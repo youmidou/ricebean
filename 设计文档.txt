@@ -1,0 +1,2 @@
+sudo find . -type d -exec chmod 777 {} \;
+chmod -R 777 .
