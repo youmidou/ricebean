@@ -7,8 +7,8 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	workers "github.com/topfreegames/go-workers"
-	"github.com/topfreegames/pitaya/v3/pkg/worker/mocks"
+	workers "github.com/youmidou/go-workers"
+	"ricebean/pkg/worker/mocks"
 )
 
 type fakeProtoMessage struct {

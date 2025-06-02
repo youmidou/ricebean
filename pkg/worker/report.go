@@ -4,10 +4,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
-	"github.com/topfreegames/pitaya/v3/pkg/metrics"
+	"ricebean/pkg/logger"
+	"ricebean/pkg/metrics"
 
-	workers "github.com/topfreegames/go-workers"
+	workers "https://github.com/youmidou/go-workers"
 )
 
 // Report sends periodic of worker reports

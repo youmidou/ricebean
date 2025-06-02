@@ -27,11 +27,11 @@ import (
 	"strconv"
 
 	"github.com/golang/protobuf/proto"
-	workers "github.com/topfreegames/go-workers"
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
-	"github.com/topfreegames/pitaya/v3/pkg/logger/interfaces"
+	workers "https://github.com/youmidou/go-workers"
+	"ricebean/pkg/config"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/logger"
+	"ricebean/pkg/logger/interfaces"
 )
 
 // Worker executes RPCs with retry and backoff time
