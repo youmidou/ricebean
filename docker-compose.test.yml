@@ -1,0 +1,101 @@
+version: '3'  # 指定 docker-compose 文件格式版本
+
+services:  # 定义所有服务
+  redis:  # Redis 服务定义
+    image: redis:7.0.11  # 使用 Redis 7.0.11 版本镜像
+    container_name: game_redis  # 容器名称
+    ports:  # 端口映射
+      - "6379:6379"  # Redis 默认端口
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped  # 容器重启策略
+    networks:
+      - game_network
+    healthcheck:  # 健康检查配置
+      test: ["CMD", "redis-cli", "ping"]  # 健康检查命令
+      interval: 30s  # 检查间隔
+      timeout: 20s  # 超时时间
+      retries: 3  # 重试次数
+
+  etcd:  # ETCD 服务定义
+    image: quay.io/coreos/etcd:v3.5.11  # 使用 ETCD 3.5.11 版本镜像
+    container_name: game_etcd  # 容器名称
+    ports:  # 端口映射
+      - "2379:2379"  # 客户端端口
+      - "2380:2380"  # 集群通信端口
+    environment:  # 环境变量配置
+      - ETCD_NAME=etcd0  # ETCD 节点名称
+      - ETCD_INITIAL_ADVERTISE_PEER_URLS=http://game_etcd:2380  # 初始广播的 peer URL
+      - ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380  # 监听 peer 请求的地址
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379  # 监听客户端请求的地址
+      - ETCD_ADVERTISE_CLIENT_URLS=http://game_etcd:2379  # 广播给客户端的地址
+      - ETCD_INITIAL_CLUSTER=etcd0=http://game_etcd:2380  # 初始集群配置
+      - ETCD_INITIAL_CLUSTER_STATE=new  # 初始集群状态
+      - ETCD_INITIAL_CLUSTER_TOKEN=etcd-cluster  # 集群令牌
+    volumes:
+      - etcd_data:/etcd-data
+    restart: unless-stopped  # 容器重启策略
+    networks:
+      - game_network
+    healthcheck:  # 健康检查配置
+      test: ["CMD", "etcdctl", "endpoint", "health"]  # 健康检查命令
+      interval: 30s  # 检查间隔
+      timeout: 20s  # 超时时间
+      retries: 3  # 重试次数
+
+  nats:  # NATS 消息服务定义
+    image: nats:2.9.19  # 使用 NATS 2.9.19 版本镜像
+    container_name: game_nats  # 容器名称
+    ports:  # 端口映射
+      - "4222:4222"  # 客户端端口
+      - "8222:8222"  # HTTP 监控端口
+    command: -js -m 8222
+    restart: unless-stopped  # 容器重启策略
+    networks:
+      - game_network
+    healthcheck:  # 健康检查配置
+      test: ["CMD", "nats-server", "--help"]  # 健康检查命令
+      interval: 30s  # 检查间隔
+      timeout: 20s  # 超时时间
+      retries: 3  # 重试次数
+
+  gameserver:  # 游戏服务器定义
+    build:  # 构建配置
+      context: .  # 构建上下文为当前目录
+      dockerfile: examples/GameServer/Dockerfile  # Dockerfile 路径
+    container_name: game_server  # 容器名称
+    ports:  # 端口映射
+      - "1250:1250"  # 游戏服务器端口
+    environment:  # 环境变量配置
+      - TZ=Asia/Shanghai
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - ETCD_HOST=game_etcd
+      - ETCD_PORT=2379
+      - NATS_HOST=game_nats
+      - NATS_PORT=4222
+      - PITAYA_CLUSTER_RPC_CLIENT_NATS_CONNECT=nats://game_nats:4222
+      - PITAYA_CLUSTER_RPC_SERVER_NATS_CONNECT=nats://game_nats:4222
+      - PITAYA_CLUSTER_RPC_CLIENT_NATS_CONNECT_TIMEOUT=30s
+      - PITAYA_CLUSTER_RPC_SERVER_NATS_CONNECT_TIMEOUT=30s
+      - PITAYA_CLUSTER_RPC_CLIENT_NATS_MAX_RECONNECT_ATTEMPTS=10
+      - PITAYA_CLUSTER_RPC_SERVER_NATS_MAX_RECONNECT_ATTEMPTS=10
+      - SERVER_TYPE=1  # 服务器类型：0-编辑器模式，1-测试服，2-正式服
+    volumes:
+      - ./config:/app/config
+    restart: unless-stopped  # 容器重启策略
+    depends_on:  # 依赖服务
+      - etcd  # 依赖 ETCD 服务
+      - nats  # 依赖 NATS 服务
+      - redis  # 依赖 Redis 服务
+    networks:
+      - game_network
+
+networks:
+  game_network:
+    driver: bridge
+
+volumes:
+  redis_data:
+  etcd_data: 

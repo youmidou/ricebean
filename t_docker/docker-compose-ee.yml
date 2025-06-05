@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  # Go 编译服务
+  go-builder:
+    image: golang:1.23.2
+    container_name: go-builder
+    working_dir: /app
+    volumes:
+      - .:/app  # 将当前目录挂载到容器中的 /app
+    command: >
+      sh -c "go mod tidy && go build -o /app/main ./examples/LobbySvc && ls -lh /app"
+    environment:
+      - CGO_ENABLED=0
+      - GOOS=linux
+      - GOARCH=amd64
+    depends_on:
+      - redis
+      - nats
+      - etcd
+
+  # 运行编译后的 Go 应用
+  go-app:
+    image: alpine:3.18
+    container_name: go-app
+    volumes:
+      - ./app:/app  # 将本地编译的文件挂载到容器
+    command: /app/main  # 启动编译后的 Go 应用
+    environment:
+      - NATS_HOST=nats  # 配置 NATS 服务主机名
+      - ETCD_HOST=etcd  # 配置 ETCD 服务主机名
+      - REDIS_HOST=redis  # 配置 Redis 服务主机名
+    depends_on:
+      - go-builder  # 确保编译完成后再启动此服务
+    networks:
+      - backend  # 将 Go 应用服务连接到同一个网络
+
+  # Redis 服务
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - backend  # 将 Redis 服务连接到名为 backend 的网络
+
+  # NATS 服务
+  nats:
+    image: nats
+    ports:
+      - "4222:4222"
+    networks:
+      - backend  # 将 NATS 服务连接到名为 backend 的网络
+
+  # ETCD 服务
+  etcd:
+    image: bitnami/etcd
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+    ports:
+      - "2379:2379"
+    networks:
+      - backend  # 将 ETCD 服务连接到名为 backend 的网络
+
+networks:
+  backend:  # 创建一个自定义网络
+    driver: bridge
