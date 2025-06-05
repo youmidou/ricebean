@@ -6,12 +6,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
 	"go.etcd.io/etcd/api/v3/mvccpb"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.etcd.io/etcd/client/v3/namespace"
+	"ricebean/pkg/config"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/logger"
 )
 
 var (

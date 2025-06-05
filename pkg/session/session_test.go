@@ -36,10 +36,10 @@ import (
 	"github.com/google/uuid"
 	nats "github.com/nats-io/nats.go"
 	"github.com/stretchr/testify/assert"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/helpers"
-	"github.com/topfreegames/pitaya/v3/pkg/networkentity/mocks"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/helpers"
+	"ricebean/pkg/networkentity/mocks"
+	"ricebean/pkg/protos"
 )
 
 var update = flag.Bool("update", false, "update .golden files")

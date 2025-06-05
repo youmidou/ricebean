@@ -24,8 +24,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/logger"
 )
 
 // Group represents an agglomeration of UIDs which is used to manage

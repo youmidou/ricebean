@@ -32,20 +32,20 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/codec"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/message"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/packet"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/errors"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
-	"github.com/topfreegames/pitaya/v3/pkg/metrics"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	"github.com/topfreegames/pitaya/v3/pkg/serialize"
-	"github.com/topfreegames/pitaya/v3/pkg/session"
-	"github.com/topfreegames/pitaya/v3/pkg/tracing"
-	"github.com/topfreegames/pitaya/v3/pkg/util"
-	"github.com/topfreegames/pitaya/v3/pkg/util/compression"
+	"ricebean/pkg/config"
+	"ricebean/pkg/conn/codec"
+	"ricebean/pkg/conn/message"
+	"ricebean/pkg/conn/packet"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/errors"
+	"ricebean/pkg/logger"
+	"ricebean/pkg/metrics"
+	"ricebean/pkg/protos"
+	"ricebean/pkg/serialize"
+	"ricebean/pkg/session"
+	"ricebean/pkg/tracing"
+	"ricebean/pkg/util"
+	"ricebean/pkg/util/compression"
 
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
@@ -560,8 +560,8 @@ func (a *agentImpl) write() {
 func (a *agentImpl) writeToConnection(ctx context.Context, data []byte) error {
 	span := createConnectionSpan(ctx, a.conn, "conn write")
 
-        a.conn.SetWriteDeadline(time.Now().Add(a.writeTimeout))
-        _, writeErr := a.conn.Write(data)
+	a.conn.SetWriteDeadline(time.Now().Add(a.writeTimeout))
+	_, writeErr := a.conn.Write(data)
 
 	if span != nil {
 		defer span.End()
@@ -698,8 +698,8 @@ func (a *agentImpl) reportChannelSize() {
 		logger.Log.Warnf("chSend is at maximum capacity")
 	}
 	for _, mr := range a.metricsReporters {
-		if err := mr.ReportHistogram(metrics.ChannelCapacity, map[string]string{"channel": "agent_chsend"}, float64(chSendCapacity)); err != nil {
-			logger.Log.Warnf("failed to report histogram chSend channel capacity: %s", err.Error())
+		if err := mr.ReportGauge(metrics.ChannelCapacity, map[string]string{"channel": "agent_chsend"}, float64(chSendCapacity)); err != nil {
+			logger.Log.Warnf("failed to report chSend channel capaacity: %s", err.Error())
 		}
 	}
 }

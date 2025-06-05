@@ -25,7 +25,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/topfreegames/pitaya/v3/pkg/config"
+	"ricebean/pkg/config"
 )
 
 var memoryGroupService *MemoryGroupService

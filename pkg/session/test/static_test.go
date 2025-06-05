@@ -7,8 +7,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
-	"github.com/topfreegames/pitaya/v3/pkg/session"
-	"github.com/topfreegames/pitaya/v3/pkg/session/mocks"
+	"ricebean/pkg/session"
+	"ricebean/pkg/session/mocks"
 )
 
 func TestStaticGetSessionByUID(t *testing.T) {

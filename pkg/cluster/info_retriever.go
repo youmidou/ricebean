@@ -1,6 +1,6 @@
 package cluster
 
-import "github.com/topfreegames/pitaya/v3/pkg/config"
+import "ricebean/pkg/config"
 
 // infoRetriever gets cluster info from config
 // Implements InfoRetriever interface

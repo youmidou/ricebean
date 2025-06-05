@@ -23,11 +23,11 @@ package metrics
 import (
 	"fmt"
 
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
+	"ricebean/pkg/constants"
 
 	"github.com/DataDog/datadog-go/statsd"
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
+	"ricebean/pkg/config"
+	"ricebean/pkg/logger"
 )
 
 // Client is the interface to required dogstatsd functions

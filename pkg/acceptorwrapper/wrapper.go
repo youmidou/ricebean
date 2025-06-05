@@ -21,7 +21,7 @@
 package acceptorwrapper
 
 import (
-	"github.com/topfreegames/pitaya/v3/pkg/acceptor"
+	"ricebean/pkg/acceptor"
 )
 
 // Wrapper has a method that receives an acceptor and the struct

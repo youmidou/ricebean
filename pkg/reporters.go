@@ -1,10 +1,10 @@
 package pitaya
 
 import (
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
-	"github.com/topfreegames/pitaya/v3/pkg/metrics"
-	"github.com/topfreegames/pitaya/v3/pkg/metrics/models"
+	"ricebean/pkg/config"
+	"ricebean/pkg/logger"
+	"ricebean/pkg/metrics"
+	"ricebean/pkg/metrics/models"
 )
 
 // CreatePrometheusReporter create a Prometheus reporter instance

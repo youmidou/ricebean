@@ -27,7 +27,7 @@ import (
 	"strconv"
 
 	"github.com/golang/protobuf/proto"
-	workers "https://github.com/youmidou/go-workers"
+	workers "github.com/topfreegames/go-workers"
 	"ricebean/pkg/config"
 	"ricebean/pkg/constants"
 	"ricebean/pkg/logger"

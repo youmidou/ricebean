@@ -23,15 +23,15 @@ package tracing
 import (
 	"context"
 
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	pcontext "github.com/topfreegames/pitaya/v3/pkg/context"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/trace"
 	otelTrace "go.opentelemetry.io/otel/trace"
+	"ricebean/pkg/constants"
+	pcontext "ricebean/pkg/context"
+	"ricebean/pkg/logger"
 )
 
 func castValueToCarrier(val interface{}) (propagation.MapCarrier, error) {

@@ -24,7 +24,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
+	"ricebean/pkg/logger"
 )
 
 // Server struct

@@ -26,17 +26,17 @@ import (
 	"reflect"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/topfreegames/pitaya/v3/pkg/cluster"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/codec"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/message"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/packet"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	"github.com/topfreegames/pitaya/v3/pkg/route"
-	"github.com/topfreegames/pitaya/v3/pkg/serialize"
-	"github.com/topfreegames/pitaya/v3/pkg/session"
-	"github.com/topfreegames/pitaya/v3/pkg/util"
+	"ricebean/pkg/cluster"
+	"ricebean/pkg/conn/codec"
+	"ricebean/pkg/conn/message"
+	"ricebean/pkg/conn/packet"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/logger"
+	"ricebean/pkg/protos"
+	"ricebean/pkg/route"
+	"ricebean/pkg/serialize"
+	"ricebean/pkg/session"
+	"ricebean/pkg/util"
 )
 
 // Remote corresponding to another server

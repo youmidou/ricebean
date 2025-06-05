@@ -7,12 +7,12 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"github.com/topfreegames/pitaya/v3/pkg/cluster"
-	"github.com/topfreegames/pitaya/v3/pkg/cluster/mocks"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/message"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	"github.com/topfreegames/pitaya/v3/pkg/route"
+	"ricebean/pkg/cluster"
+	"ricebean/pkg/cluster/mocks"
+	"ricebean/pkg/conn/message"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/protos"
+	"ricebean/pkg/route"
 )
 
 var (

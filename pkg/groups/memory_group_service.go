@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
+	"ricebean/pkg/config"
+	"ricebean/pkg/constants"
 )
 
 var (

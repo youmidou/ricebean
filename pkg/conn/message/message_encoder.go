@@ -23,7 +23,7 @@ package message
 import (
 	"encoding/binary"
 
-	"github.com/topfreegames/pitaya/v3/pkg/util/compression"
+	"ricebean/pkg/util/compression"
 )
 
 // Encoder interface

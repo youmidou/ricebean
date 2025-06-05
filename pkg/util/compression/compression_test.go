@@ -7,7 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/topfreegames/pitaya/v3/pkg/helpers"
+	"ricebean/pkg/helpers"
 )
 
 var update = flag.Bool("update", false, "update .golden files")

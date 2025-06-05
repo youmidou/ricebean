@@ -29,14 +29,14 @@ import (
 
 	"github.com/golang/protobuf/proto"
 	nats "github.com/nats-io/nats.go"
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	e "github.com/topfreegames/pitaya/v3/pkg/errors"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
-	"github.com/topfreegames/pitaya/v3/pkg/metrics"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	"github.com/topfreegames/pitaya/v3/pkg/session"
-	"github.com/topfreegames/pitaya/v3/pkg/util"
+	"ricebean/pkg/config"
+	"ricebean/pkg/constants"
+	e "ricebean/pkg/errors"
+	"ricebean/pkg/logger"
+	"ricebean/pkg/metrics"
+	"ricebean/pkg/protos"
+	"ricebean/pkg/session"
+	"ricebean/pkg/util"
 )
 
 // NatsRPCServer struct
@@ -408,15 +408,16 @@ func (ns *NatsRPCServer) reportMetrics() {
 			if subChanCapacity == 0 {
 				logger.Log.Warn("subChan is at maximum capacity")
 			}
-			if err := mr.ReportHistogram(metrics.ChannelCapacity, map[string]string{"channel": "rpc_server_subchan"}, float64(subChanCapacity)); err != nil {
+			if err := mr.ReportGauge(metrics.ChannelCapacity, map[string]string{"channel": "rpc_server_subchan"}, float64(subChanCapacity)); err != nil {
 				logger.Log.Warnf("failed to report subChan queue capacity: %s", err.Error())
 			}
+
 			// bindingschan
 			bindingsChanCapacity := ns.messagesBufferSize - len(ns.bindingsChan)
 			if bindingsChanCapacity == 0 {
 				logger.Log.Warn("bindingsChan is at maximum capacity")
 			}
-			if err := mr.ReportHistogram(metrics.ChannelCapacity, map[string]string{"channel": "rpc_server_bindingschan"}, float64(bindingsChanCapacity)); err != nil {
+			if err := mr.ReportGauge(metrics.ChannelCapacity, map[string]string{"channel": "rpc_server_bindingschan"}, float64(bindingsChanCapacity)); err != nil {
 				logger.Log.Warnf("failed to report bindingsChan capacity: %s", err.Error())
 			}
 
@@ -425,7 +426,7 @@ func (ns *NatsRPCServer) reportMetrics() {
 			if userPushChanCapacity == 0 {
 				logger.Log.Warn("userPushChan is at maximum capacity")
 			}
-			if err := mr.ReportHistogram(metrics.ChannelCapacity, map[string]string{"channel": "rpc_server_userpushchan"}, float64(userPushChanCapacity)); err != nil {
+			if err := mr.ReportGauge(metrics.ChannelCapacity, map[string]string{"channel": "rpc_server_userpushchan"}, float64(userPushChanCapacity)); err != nil {
 				logger.Log.Warnf("failed to report userPushCh capacity: %s", err.Error())
 			}
 		}

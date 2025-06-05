@@ -26,9 +26,9 @@ import (
 	"io"
 	"net"
 
-	"github.com/topfreegames/pitaya/v3/pkg/conn/codec"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
+	"ricebean/pkg/conn/codec"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/logger"
 )
 
 // TCPAcceptor struct

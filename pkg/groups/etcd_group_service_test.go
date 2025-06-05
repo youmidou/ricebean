@@ -23,9 +23,9 @@ package groups
 import (
 	"testing"
 
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/helpers"
 	"go.etcd.io/etcd/tests/v3/integration"
+	"ricebean/pkg/config"
+	"ricebean/pkg/helpers"
 )
 
 func setup(t *testing.T) (*integration.ClusterV3, GroupService) {

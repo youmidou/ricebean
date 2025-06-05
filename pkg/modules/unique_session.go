@@ -23,8 +23,8 @@ package modules
 import (
 	"context"
 
-	"github.com/topfreegames/pitaya/v3/pkg/cluster"
-	"github.com/topfreegames/pitaya/v3/pkg/session"
+	"ricebean/pkg/cluster"
+	"ricebean/pkg/session"
 )
 
 // UniqueSession module watches for sessions using the same UID and kicks them

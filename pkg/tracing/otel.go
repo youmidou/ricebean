@@ -6,13 +6,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/propagation"
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	"ricebean/pkg/logger"
 )
 
 func InitializeOtel() error {

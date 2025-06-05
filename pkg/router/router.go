@@ -25,12 +25,12 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/topfreegames/pitaya/v3/pkg/cluster"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/message"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	"github.com/topfreegames/pitaya/v3/pkg/route"
+	"ricebean/pkg/cluster"
+	"ricebean/pkg/conn/message"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/logger"
+	"ricebean/pkg/protos"
+	"ricebean/pkg/route"
 )
 
 // Router struct

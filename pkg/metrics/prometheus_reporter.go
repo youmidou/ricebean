@@ -23,16 +23,16 @@ package metrics
 import (
 	"fmt"
 
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
+	"ricebean/pkg/logger"
 
 	"net/http"
 	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/metrics/models"
+	"ricebean/pkg/config"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/metrics/models"
 )
 
 var (
@@ -188,13 +188,12 @@ func (p *PrometheusReporter) registerMetrics(
 		append([]string{"type"}, additionalLabelsKeys...),
 	)
 
-	p.histogramReportersMap[ChannelCapacity] = prometheus.NewHistogramVec(
-		prometheus.HistogramOpts{
+	p.gaugeReportersMap[ChannelCapacity] = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
 			Namespace:   "pitaya",
 			Subsystem:   "channel",
 			Name:        ChannelCapacity,
 			Help:        "the available capacity of the channel",
-			Buckets:     []float64{0, 1, 10, 50, 100, 250, 500, 750, 1000, 1500, 2000, 3000, 4000, 5000},
 			ConstLabels: constLabels,
 		},
 		append([]string{"channel"}, additionalLabelsKeys...),

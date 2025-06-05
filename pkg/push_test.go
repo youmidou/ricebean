@@ -27,12 +27,12 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	clustermocks "github.com/topfreegames/pitaya/v3/pkg/cluster/mocks"
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	serializemocks "github.com/topfreegames/pitaya/v3/pkg/serialize/mocks"
-	sessionmocks "github.com/topfreegames/pitaya/v3/pkg/session/mocks"
+	clustermocks "ricebean/pkg/cluster/mocks"
+	"ricebean/pkg/config"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/protos"
+	serializemocks "ricebean/pkg/serialize/mocks"
+	sessionmocks "ricebean/pkg/session/mocks"
 )
 
 type someStruct struct {

@@ -26,15 +26,15 @@ import (
 
 	"github.com/golang/protobuf/proto"
 	"github.com/spf13/viper"
-	"github.com/topfreegames/pitaya/v3/pkg/cluster"
-	"github.com/topfreegames/pitaya/v3/pkg/component"
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/interfaces"
-	"github.com/topfreegames/pitaya/v3/pkg/metrics"
-	"github.com/topfreegames/pitaya/v3/pkg/router"
-	"github.com/topfreegames/pitaya/v3/pkg/session"
-	"github.com/topfreegames/pitaya/v3/pkg/worker"
+	"ricebean/pkg/cluster"
+	"ricebean/pkg/component"
+	"ricebean/pkg/config"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/interfaces"
+	"ricebean/pkg/metrics"
+	"ricebean/pkg/router"
+	"ricebean/pkg/session"
+	"ricebean/pkg/worker"
 )
 
 var DefaultApp Pitaya

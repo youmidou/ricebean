@@ -21,8 +21,8 @@
 package pitaya
 
 import (
-	"github.com/topfreegames/pitaya/v3/pkg/component"
-	"github.com/topfreegames/pitaya/v3/pkg/logger"
+	"ricebean/pkg/component"
+	"ricebean/pkg/logger"
 )
 
 type regComp struct {

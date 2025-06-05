@@ -32,13 +32,13 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/topfreegames/pitaya/v3/pkg/component"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/message"
-	"github.com/topfreegames/pitaya/v3/pkg/helpers"
-	"github.com/topfreegames/pitaya/v3/pkg/pipeline"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	"github.com/topfreegames/pitaya/v3/pkg/protos/test"
-	"github.com/topfreegames/pitaya/v3/pkg/serialize/mocks"
+	"ricebean/pkg/component"
+	"ricebean/pkg/conn/message"
+	"ricebean/pkg/helpers"
+	"ricebean/pkg/pipeline"
+	"ricebean/pkg/protos"
+	"ricebean/pkg/protos/test"
+	"ricebean/pkg/serialize/mocks"
 )
 
 var update = flag.Bool("update", false, "update .golden files")

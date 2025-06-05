@@ -7,7 +7,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	workers "github.com/youmidou/go-workers"
+	workers "github.com/topfreegames/go-workers"
 	"ricebean/pkg/worker/mocks"
 )
 

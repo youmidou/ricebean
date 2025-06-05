@@ -7,9 +7,9 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/message"
-	"github.com/topfreegames/pitaya/v3/pkg/helpers"
-	"github.com/topfreegames/pitaya/v3/pkg/mocks"
+	"ricebean/pkg/conn/message"
+	"ricebean/pkg/helpers"
+	"ricebean/pkg/mocks"
 )
 
 func TestSendRequestShouldTimeout(t *testing.T) {

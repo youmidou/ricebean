@@ -8,7 +8,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	cluster "github.com/topfreegames/pitaya/v3/pkg/cluster"
+	cluster "ricebean/pkg/cluster"
 )
 
 // MockServiceDiscovery is a mock of ServiceDiscovery interface.

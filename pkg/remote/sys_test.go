@@ -27,9 +27,9 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	"github.com/topfreegames/pitaya/v3/pkg/session/mocks"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/protos"
+	"ricebean/pkg/session/mocks"
 )
 
 func TestBindSession(t *testing.T) {

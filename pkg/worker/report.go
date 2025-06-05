@@ -7,7 +7,7 @@ import (
 	"ricebean/pkg/logger"
 	"ricebean/pkg/metrics"
 
-	workers "https://github.com/youmidou/go-workers"
+	workers "github.com/topfreegames/go-workers"
 )
 
 // Report sends periodic of worker reports

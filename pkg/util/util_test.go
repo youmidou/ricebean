@@ -31,16 +31,16 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/message"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	pcontext "github.com/topfreegames/pitaya/v3/pkg/context"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	"github.com/topfreegames/pitaya/v3/pkg/serialize/mocks"
-	"github.com/topfreegames/pitaya/v3/pkg/tracing"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/sdk/trace/tracetest"
+	"ricebean/pkg/conn/message"
+	"ricebean/pkg/constants"
+	pcontext "ricebean/pkg/context"
+	"ricebean/pkg/protos"
+	"ricebean/pkg/serialize/mocks"
+	"ricebean/pkg/tracing"
 )
 
 var update = flag.Bool("update", false, "update .golden files")

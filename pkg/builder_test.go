@@ -24,8 +24,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/topfreegames/pitaya/v3/pkg/acceptor"
-	"github.com/topfreegames/pitaya/v3/pkg/config"
+	"ricebean/pkg/acceptor"
+	"ricebean/pkg/config"
 )
 
 func TestPostBuildHooks(t *testing.T) {

@@ -23,8 +23,8 @@ package client
 import (
 	"crypto/tls"
 
-	"github.com/topfreegames/pitaya/v3/pkg/conn/message"
-	"github.com/topfreegames/pitaya/v3/pkg/session"
+	"ricebean/pkg/conn/message"
+	"ricebean/pkg/session"
 )
 
 // PitayaClient iface

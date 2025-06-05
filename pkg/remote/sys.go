@@ -23,10 +23,10 @@ package remote
 import (
 	"context"
 
-	"github.com/topfreegames/pitaya/v3/pkg/component"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	"github.com/topfreegames/pitaya/v3/pkg/session"
+	"ricebean/pkg/component"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/protos"
+	"ricebean/pkg/session"
 )
 
 // Sys contains logic for handling sys remotes

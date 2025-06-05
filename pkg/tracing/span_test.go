@@ -27,14 +27,14 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	pcontext "github.com/topfreegames/pitaya/v3/pkg/context"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/propagation"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
+	"ricebean/pkg/constants"
+	pcontext "ricebean/pkg/context"
 )
 
 var tracerProvider *sdktrace.TracerProvider

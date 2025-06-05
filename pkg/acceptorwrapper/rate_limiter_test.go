@@ -27,8 +27,8 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
-	"github.com/topfreegames/pitaya/v3/pkg/metrics"
-	"github.com/topfreegames/pitaya/v3/pkg/mocks"
+	"ricebean/pkg/metrics"
+	"ricebean/pkg/mocks"
 )
 
 func TestRateLimiterGetNextMessage(t *testing.T) {

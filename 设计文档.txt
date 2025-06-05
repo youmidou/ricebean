@@ -1,2 +1,9 @@
 sudo find . -type d -exec chmod 777 {} \;
 chmod -R 777 .
+
+go clean -medicate
+go mod tidy
+
+module ricebean
+
+go 1.24.3

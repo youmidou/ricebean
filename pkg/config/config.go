@@ -3,7 +3,7 @@ package config
 import (
 	"time"
 
-	"github.com/topfreegames/pitaya/v3/pkg/metrics/models"
+	"ricebean/pkg/metrics/models"
 )
 
 const DefaultWriteTimeout = 10 * time.Second

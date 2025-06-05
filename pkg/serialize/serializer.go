@@ -23,8 +23,8 @@ package serialize
 import (
 	"errors"
 
-	"github.com/topfreegames/pitaya/v3/pkg/serialize/json"
-	"github.com/topfreegames/pitaya/v3/pkg/serialize/protobuf"
+	"ricebean/pkg/serialize/json"
+	"ricebean/pkg/serialize/protobuf"
 )
 
 const (

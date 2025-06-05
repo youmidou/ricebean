@@ -27,7 +27,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/topfreegames/pitaya/v3/pkg/conn/message"
+	"ricebean/pkg/conn/message"
 )
 
 var (

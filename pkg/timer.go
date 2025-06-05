@@ -24,8 +24,8 @@ import (
 	"math"
 	"time"
 
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/timer"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/timer"
 )
 
 // NewTimer returns a new Timer containing a function that will be called

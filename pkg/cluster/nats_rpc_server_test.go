@@ -31,14 +31,14 @@ import (
 	"github.com/golang/protobuf/proto"
 	nats "github.com/nats-io/nats.go"
 	"github.com/stretchr/testify/assert"
-	"github.com/topfreegames/pitaya/v3/pkg/config"
-	"github.com/topfreegames/pitaya/v3/pkg/constants"
-	"github.com/topfreegames/pitaya/v3/pkg/helpers"
-	"github.com/topfreegames/pitaya/v3/pkg/metrics"
-	metricsmocks "github.com/topfreegames/pitaya/v3/pkg/metrics/mocks"
-	"github.com/topfreegames/pitaya/v3/pkg/protos"
-	protosmocks "github.com/topfreegames/pitaya/v3/pkg/protos/mocks"
-	sessionmocks "github.com/topfreegames/pitaya/v3/pkg/session/mocks"
+	"ricebean/pkg/config"
+	"ricebean/pkg/constants"
+	"ricebean/pkg/helpers"
+	"ricebean/pkg/metrics"
+	metricsmocks "ricebean/pkg/metrics/mocks"
+	"ricebean/pkg/protos"
+	protosmocks "ricebean/pkg/protos/mocks"
+	sessionmocks "ricebean/pkg/session/mocks"
 )
 
 type funcPtrMatcher struct {
@@ -316,7 +316,7 @@ func TestNatsRPCServerHandleMessages(t *testing.T) {
 			assert.NoError(t, err)
 
 			mockMetricsReporter.EXPECT().ReportGauge(metrics.DroppedMessages, gomock.Any(), float64(0))
-			mockMetricsReporter.EXPECT().ReportHistogram(metrics.ChannelCapacity, gomock.Any(), gomock.Any()).Times(3)
+			mockMetricsReporter.EXPECT().ReportGauge(metrics.ChannelCapacity, gomock.Any(), gomock.Any()).Times(3)
 
 			conn.Publish(table.topic, b)
 			r := helpers.ShouldEventuallyReceive(t, rpcServer.unhandledReqCh).(*protos.Request)
@@ -505,6 +505,6 @@ func TestNatsRPCServerReportMetrics(t *testing.T) {
 	rpcServer.userPushCh <- &protos.Push{}
 
 	mockMetricsReporter.EXPECT().ReportGauge(metrics.DroppedMessages, gomock.Any(), float64(rpcServer.dropped))
-	mockMetricsReporter.EXPECT().ReportHistogram(metrics.ChannelCapacity, gomock.Any(), float64(99)).Times(3)
+	mockMetricsReporter.EXPECT().ReportGauge(metrics.ChannelCapacity, gomock.Any(), float64(99)).Times(3)
 	rpcServer.reportMetrics()
 }
