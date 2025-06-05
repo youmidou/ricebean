@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	pitaya "ricebean/pkg"
+	"ricebean/pkg/acceptor"
 	"ricebean/pkg/config"
 	"ricebean/pkg/serialize/protobuf"
 )
@@ -20,6 +21,9 @@ func main() {
 
 	builder := pitaya.NewDefaultBuilder(false, *svType, pitaya.Cluster, serverMetadata, *cfg)
 	builder.Serializer = protobuf.NewSerializer() // 设置 Protobuf 序列化器 //builder.PacketDecoder//builder.MessageEncoder
+
+	tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", 1250))
+	builder.AddAcceptor(tcp)
 
 	app = builder.Build()
 	defer app.Shutdown()
