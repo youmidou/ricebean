@@ -62,6 +62,16 @@ func (me *MessagesEncoder) IsCompressionEnabled() bool {
 // The figure above indicates that the bit does not affect the type of message.
 // See ref: https://github.com/topfreegames/pitaya/v3/blob/master/docs/communication_protocol.md
 func (me *MessagesEncoder) Encode(message *Message) ([]byte, error) {
+	return Encode(message, me.DataCompression)
+}
+
+// Decode decodes the message
+func (me *MessagesEncoder) Decode(data []byte) (*Message, error) {
+	return Decode(data)
+}
+
+// 加密
+func Encode(message *Message, DataCompression bool) ([]byte, error) {
 	if invalidType(message.Type) {
 		return nil, ErrWrongMessageType
 	}
@@ -107,7 +117,7 @@ func (me *MessagesEncoder) Encode(message *Message) ([]byte, error) {
 		}
 	}
 
-	if me.DataCompression {
+	if DataCompression {
 		d, err := compression.DeflateData(message.Data)
 		if err != nil {
 			return nil, err
@@ -123,13 +133,9 @@ func (me *MessagesEncoder) Encode(message *Message) ([]byte, error) {
 	return buf, nil
 }
 
-// Decode decodes the message
-func (me *MessagesEncoder) Decode(data []byte) (*Message, error) {
-	return Decode(data)
-}
-
 // Decode unmarshal the bytes slice to a message
 // See ref: https://github.com/topfreegames/pitaya/v3/blob/master/docs/communication_protocol.md
+// 解码
 func Decode(data []byte) (*Message, error) {
 	if len(data) < msgHeadLength {
 		return nil, ErrInvalidMessage

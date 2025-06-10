@@ -9,7 +9,7 @@ func ParseHeader(header []byte) (int, packet.Type, error) {
 	}
 	typ := header[0]
 	if typ < packet.Handshake || typ > packet.Kick {
-		return 0, 0x00, packet.ErrWrongPomeloPacketType
+		//return 0, 0x00, packet.ErrWrongPomeloPacketType
 	}
 
 	size := BytesToInt(header[1:])

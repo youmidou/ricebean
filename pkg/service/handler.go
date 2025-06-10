@@ -22,7 +22,6 @@ package service
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net"
@@ -49,7 +48,6 @@ import (
 	"ricebean/pkg/metrics"
 	"ricebean/pkg/route"
 	"ricebean/pkg/serialize"
-	"ricebean/pkg/session"
 	"ricebean/pkg/timer"
 	"ricebean/pkg/tracing"
 )
@@ -222,68 +220,83 @@ func (h *HandlerService) Handle(conn acceptor.PlayerConn) {
 }
 
 func (h *HandlerService) processPacket(a agent.Agent, p *packet.Packet) error {
-	switch p.Type {
-	case packet.Handshake:
-		logger.Log.Debug("Received handshake packet")
+	/*
+		switch p.Type {
+		case packet.Handshake: //握手
+			logger.Log.Debug("Received handshake packet")
 
-		// Parse the json sent with the handshake by the client
-		handshakeData := &session.HandshakeData{}
-		if err := json.Unmarshal(p.Data, handshakeData); err != nil {
-			defer a.Close()
-			logger.Log.Errorf("Failed to unmarshal handshake data: %s", err.Error())
-			if serr := a.SendHandshakeErrorResponse(); serr != nil {
-				logger.Log.Errorf("Error sending handshake error response: %s", err.Error())
-				return err
+			// Parse the json sent with the handshake by the client
+			handshakeData := &session.HandshakeData{}
+			if err := json.Unmarshal(p.Data, handshakeData); err != nil {
+				defer a.Close()
+				logger.Log.Errorf("Failed to unmarshal handshake data: %s", err.Error())
+				if serr := a.SendHandshakeErrorResponse(); serr != nil {
+					logger.Log.Errorf("Error sending handshake error response: %s", err.Error())
+					return err
+				}
+
+				return fmt.Errorf("invalid handshake data. Id=%d", a.GetSession().ID())
 			}
 
-			return fmt.Errorf("invalid handshake data. Id=%d", a.GetSession().ID())
-		}
+			if err := a.GetSession().ValidateHandshake(handshakeData); err != nil {
+				defer a.Close()
+				logger.Log.Errorf("Handshake validation failed: %s", err.Error())
+				if serr := a.SendHandshakeErrorResponse(); serr != nil {
+					logger.Log.Errorf("Error sending handshake error response: %s", err.Error())
+					return err
+				}
 
-		if err := a.GetSession().ValidateHandshake(handshakeData); err != nil {
-			defer a.Close()
-			logger.Log.Errorf("Handshake validation failed: %s", err.Error())
-			if serr := a.SendHandshakeErrorResponse(); serr != nil {
-				logger.Log.Errorf("Error sending handshake error response: %s", err.Error())
+				return fmt.Errorf("handshake validation failed: %w. SessionId=%d", err, a.GetSession().ID())
+			}
+			//发送握手响应
+			if err := a.SendHandshakeResponse(); err != nil {
+				logger.Log.Errorf("Error sending handshake response: %s", err.Error())
 				return err
 			}
+			logger.Log.Debugf("Session handshake Id=%d, Remote=%s", a.GetSession().ID(), a.RemoteAddr())
 
-			return fmt.Errorf("handshake validation failed: %w. SessionId=%d", err, a.GetSession().ID())
+			a.GetSession().SetHandshakeData(handshakeData)
+			a.SetStatus(constants.StatusHandshake)
+			err := a.GetSession().Set(constants.IPVersionKey, a.IPVersion())
+			if err != nil {
+				logger.Log.Warnf("failed to save ip version on session: %q\n", err)
+			}
+
+			logger.Log.Debug("Successfully saved handshake data")
+
+		case packet.HandshakeAck: //握手确认
+			a.SetStatus(constants.StatusWorking)
+			logger.Log.Debugf("Receive handshake ACK Id=%d, Remote=%s", a.GetSession().ID(), a.RemoteAddr())
+
+		case packet.Data: //数据
+			if a.GetStatus() < constants.StatusWorking {
+				return fmt.Errorf("receive data on socket which is not yet ACK, session will be closed immediately, remote=%s",
+					a.RemoteAddr().String())
+			}
+
+			msg, err := message.Decode(p.Data)
+			if err != nil {
+				return err
+			}
+			h.processMessage(a, msg)
+
+		case packet.Heartbeat:
+			// expected
 		}
+	*/
 
-		if err := a.SendHandshakeResponse(); err != nil {
-			logger.Log.Errorf("Error sending handshake response: %s", err.Error())
-			return err
-		}
-		logger.Log.Debugf("Session handshake Id=%d, Remote=%s", a.GetSession().ID(), a.RemoteAddr())
-
-		a.GetSession().SetHandshakeData(handshakeData)
-		a.SetStatus(constants.StatusHandshake)
-		err := a.GetSession().Set(constants.IPVersionKey, a.IPVersion())
-		if err != nil {
-			logger.Log.Warnf("failed to save ip version on session: %q\n", err)
-		}
-
-		logger.Log.Debug("Successfully saved handshake data")
-
-	case packet.HandshakeAck:
-		a.SetStatus(constants.StatusWorking)
-		logger.Log.Debugf("Receive handshake ACK Id=%d, Remote=%s", a.GetSession().ID(), a.RemoteAddr())
-
-	case packet.Data:
-		if a.GetStatus() < constants.StatusWorking {
-			return fmt.Errorf("receive data on socket which is not yet ACK, session will be closed immediately, remote=%s",
-				a.RemoteAddr().String())
-		}
-
-		msg, err := message.Decode(p.Data)
-		if err != nil {
-			return err
-		}
-		h.processMessage(a, msg)
-
-	case packet.Heartbeat:
-		// expected
+	a.SetStatus(constants.StatusWorking)
+	if a.GetStatus() < constants.StatusWorking {
+		return fmt.Errorf("receive data on socket which is not yet ACK, session will be closed immediately, remote=%s",
+			a.RemoteAddr().String())
 	}
+
+	msg, err := message.Decode(p.Data)
+	if err != nil {
+		return err
+	}
+	msg.Route = ""
+	h.processMessage(a, msg)
 
 	a.SetLastAt()
 	return nil
