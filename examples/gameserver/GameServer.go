@@ -3,9 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"ricebean/_ymd"
 	pitaya "ricebean/pkg"
 	"ricebean/pkg/acceptor"
 	"ricebean/pkg/config"
+	"ricebean/pkg/conn/codec"
+	"ricebean/pkg/conn/message"
 	"ricebean/pkg/serialize/protobuf"
 )
 
@@ -21,10 +24,19 @@ func main() {
 
 	builder := pitaya.NewDefaultBuilder(true, *svType, pitaya.Cluster, serverMetadata, *cfg)
 
-	builder.Serializer = protobuf.NewSerializer() // 设置 Protobuf 序列化器 //builder.PacketDecoder//builder.MessageEncoder
+	//----------------------------------------------
+	//数据包->解码器
+	builder.PacketDecoder = _ymd.NewPomeloPacketDecoder()
+	//数据包->编码器
+	builder.PacketEncoder = codec.NewPomeloPacketEncoder()
+	//消息->编码器
+	builder.MessageEncoder = message.NewMessagesEncoder(cfg.Handler.Messages.Compression)
+	builder.Serializer = protobuf.NewSerializer() // 设置 Protobuf 序列化器
+
 	tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", 1250))
 	builder.AddAcceptor(tcp)
-
+	//----------------------------------------------
+	
 	app = builder.Build()
 	defer app.Shutdown()
 

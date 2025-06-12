@@ -198,7 +198,7 @@ func (builder *Builder) Build() Pitaya {
 		}
 
 		builder.Router.SetServiceDiscovery(builder.ServiceDiscovery)
-
+		//远程服务
 		remoteService = service.NewRemoteService(
 			builder.RPCClient,
 			builder.RPCServer,
@@ -216,7 +216,7 @@ func (builder *Builder) Build() Pitaya {
 
 		builder.RPCServer.SetPitayaServer(remoteService)
 	}
-
+	//代理工厂
 	agentFactory := agent.NewAgentFactory(builder.DieChan,
 		builder.PacketDecoder,
 		builder.PacketEncoder,
