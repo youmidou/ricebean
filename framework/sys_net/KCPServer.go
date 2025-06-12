@@ -5,8 +5,8 @@ import (
 	"github.com/panjf2000/gnet/pkg/pool/goroutine"
 	"github.com/xtaci/kcp-go"
 	"net"
-	"phoenix-tudou/framework/log4"
-	"phoenix-tudou/framework/sys_map"
+	"ricebean/framework/log4"
+	"ricebean/framework/sys_map"
 )
 
 /*

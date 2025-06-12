@@ -2,9 +2,9 @@ package lobby_svc
 
 import (
 	"github.com/golang/protobuf/proto"
-	"phoenix-tudou/examples/_def"
-	"phoenix-tudou/framework/sys_net"
-	"phoenix-tudou/z_Tools/ProtoToCS/Protocal/pb"
+	"ricebean/examples/_def"
+	"ricebean/framework/sys_net"
+	"ricebean/z_Tools/ProtoToCS/Protocal/pb"
 )
 
 type LobbySvcMsgHandler struct {

@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"github.com/gorilla/websocket"
-	"phoenix-tudou/framework/log4"
+	"ricebean/framework/log4"
 	"runtime/debug"
 )
 

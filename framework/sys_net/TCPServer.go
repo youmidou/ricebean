@@ -4,8 +4,8 @@ import (
 	"encoding/binary"
 	"github.com/panjf2000/gnet/pkg/pool/goroutine"
 	"net"
-	"phoenix-tudou/framework/log4"
-	"phoenix-tudou/framework/sys_map"
+	"ricebean/framework/log4"
+	"ricebean/framework/sys_map"
 	"runtime/debug"
 )
 

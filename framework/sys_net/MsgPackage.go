@@ -2,7 +2,7 @@ package sys_net
 
 import (
 	"github.com/golang/protobuf/proto"
-	"phoenix-tudou/framework/log4"
+	"ricebean/framework/log4"
 )
 
 // 包-解析

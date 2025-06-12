@@ -1,6 +1,6 @@
 package _interfaces
 
-import "phoenix-tudou/examples/_def"
+import "ricebean/examples/_def"
 
 type GlobalUser interface {
 	GetName() string

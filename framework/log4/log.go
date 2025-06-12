@@ -10,8 +10,8 @@ import (
 	"fmt"
 	"go.uber.org/zap"
 	"log"
-	"phoenix-tudou/framework/log4/log_cmd"
-	"phoenix-tudou/framework/sys_json"
+	"ricebean/framework/log4/log_cmd"
+	"ricebean/framework/sys_json"
 )
 
 var log_config = []log_cmd.LogCmd{

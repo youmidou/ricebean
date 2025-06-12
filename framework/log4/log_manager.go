@@ -12,8 +12,9 @@ import (
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"phoenix-tudou/framework/log4/log_cmd"
-	"phoenix-tudou/framework/sys_getenv"
+	"ricebean/framework/log4/log_cmd"
+	"ricebean/framework/sys_getenv"
+
 	"time"
 )
 
