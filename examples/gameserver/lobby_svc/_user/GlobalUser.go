@@ -1,6 +1,6 @@
 package _user
 
-import "phoenix-tudou/examples/_def"
+import "ricebean/examples/_def"
 
 type GlobalUser struct {
 	netId             _def.GSNetID

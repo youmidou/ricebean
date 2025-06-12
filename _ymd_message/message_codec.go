@@ -1,51 +1,26 @@
-// Copyright (c) nano Author and TFG Co. All Rights Reserved.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in all
-// copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-// SOFTWARE.
-
 package _ymd_message
 
 import (
 	"encoding/binary"
-
 	"ricebean/pkg/util/compression"
 )
 
-// Encoder interface
-type Encoder interface {
-	IsCompressionEnabled() bool
-	Encode(message *Message) ([]byte, error)
-}
+//MessageCodec
 
-// MessagesEncoder implements MessageEncoder interface
-type MessagesEncoder struct {
+// MessagesEncoder implements MessageCodec interface
+type YmdMessageCodec struct {
 	DataCompression bool
 }
 
 // NewMessagesEncoder returns a new message encoder
-func NewMessagesEncoder(dataCompression bool) *MessagesEncoder {
-	me := &MessagesEncoder{dataCompression}
-	return me
+func NewYmdMessageCodec(dataCompression bool) *YmdMessageCodec {
+	t := &YmdMessageCodec{dataCompression}
+	return t
 }
 
 // IsCompressionEnabled returns wether the compression is enabled or not
-func (me *MessagesEncoder) IsCompressionEnabled() bool {
-	return me.DataCompression
+func (t *YmdMessageCodec) IsCompressionEnabled() bool {
+	return t.DataCompression
 }
 
 // Encode marshals message to binary format. Different message types is corresponding to
@@ -61,17 +36,7 @@ func (me *MessagesEncoder) IsCompressionEnabled() bool {
 // ------------------------------------------
 // The figure above indicates that the bit does not affect the type of message.
 // See ref: https://github.com/topfreegames/pitaya/v3/blob/master/docs/communication_protocol.md
-func (me *MessagesEncoder) Encode(message *Message) ([]byte, error) {
-	return Encode(message, me.DataCompression)
-}
-
-// Decode decodes the message
-func (me *MessagesEncoder) Decode(data []byte) (*Message, error) {
-	return Decode(data)
-}
-
-// 加密
-func Encode(message *Message, DataCompression bool) ([]byte, error) {
+func (t *YmdMessageCodec) Encode(message *Message) ([]byte, error) {
 	if invalidType(message.Type) {
 		return nil, ErrWrongMessageType
 	}
@@ -117,7 +82,7 @@ func Encode(message *Message, DataCompression bool) ([]byte, error) {
 		}
 	}
 
-	if DataCompression {
+	if t.DataCompression {
 		d, err := compression.DeflateData(message.Data)
 		if err != nil {
 			return nil, err
@@ -133,10 +98,8 @@ func Encode(message *Message, DataCompression bool) ([]byte, error) {
 	return buf, nil
 }
 
-// Decode unmarshal the bytes slice to a message
-// See ref: https://github.com/topfreegames/pitaya/v3/blob/master/docs/communication_protocol.md
-// 解码
-func Decode(data []byte) (*Message, error) {
+// Decode decodes the message
+func (t *YmdMessageCodec) Decode(data []byte) (*Message, error) {
 	if len(data) < msgHeadLength {
 		return nil, ErrInvalidMessage
 	}
