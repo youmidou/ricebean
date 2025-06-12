@@ -1,7 +1,7 @@
-package _user
+package lobby_svc
 
 import (
-	"phoenix-tudou/examples/_def"
+	"ricebean/examples/_def"
 	"ricebean/examples/gameserver/lobby_svc/_interfaces"
 )
 

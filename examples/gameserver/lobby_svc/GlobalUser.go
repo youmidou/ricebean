@@ -1,4 +1,4 @@
-package _user
+package lobby_svc
 
 import "ricebean/examples/_def"
 

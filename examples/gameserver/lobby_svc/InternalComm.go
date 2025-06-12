@@ -1,11 +1,11 @@
-package InternalComm
+package lobby_svc
 
 import (
 	"context"
 	"github.com/golang/protobuf/proto"
-	pitaya "github.com/topfreegames/pitaya/v3/pkg"
-	"phoenix-tudou/examples/_def"
-	"phoenix-tudou/z_Tools/ProtoToCS/Protocal/pbs"
+	"ricebean/examples/_def"
+	pitaya "ricebean/pkg"
+	"ricebean/z_Tools/ProtoToCS/Protocal/pbs"
 )
 
 const (

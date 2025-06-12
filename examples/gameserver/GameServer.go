@@ -3,8 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"ricebean/examples/gameserver/lobby_svc"
 	pitaya "ricebean/pkg"
 	"ricebean/pkg/acceptor"
+	"ricebean/pkg/component"
 	"ricebean/pkg/config"
 	"ricebean/pkg/conn/codec"
 	"ricebean/pkg/conn/message"
@@ -36,6 +38,11 @@ func main() {
 
 	app = builder.Build()
 	defer app.Shutdown()
+
+	//-----------大厅-----------------------
+	lobbySvc := lobby_svc.NewLobbySvc(app)
+	app.Register(lobbySvc, component.WithName("LobbySvc"))
+	//app.RegisterRemote(lobbySvc, component.WithName("LobbySvc"))
 
 	//接收路由地址 server.service.handler
 	err := app.SetDictionary(map[string]uint16{
