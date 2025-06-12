@@ -29,10 +29,6 @@ func main() {
 	//消息->编码器
 	builder.MessageCodec = message.NewPomeloPacketEncoder(cfg.Handler.Messages.Compression)
 	builder.Serializer = protobuf.NewSerializer() // 设置 Protobuf 序列化器
-	
-	//builder.PacketDecoder = _ymd_packet.NewPomeloPacketDecoder()
-	//数据包->编码器
-	//builder.PacketEncoder = _ymd_packet.NewPomeloPacketEncoder()
 
 	tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", 1250))
 	builder.AddAcceptor(tcp)
