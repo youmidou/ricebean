@@ -230,7 +230,7 @@ func (builder *Builder) Build() Pitaya {
 	)
 	//接收消息服务器
 	handlerService := service.NewHandlerService(
-		builder.PacketDecoder,
+		builder.PacketDecoder, //数据包解码器
 		builder.Serializer,
 		builder.Config.Buffer.Handler.LocalProcess,
 		builder.Config.Buffer.Handler.RemoteProcess,
