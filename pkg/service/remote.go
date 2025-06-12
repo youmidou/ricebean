@@ -55,7 +55,7 @@ type RemoteService struct {
 	rpcServer              cluster.RPCServer
 	serviceDiscovery       cluster.ServiceDiscovery
 	serializer             serialize.Serializer
-	encoder                codec.PacketEncoder
+	packetCodec            codec.PacketCodec
 	rpcClient              cluster.RPCClient
 	services               map[string]*component.Service // all registered service
 	router                 *router.Router
@@ -73,7 +73,7 @@ func NewRemoteService(
 	rpcClient cluster.RPCClient,
 	rpcServer cluster.RPCServer,
 	sd cluster.ServiceDiscovery,
-	encoder codec.PacketEncoder,
+	packetCodec codec.PacketCodec,
 	serializer serialize.Serializer,
 	router *router.Router,
 	messageEncoder message.MessagesEncoder,
@@ -87,7 +87,7 @@ func NewRemoteService(
 		services:               make(map[string]*component.Service),
 		rpcClient:              rpcClient,
 		rpcServer:              rpcServer,
-		encoder:                encoder,
+		packetCodec:            packetCodec,
 		serviceDiscovery:       sd,
 		serializer:             serializer,
 		router:                 router,
@@ -439,7 +439,7 @@ func (r *RemoteService) handleRPCSys(ctx context.Context, req *protos.Request, r
 		req.GetSession(),
 		reply,
 		r.rpcClient,
-		r.encoder,
+		r.packetCodec,
 		r.serializer,
 		r.serviceDiscovery,
 		req.FrontendID,

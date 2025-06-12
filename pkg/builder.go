@@ -27,8 +27,8 @@ type Builder struct {
 	postBuildHooks []func(app Pitaya)
 	Config         config.PitayaConfig
 	DieChan        chan bool
-	//数据包->解析
-	MessagePacket codec.MessagePacket
+	//数据包编解码器
+	PacketCodec codec.PacketCodec
 
 	MessageEncoder message.MessagesEncoder
 	Serializer     serialize.Serializer
@@ -203,7 +203,7 @@ func (builder *Builder) Build() Pitaya {
 			builder.RPCClient,
 			builder.RPCServer,
 			builder.ServiceDiscovery,
-			builder.MessagePacket,
+			builder.PacketCodec,
 			builder.Serializer,
 			builder.Router,
 			builder.MessageEncoder,
@@ -218,8 +218,7 @@ func (builder *Builder) Build() Pitaya {
 	}
 	//代理工厂
 	agentFactory := agent.NewAgentFactory(builder.DieChan,
-		builder.PacketDecoder,
-		builder.PacketEncoder,
+		builder.PacketCodec,
 		builder.Serializer,
 		builder.Config.Heartbeat.Interval,
 		builder.Config.Buffer.Agent.WriteTimeout,
@@ -230,7 +229,7 @@ func (builder *Builder) Build() Pitaya {
 	)
 	//接收消息服务器
 	handlerService := service.NewHandlerService(
-		builder.PacketDecoder, //数据包解码器
+		builder.PacketCodec, //数据包解码器
 		builder.MessageEncoder,
 		builder.Serializer,
 		builder.Config.Buffer.Handler.LocalProcess,

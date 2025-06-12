@@ -33,7 +33,7 @@ func NewPomeloMessagePacket() *PomeloMessagePacket {
 }
 
 // 包编码
-func (t *PomeloMessagePacket) PacketEncode(typ packet.Type, data []byte) ([]byte, error) {
+func (t *PomeloMessagePacket) Encode(typ packet.Type, data []byte) ([]byte, error) {
 	if typ < packet.Handshake || typ > packet.Kick {
 		return nil, packet.ErrWrongPomeloPacketType
 	}
@@ -60,7 +60,7 @@ func (t *PomeloMessagePacket) forward(buf *bytes.Buffer) (int, packet.Type, erro
 }
 
 // 包解码 Decode decode the network bytes slice to packet.Packet(s)
-func (t *PomeloMessagePacket) PacketDecode(data []byte) ([]*packet.Packet, error) {
+func (t *PomeloMessagePacket) Decode(data []byte) ([]*packet.Packet, error) {
 	buf := bytes.NewBuffer(nil)
 	buf.Write(data)
 

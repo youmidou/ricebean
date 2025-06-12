@@ -62,7 +62,7 @@ type (
 		baseService
 		chLocalProcess   chan unhandledMessage // channel of messages that will be processed locally
 		chRemoteProcess  chan unhandledMessage // channel of messages that will be processed remotely
-		decoder          codec.PacketDecoder   // binary decoder
+		packetCodec      codec.PacketCodec     // binary decoder
 		remoteService    *RemoteService
 		serializer       serialize.Serializer          // message serializer
 		server           *cluster.Server               // server obj
@@ -84,7 +84,7 @@ type (
 
 // NewHandlerService creates and returns a new handler service
 func NewHandlerService(
-	packetDecoder codec.PacketDecoder,
+	packetCodec codec.PacketCodec,
 	messageEncoder message.MessagesEncoder,
 	serializer serialize.Serializer,
 	localProcessBufferSize int,
@@ -100,7 +100,7 @@ func NewHandlerService(
 		services:         make(map[string]*component.Service),
 		chLocalProcess:   make(chan unhandledMessage, localProcessBufferSize),
 		chRemoteProcess:  make(chan unhandledMessage, remoteProcessBufferSize),
-		decoder:          packetDecoder,
+		packetCodec:      packetCodec,
 		messageEncoder:   messageEncoder,
 		serializer:       serializer,
 		server:           server,
@@ -201,7 +201,7 @@ func (h *HandlerService) Handle(conn acceptor.PlayerConn) {
 			return
 		}
 
-		packets, err := h.decoder.Decode(msg)
+		packets, err := h.packetCodec.Decode(msg)
 		if err != nil {
 			logger.Log.Errorf("Failed to decode message: %s", err.Error())
 			return

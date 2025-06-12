@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"ricebean/_ymd_packet"
 	pitaya "ricebean/pkg"
 	"ricebean/pkg/acceptor"
 	"ricebean/pkg/config"
@@ -26,11 +25,11 @@ func main() {
 
 	//----------------------------------------------
 	//数据包->解析
-	builder.MessagePacket = codec.NewPomeloMessagePacket()
+	builder.PacketCodec = codec.NewPomeloMessagePacket()
 
-	builder.PacketDecoder = _ymd_packet.NewPomeloPacketDecoder()
+	//builder.PacketDecoder = _ymd_packet.NewPomeloPacketDecoder()
 	//数据包->编码器
-	builder.PacketEncoder = _ymd_packet.NewPomeloPacketEncoder()
+	//builder.PacketEncoder = _ymd_packet.NewPomeloPacketEncoder()
 	//消息->编码器
 	builder.MessageEncoder = message.NewPomeloPacketEncoder(cfg.Handler.Messages.Compression)
 	builder.Serializer = protobuf.NewSerializer() // 设置 Protobuf 序列化器

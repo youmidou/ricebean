@@ -75,9 +75,8 @@ type (
 		chStopHeartbeat    chan struct{}     // stop heartbeats
 		chStopWrite        chan struct{}     // stop writing messages
 		closeMutex         sync.Mutex
-		conn               net.Conn            // low-level conn fd
-		decoder            codec.PacketDecoder // binary decoder
-		encoder            codec.PacketEncoder // binary encoder
+		conn               net.Conn // low-level conn fd
+		packetCodec        codec.PacketCodec
 		heartbeatTimeout   time.Duration
 		writeTimeout       time.Duration
 		lastAt             int64 // last heartbeat unix time stamp
@@ -130,9 +129,8 @@ type (
 
 	agentFactoryImpl struct {
 		sessionPool        session.SessionPool
-		appDieChan         chan bool           // app die channel
-		decoder            codec.PacketDecoder // binary decoder
-		encoder            codec.PacketEncoder // binary encoder
+		appDieChan         chan bool // app die channel
+		packetCodec        codec.PacketCodec
 		heartbeatTimeout   time.Duration
 		writeTimeout       time.Duration
 		messageEncoder     message.MessagesEncoder
@@ -145,8 +143,7 @@ type (
 // NewAgentFactory ctor
 func NewAgentFactory(
 	appDieChan chan bool,
-	decoder codec.PacketDecoder,
-	encoder codec.PacketEncoder,
+	packetCodec codec.PacketCodec,
 	serializer serialize.Serializer,
 	heartbeatTimeout time.Duration,
 	writeTimeout time.Duration,
@@ -157,8 +154,7 @@ func NewAgentFactory(
 ) AgentFactory {
 	return &agentFactoryImpl{
 		appDieChan:         appDieChan,
-		decoder:            decoder,
-		encoder:            encoder,
+		packetCodec:        packetCodec,
 		heartbeatTimeout:   heartbeatTimeout,
 		writeTimeout:       writeTimeout,
 		messageEncoder:     messageEncoder,
@@ -171,14 +167,13 @@ func NewAgentFactory(
 
 // CreateAgent returns a new agent
 func (f *agentFactoryImpl) CreateAgent(conn net.Conn) Agent {
-	return newAgent(conn, f.decoder, f.encoder, f.serializer, f.heartbeatTimeout, f.writeTimeout, f.messagesBufferSize, f.appDieChan, f.messageEncoder, f.metricsReporters, f.sessionPool)
+	return newAgent(conn, f.packetCodec, f.serializer, f.heartbeatTimeout, f.writeTimeout, f.messagesBufferSize, f.appDieChan, f.messageEncoder, f.metricsReporters, f.sessionPool)
 }
 
 // NewAgent create new agent instance
 func newAgent(
 	conn net.Conn,
-	packetDecoder codec.PacketDecoder,
-	packetEncoder codec.PacketEncoder,
+	packetCodec codec.PacketCodec,
 	serializer serialize.Serializer,
 	heartbeatTime time.Duration,
 	writeTimeout time.Duration,
@@ -192,8 +187,8 @@ func newAgent(
 	serializerName := serializer.GetName()
 
 	once.Do(func() {
-		hbdEncode(heartbeatTime, packetEncoder, messageEncoder.IsCompressionEnabled(), serializerName)
-		herdEncode(heartbeatTime, packetEncoder, messageEncoder.IsCompressionEnabled(), serializerName)
+		hbdEncode(heartbeatTime, packetCodec, messageEncoder.IsCompressionEnabled(), serializerName)
+		herdEncode(heartbeatTime, packetCodec, messageEncoder.IsCompressionEnabled(), serializerName)
 	})
 
 	if writeTimeout <= 0 {
@@ -208,8 +203,7 @@ func newAgent(
 		chStopWrite:        make(chan struct{}),
 		messagesBufferSize: messagesBufferSize,
 		conn:               conn,
-		decoder:            packetDecoder,
-		encoder:            packetEncoder,
+		packetCodec:        packetCodec,
 		heartbeatTimeout:   heartbeatTime,
 		writeTimeout:       writeTimeout,
 		lastAt:             time.Now().Unix(),
@@ -255,7 +249,7 @@ func (a *agentImpl) packetEncodeMessage(m *message.Message) ([]byte, error) {
 	}
 
 	// packet encode
-	p, err := a.encoder.Encode(packet.Data, em)
+	p, err := a.packetCodec.Encode(packet.Data, em)
 	if err != nil {
 		return nil, err
 	}
@@ -407,7 +401,7 @@ func (a *agentImpl) GetStatus() int32 {
 // Kick sends a kick packet to a client
 func (a *agentImpl) Kick(ctx context.Context) error {
 	// packet encode
-	p, err := a.encoder.Encode(packet.Kick, nil)
+	p, err := a.packetCodec.Encode(packet.Kick, nil)
 	if err != nil {
 		return err
 	}
@@ -626,7 +620,7 @@ func (a *agentImpl) AnswerWithError(ctx context.Context, mid uint, err error) {
 	}
 }
 
-func hbdEncode(heartbeatTimeout time.Duration, packetEncoder codec.PacketEncoder, dataCompression bool, serializerName string) {
+func hbdEncode(heartbeatTimeout time.Duration, packetCodec codec.PacketCodec, dataCompression bool, serializerName string) {
 	hData := map[string]interface{}{
 		"code": 200,
 		"sys": map[string]interface{}{
@@ -641,18 +635,18 @@ func hbdEncode(heartbeatTimeout time.Duration, packetEncoder codec.PacketEncoder
 		panic(err)
 	}
 
-	hrd, err = packetEncoder.Encode(packet.Handshake, data)
+	hrd, err = packetCodec.Encode(packet.Handshake, data)
 	if err != nil {
 		panic(err)
 	}
 
-	hbd, err = packetEncoder.Encode(packet.Heartbeat, nil)
+	hbd, err = packetCodec.Encode(packet.Heartbeat, nil)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func herdEncode(heartbeatTimeout time.Duration, packetEncoder codec.PacketEncoder, dataCompression bool, serializerName string) {
+func herdEncode(heartbeatTimeout time.Duration, packetCodec codec.PacketCodec, dataCompression bool, serializerName string) {
 	hErrData := map[string]interface{}{
 		"code": 400,
 		"sys": map[string]interface{}{
@@ -667,7 +661,7 @@ func herdEncode(heartbeatTimeout time.Duration, packetEncoder codec.PacketEncode
 		panic(err)
 	}
 
-	herd, err = packetEncoder.Encode(packet.Handshake, errData)
+	herd, err = packetCodec.Encode(packet.Handshake, errData)
 	if err != nil {
 		panic(err)
 	}
