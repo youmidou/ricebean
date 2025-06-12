@@ -1,0 +1,63 @@
+syntax = "proto3";
+option go_package = "./pbs";
+package pbs;
+//内部通用转发服务 RPC 请求
+message Net_Internal_ForwardSvcGeneralRPCReq {
+  int32 MsgType=7;//消息类型 1:消息;2:断开
+
+  string NetId = 1;//网关地址(GatewayId->NetId)
+  string UserId = 2;//用户Id
+  int32 MsgId =5; //转发消息1001002
+  bytes MsgData =6;//消息内容
+}
+//内部通用转发服务 RPC 返回
+message Net_Internal_ForwardSvcGeneralRPCRet {
+  string NetId = 1;//网关地址(GatewayId->NetId)
+  int32 MsgType=7;//消息类型 1:消息;2:断开
+  string UserId = 2;//用户Id
+  int32 MsgId =5; //转发消息1001002
+  bytes MsgData =6;//消息内容
+}
+
+//内部转发Common
+
+message Net_Internal_GatewayRPCGameWorldReq {
+  string NetId = 1;//也是 IPAddress地址
+  string UserId = 2;//
+  int32 MsgId =5; //转发消息1001002
+  bytes MsgData =6;//消息内容
+}
+message Net_Internal_GatewayRPCGameWorldRet {
+  string NetId = 1;//也是 IPAddress地址
+  string UserId = 2;//
+  int32 MsgId =5; //转发消息1001002
+  bytes MsgData =6;//消息内容
+}
+
+message Net_Internal_GlobalRPCGameWorldReq {
+  string NetId = 1;//也是 IPAddress地址
+  string UserId = 2;//
+  int32 MsgId =5; //转发消息1001002
+  bytes MsgData =6;//消息内容
+}
+message Net_Internal_GlobalRPCGameWorldRet {
+  string NetId = 1;//也是 IPAddress地址
+  string UserId = 2;//
+  int32 MsgId =5; //转发消息1001002
+  bytes MsgData =6;//消息内容
+}
+//--------------------------------------------------
+message Net_Internal_GlobalRPCDataAccessReq {
+  string NetId = 1;//也是 IPAddress地址
+  string UserId = 2;//
+  int32 MsgId =5; //转发消息1001002
+  bytes MsgData =6;//消息内容
+}
+message Net_Internal_GlobalRPCDataAccessRet {
+  string NetId = 1;//也是 IPAddress地址
+  string UserId = 2;//
+  int32 MsgId =5; //转发消息1001002
+  bytes MsgData =6;//消息内容
+}
+
+

@@ -1,0 +1,22 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+/*
+   	Slots
+
+   added by yh @ 2024/03/13 20:33
+   注意:
+*/
+
+//Slots信息
+message Base_Slots_SlotsInfo{
+
+}
+
+//Spin
+message Net_Slots_SpinReq{
+  int32 TaskId =1;//任务Id
+}
+message Net_Slots_SpinRet{
+  int32 Ret =1;//0:成功;1:失败;2:金币不够;3:条件不满足;
+}

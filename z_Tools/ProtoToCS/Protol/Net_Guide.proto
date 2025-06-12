@@ -1,0 +1,24 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+/*
+	玩家->新手引导
+
+added by yh @ 2024/03/01 15:41
+注意:
+*/
+//新手引导信息
+message Base_Guide_GuideInfo{
+  map<int32,int32> CompletedGuide =1;//已完成的引导
+}
+
+//当前引导完成
+message Net_Guide_MarkCompleteReq{
+  int32 GuideId = 1;//引导Id
+
+}
+//当前引导完成
+message Net_Guide_MarkCompleteRet{
+  int32 Ret=1;//0:成功;1:未知错误;2:已经完成;3:;
+  int32 GuideId =2;//引导Id
+}

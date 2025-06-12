@@ -1,0 +1,138 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+import "Net_Player.proto";
+/*
+	大厅消息
+
+added by yh @ 2023/11/30 10:29
+注意:大厅小功能就放大厅 难得建文件夹
+*/
+message Base_Lobby_UserInfo{
+     string UserId = 1;//
+     string GameName=2;
+     string PlatName=3;
+     int32 SceneId=4;
+}
+//授权登录
+message Net_Lobby_AuthorizationLoginReq{
+     string Token =1;
+     Base_Lobby_UserInfo UserInfo=2;//用户信息
+}
+//授权登录
+message Net_Lobby_AuthorizationLoginRet{
+     int32 Ret = 1;//0:成功；1:失败；
+
+}
+
+//授权进入游戏
+message Net_Lobby_AuthorizationEnterGameReq{
+     string GameId =1;
+}
+//授权进入游戏
+message Net_Lobby_AuthorizationEnterGameRet{
+     int32 Ret = 1;//0:成功；1:失败；
+
+}
+//幸运大转盘
+message Net_Lobby_LuckyWheelReq{
+}
+//幸运大转盘
+message Net_Lobby_LuckyWheelRet{
+     int32 Ret = 1;//0:成功；1:材料不够；
+     int32 WinningId =2;//中奖Id
+     int32 PrizeId =3;//中奖物品Id
+     int32 PrizeNum =4;//中奖物品数量
+}
+
+
+//进入大厅
+message Net_Lobby_EnterLobbyReq{
+
+}
+message Net_Lobby_EnterLobbyRet{
+
+     int32 Coins =1; //同步前后端金币
+     int32 Chips =2;//同步前后端宝石
+}
+
+//获得 Fcm 奖励
+message Net_Lobby_GetFcmRewardsReq{
+     string Id =1; //
+     string Key =2;//
+     string Type =3;//
+}
+message Net_Lobby_GetFcmRewardsRet{
+     int32 InvalidType =1; //
+     string FcmRewards =2;//
+     string Type =3;//
+}
+//收集 Fcm 奖励
+message Net_Lobby_CollectFcmRewardsReq{
+     string Id =1; //
+     string Key =2;//
+     string Type =3;//
+}
+message Net_Lobby_CollectFcmRewardsRet{
+     int32 InvalidType =1; //
+     string FcmRewards =2;//
+     string Type =3;//
+}
+//收集周奖励
+message Base_Lobby_WeeklyPrize{
+     int32 Coins =1;//获得金币
+     int32 Golds =2;//获得砖石
+     int32 HolyGrails=3;//获得奖杯
+
+}
+//收集每日签到奖励
+message Net_Lobby_CollectLoginBonusReq{
+
+}
+message Net_Lobby_CollectLoginBonusRet{
+     int32 Ret =1;//0:签到成功;1:已经签到;
+     Base_Player_LoginBonusInfo LoginBonusInfo = 2;//每日签到信息
+     Base_Lobby_WeeklyPrize WeeklyPrize =3;//周奖励信息
+
+     int32 CurrentCoins =4;//当前金币
+     int32 CurrentGolds =5;//当前钻石
+     int32 CurrentHolyGrails=6;//当前奖杯
+
+     //int32 MonthlyPrize=2;//
+}
+//补签登录奖励
+message Net_Lobby_ReissueLoginBonusReq{
+    int32 MonthCount =1;//补签的那一天数
+}
+message Net_Lobby_ReissueLoginBonusRet{
+     int32 Ret =1;//0:签到成功;1:已经签到;2:金币不够;
+     Base_Player_LoginBonusInfo LoginBonusInfo = 2;//每日签到信息
+     Base_Lobby_WeeklyPrize WeeklyPrize =3;//周奖励信息
+
+     int32 CurrentCoins =4;//当前金币
+     int32 CurrentGolds =5;//当前钻石
+     int32 CurrentHolyGrails=6;//当前奖杯
+
+     //int32 MonthlyPrize=2;//
+}
+
+
+
+//获取每日登陆奖励
+message Net_Lobby_GetDailyBonusReq{
+
+}
+message Net_Lobby_GetDailyBonusRet{
+    Base_Player_DailyBonusInfo DailyBonusInfo =1;//每日奖励
+
+}
+
+//收集每日登录奖励
+message Net_Lobby_CollectDailyBonusReq{
+     int32 TickIndex =1;//领取每日奖励索引
+
+}
+message Net_Lobby_CollectDailyBonusRet{
+     int32 TickIndex =1;//领取每日奖励索引
+     bool IsBool =2;//true:成功;false:失败;
+}

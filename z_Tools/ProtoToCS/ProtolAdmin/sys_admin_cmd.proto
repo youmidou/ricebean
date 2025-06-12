@@ -1,0 +1,28 @@
+syntax = "proto3";
+option go_package = "./pb_admin";
+package pb_admin;
+/*
+	sys_admin_cmd
+
+added by yh @ 2024/01/22 11:36
+    后台运维操作命令
+注意:
+*/
+
+
+enum Cmd {
+    Admin_Idle = 0; //空置占位没用
+    Admin_GetSystem = 9001001;//返回服务器信息
+    Admin_UpdateConfig  = 9001002;//更新配置
+    Admin_UserAddCurrency = 9001003;//user添加货币
+    Admin_ExecuteEmail = 9001004;//执行邮件
+    Admin_GetUsers = 9001005;//获取用户列表
+
+    Admin_DeleteAccount = 9001006;//删除账号
+    Admin_AddPlayerInbox = 9001007;//添加玩家邮件
+    Admin_DeleteRole =9001008;//删除角色
+    DeleteAllRoleRedisData = 9001009;//删除所有角色数据
+    Admin_Cheat = 9001011;//作弊
+
+    Admin_DeleteRedisAllRoleCacheData = 9001012;//删除所有Redis角色缓存数据
+}

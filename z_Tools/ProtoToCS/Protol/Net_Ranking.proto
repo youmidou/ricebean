@@ -1,0 +1,24 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+/*
+   	排行榜
+
+   added by yh @ 2024/03/19 10:54
+   注意:
+*/
+
+//一行排名信息
+message Base_Ranking_ARankingInfo{
+  int32 Index = 1;//排名
+  string Id =2; //玩家Id
+  string NickName =3;//玩家名字
+  int32 HolyGrail =4;//奖杯
+}
+
+//排行榜
+message Net_Ranking_GetRankingReq{
+}
+message Net_Ranking_GetRankingRet{
+  repeated Base_Ranking_ARankingInfo RankingList =1; //奖杯排名信息
+}

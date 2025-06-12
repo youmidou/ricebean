@@ -1,0 +1,19 @@
+syntax = "proto3";
+option go_package = "./pbs";
+package pbs;
+//内部转发Common
+message Net_Global_RPCGameWorldReq {
+  string NetId = 1;//也是 IPAddress地址
+  string UserId = 2;//
+  int32 ReqId =5; //转发消息1001002
+  bytes ReqBytes =6;//消息内容
+}
+message Net_Global_RPCGameWorldRet {
+  string GateCid = 1;//也是 IPAddress地址
+  string Cid = 2;
+  string IPAddress =3;
+  string UserId = 4;
+  int32 ReqId =5; //转发消息1001002
+  bytes ReqBytes =6;//消息内容
+}
+    //

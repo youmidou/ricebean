@@ -1,0 +1,87 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+/*
+	玩家->商店
+
+added by yh @ 2024/01/26 14:36
+注意:
+*/
+//商店一个物品
+message Base_Shop_AnItemInfo{
+    int32 Id =1;//物品Id
+    int32 BuyNum =2;//已经购买数量
+    // int32 Num =2;  //当前数量
+
+}
+//一个货架
+message Base_Shop_ShelvesInfo{
+    int32 Id =1;//货架Id
+    string Name =2;//货架名字
+    int32 Quantity=3; //展示数量
+    repeated Base_Shop_AnItemInfo ItemList =4;//货架物品
+    int64 NextRefreshTime =5;//下次刷新时间
+}
+//一个商店信息
+message Base_Shop_AShopInfo{
+    int32 Id =1;//商店Id
+    string Name =2;//商店名字
+    repeated Base_Shop_ShelvesInfo ItemList =5;//货架数组
+}
+
+//商店信息
+message Base_Shop_ShopInfo{
+    repeated Base_Shop_AShopInfo AShopInfoList =1;//商店列表信息
+    map<int32,Base_Shop_AnItemInfo> ShopBuyLimitNumList =2;//玩家已经购买列表
+}
+//------消息------------------------------------------------
+//获取获取商店信息
+message Net_Shop_GetShopInfoReq{
+}
+//获取获取商店信息
+message Net_Shop_GetShopInfoRet{
+    Base_Shop_ShopInfo ShopInfo =1;//商店信息
+}
+
+/*
+//更新添加物品列表
+message Net_Store_UpdateAddItemsRet{
+    repeated Base_Backpack_AnItemInfo AddItemList =1;//添加物品列表
+}
+//更新删除物品列表
+message Net_Backpack_UpdateDeleteItemsRet{
+    repeated Base_Backpack_AnItemInfo UseItems =1;//使用物品列表
+}
+*/
+
+
+//购买商品
+message Net_Shop_BuyItemReq{
+    int32 ShopItemId =1;//购买商品Id
+    int32 ShopItemNum =2;//购买商品数量
+
+}
+message Net_Shop_BuyItemRet{
+    int32 Ret=1;//0:成功;1:未知错误;2:数量不能小于0;3:购买上限;4:条件未满足;
+    int32 ShopItemId =2;//购买商品Id
+    int32 ShopItemNum =3;//购买商品数量
+    int32 ItemId=4;//购买物品Id
+    int32 ItemNum=5;//购买物品数量
+}
+//支付:->购买商品回来转发服务器
+message Net_Shop_PayReq{
+    int32 Cmd = 1;//1:CmdGoogleVerify;2:CmdIosVerify;
+    string Data = 2;
+    int32 ShopItemId =3;//购买商品Id
+    int32 ShopItemNum =4;//购买商品数量
+
+}
+message Net_Shop_PayRet{
+    int32 Ret =1;//
+    int32 ProductId =2;//购买商品数量
+    string OrderId =3;//订单Id
+    int32 Price =4;//价格
+    int32 Status =5;//
+
+
+}

@@ -1,0 +1,84 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+//收件箱
+
+//消息模块
+enum InboxType {
+  InboxIdle =0;
+  InboxTypeSys = 1;//系统
+
+}
+//收件箱信息
+message Base_Inbox_InboxInfo{
+  repeated Base_Inbox_InboxItemInfo ItemList =1;//邮件信息列表
+}
+//一封邮件
+message Base_Inbox_InboxItemInfo{
+  int32 Id =1;//邮件Id
+  int32 Type =2;//类型
+  string ReceiverId=3;//收件人
+  string SenderId=4;//发件人
+  string SenderName=5;//发件人名字
+  string Title =6;//邮件标题
+  string Content =7;//内容
+  bool IsRead = 8;//是否读取 false:未读;true:读取;
+  bool IsClaimReward =9;//是否领取奖励 false:未领取;true:领取;
+  int32 ItemId1 = 10;//物品Id
+  int32 ItemNum1 = 11;//物品数量
+  int32 ItemId2 = 12;//物品Id
+  int32 ItemNum2 = 13;//物品数量
+  int32 ItemId3 = 14;//物品Id
+  int32 ItemNum3 = 15;//物品数量
+
+  int64 Ts=16;//创建时间
+
+}
+//-------------------------------------------------
+//主动更新
+message Net_Inbox_UpdateItemsInfoRet{
+  map<int32,Base_Inbox_InboxItemInfo> UpdateItemList =1;//
+}
+//发送邮件
+message Net_Inbox_SendEmailReq{
+  Base_Inbox_InboxItemInfo InboxItemInfo =1;//一封邮件
+
+}
+message Net_Inbox_SendEmailRet{
+  int32 Ret =1;//0:成功;1:未知错误;
+}
+
+//删除邮件
+message Net_Inbox_DeleteEmailReq{
+  repeated int32 EmailIds=1;//邮件Id数组
+}
+message Net_Inbox_DeleteEmailRet{
+  int32 Ret =1;//0:成功;1:失败;
+}
+
+
+//收件箱->领取奖励礼物
+message Net_Inbox_ClaimRewardGiftsReq{
+  int32 EmailId =1;//邮件Id
+}
+message Net_Inbox_ClaimRewardGiftsRet{
+  int32 Ret = 1;//0:成功;1:未知错我;2:;
+}
+
+
+//获取礼物列表
+message Net_Inbox_GetInboxListRet{
+  map<int32, Base_Inbox_InboxItemInfo>  InboxItemInfoList =1;//玩家收件箱 邮件列表
+}
+
+//获取邮件礼包
+message Net_Inbox_ReceiveGiftsReq{
+  int32 Index =1;//邮件Id
+}
+//获取邮件礼包
+message Net_Inbox_ReceiveGiftsRet{
+  int32 Ret =1;//0:成功;1:失败;
+
+}
+
+

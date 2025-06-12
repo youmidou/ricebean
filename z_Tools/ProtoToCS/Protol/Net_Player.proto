@@ -1,0 +1,146 @@
+syntax = "proto3";
+import "Net_Backpack.proto";
+import "Net_Shop.proto";
+import "Net_Activity.proto";
+import "Net_Task.proto";
+import "Net_PassCheck.proto";
+import "Net_Inbox.proto";
+import "Net_Guide.proto";
+import "Net_Match3.proto";
+import "Net_HeroCard.proto";
+import "Net_Vip.proto";
+package Pb;
+option go_package = "./pb";
+//import "Net_Inbox.proto";
+
+//import "Net_Lobby.proto";
+
+//玩家修改标记
+enum PlayerMark {
+    PlayerMarkIdle =0;
+    Coins =1;//金币
+    Golds =2;//钻石
+    HolyGrails =3;//奖杯
+    //-------财产--------------------
+
+    //LuckyWheelCoin =4;//幸运轮金币
+  //-------功能模块标记--------------------
+    //BackpackMark =6;//背包标记
+    //ActivityMark =7;//玩家活动标记
+    //TaskMark =8;//玩家任务标记
+    LoginBonusMark =9;//每日签到奖励
+    DailyBonusMark =10;//每日奖金
+    StoreMark =11;//商店标记
+}
+/*
+	用户->玩家 Player信息列表
+
+added by yh @ 2023/11/30 10:29
+注意:
+*/
+message Base_Player_PlayerData{
+  Base_Player_PlayerInfo PlayerInfo =1;//玩家Id
+  Base_Player_MoneyInfo MoneyInfo =10;//钱包信息
+  Base_Backpack_BackpackInfo BackpackInfo =11;//背包信息
+  Base_Player_LoginBonusInfo LoginBonusInfo=12; //每日签到奖励
+  Base_Player_DailyBonusInfo DailyBonusInfo =13;//每日奖金
+  Base_Vip_VipInfo VipInfo =14;//vip信息
+  Base_Activity_ActivityInfo ActivityInfo=15;//每日任务活动
+  Base_Player_ThemeInfo ThemeInfo = 16;//主题信息
+  Base_Shop_ShopInfo ShopInfo =17;//商店信息
+  Base_Inbox_InboxInfo InboxInfo =18;//收件箱信息
+  Base_HeroCard_HeroCardInfo HeroCardInfo =19;//英雄信息
+  Base_Task_TaskInfo TaskInfo =20;//任务
+  Base_Task_CupTaskInfo CupTaskInfo =21;//奖杯任务 未整合的
+  Base_PassCheck_PassCheckInfo PassCheckInfo = 24;//通行证信息
+  Base_Guide_GuideInfo GuideInfo= 25;//新手引导
+  Base_Match3_Match3Info Match3Info =26;//3消主题信息
+
+}
+message Base_Player_PlayerInfo{
+  string PlayerId =1;//玩家Id
+  string NickName =2;//玩家名称
+  int32 Level =3;//等级
+  int32 Exp =4;//经验
+  int32 ExpLimit =5;//经验上限
+  int32 Coin =6;//金币
+  int32 Gold =7;//钻石
+  int32 HolyGrail =8;//圣杯
+
+  int32 IsNewPlayer =9;//是否是新玩家
+}
+
+//每日登陆奖励
+message Base_Player_LoginBonusInfo{
+  int32 CheckIn =1; //今天是否已经签到 1:签到;0:未签到；
+  int32 TypeWeek =2;//周类型 一个类型7天
+  int32 WeeklyCount =3;//每周计数
+  int32 MonthlyCount =4;//每月计数
+  repeated int32 MonthStatus=5;//周奖励状态 用于前端展示
+  /*
+
+  int32 WeeklyBaseCredits =5;//每周基本学分
+  int32 MonthlyBaseCredits =6;//每月基本学分
+  int32 WeeklyPrizeType =7;//每周奖品类型
+  int32 MonthlyPrizeStatus =8;//月度奖状
+*/
+}
+
+//主题信息
+message Base_Player_ThemeInfo{
+
+}
+//每日奖金
+message Base_Player_DailyBonusInfo{
+  repeated int32 DailyBonusStatus=1;//每日奖励领取
+
+}
+
+
+//玩家属性标记
+message Base_Player_PlayerMark{
+  int32 AttributeType =1;//货币类型
+  int32 AttributeValue =2;//货币值
+}
+
+//玩家->钱包信息
+message Base_Player_MoneyInfo{
+  int32 Gold = 1;//钻石
+  int32 GoldBind = 2;//绑定钻石
+  int32 Coin = 3;//金币
+  int32 CoinBind = 4;//绑定金币
+
+  int32 HolyGrail =5;//奖杯币
+  int32 LuckyWheelCoin =6;//幸运轮币
+
+}
+//主动更新玩家货币信息
+message Net_Player_UpdateMoneyInfoRet{
+  Base_Player_MoneyInfo MoneyInfo =1;//玩家钱包
+}
+
+//玩家更新信息有变更走这里
+message Net_Player_PlayerUpdatesInfoRet{
+  map<int32, Base_Player_PlayerMark> PlayerMarkList =1;//货币更新列表
+  Base_HeroCard_HeroCardInfo HeroCardInfo =2;//英雄卡牌信息
+  Base_Activity_ActivityInfo ActivityInfo=3;//每日任务活动
+  Base_Task_TaskInfo TaskInfo =4;//任务
+  //Base_Player_StoreInfo StoreInfo =4;//商店信息
+}
+/*
+//进入游戏
+message Net_Player_EnterGameRet{
+    Base_Player_PlayerInfo PlayerInfo =1;//玩家信息
+
+}
+*/
+
+//更换名字
+message Net_Player_ChangeNameReq{
+  string NickName =1;//昵称
+}
+//更换名字
+message Net_Player_ChangeNameRet{
+  int32 Ret =1;//0:成功;1:失败;
+  string NickName =2;//昵称
+}

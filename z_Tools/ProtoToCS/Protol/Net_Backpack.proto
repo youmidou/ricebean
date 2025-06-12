@@ -1,0 +1,179 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+/*
+	玩家->背包
+
+added by yh @ 2024/01/23 10:36
+注意:
+*/
+//背包类型
+enum EBackpack{
+  EBackpackTypeIdle = 0;//空置占位没用
+  EBackpackTypeItem = 1;//物品背包
+  EBackpackTypeDepot = 2;//仓库
+  EBackpackTypeDummy = 3;//虚拟背包
+
+  EBackpackMaxGridNum  = 100;//最大背包格子数
+}
+//背包类型
+enum EBagId{
+  EBagIdIdle = 0;//空置占位没用
+  EBagIdMain = 101;//主背包
+  EBagIdPet = 102;//宠物背包
+  EBagIdDepot = 201;//主仓库
+
+}
+//货币Currency BackpackItems
+enum EItemId{
+   BackpackItemIdle = 0;//空置占位没用
+   CoinItemId = 1001; //金币
+   GoldItemId = 1002;//钻石
+   HolyGrailItemId = 2001;//奖杯积分
+   ItemId4002 = 4002;//通行证积分
+
+}
+//放置原因类型
+enum EPutReasonType{
+  PutReasonInvalid=0;//放置原因无效
+  PutReasonNoNotice=1;//放置原因无通知
+  PutReasonGM =2;//GM
+}
+
+//背包信息
+message Base_Backpack_BackpackInfo{
+  map<int32,int32> ItemInfoList =1;//物品列表
+
+}
+
+//一个消耗订单
+message Base_Backpack_ConsumeOperationOrderInfo{
+  int32 OperationType =1;//操作类型
+  //Base_Backpack_MoneyInfo ConsumeMoney =2;//消耗的Money
+  int32 ConsumeItemList =3;//消耗的物品列表
+  //Base_Backpack_MoneyInfo AcquireMoney=4;//获得物品列表
+  int32 AcquireItemList=5;//获得物品列表
+}
+//金钱
+message Base_Backpack_MoneyInfo{
+  int32 Coin =1;//金币
+  int32 Gold =2;//钻石
+}
+/*
+//一个物品
+message Base_Backpack_ItemInfo{
+  int32 Id =1;//物品Id
+  int32 ItemType =2;//物品类型
+  int32 SearchType = 3;//物品类型
+  int32 Color = 4;//品质
+  int32 Num =5;  //当前数量
+  bool IsBind =6;//是否绑定
+  bool CanDiscard=7;//可丢弃
+  bool CanSell = 8;//可出售
+  bool IsBroadcast =9;//是否可广播
+  int32 SellPrice = 10;//卖价
+  bool IsRecord = 11;//是否记录
+  int64 TimeLength =12;//时间长度
+  int64 InvalidTime = 13;//无效时间
+  int32 LimitProf = 14;//限制职业
+  int32 LimitLevel = 15;//限制等级
+  int32 LimitSex = 16;//限制性别
+}
+*/
+//一个物品 Base_Backpack_ItemWrapper Base_Backpack_AnItemInfo
+message Base_Backpack_AnItemInfo{
+    int32 Id =1;//物品Id
+    int32 Num =2;  //当前数量
+    bool IsBind =3;//是否绑定
+    string HasParam =4;//有参数
+    int64 InvalidTime=5;//无效时间
+    int32 GoldPrice = 6;//金币价格
+
+
+}
+//物品消费信息
+message Base_Backpack_ItemConsumeInfo{
+    int32 ConsumeBindItemNum =1;//消耗绑定物品数量
+    int32 ConsumeNoBindItemNum =2;//消耗无绑定物品数量
+    int32 ConsumeNumList = 3;//消耗数量
+
+
+}
+//购买物品信息
+message Base_Backpack_BuyItemInfo{
+  int32 ItemId =1;//物品Id
+  int32 ItemCount =2;//物品数量
+}
+//物品消耗清单
+message Base_Backpack_ItemConsumeList{
+   int32 BindItemNum = 1;//绑定物品数量
+   int32 NoBindItemNum = 2;//不绑定物品数量
+   int32 NeedGoldNum = 3;//需要金币数量
+   int32 CostBindCoinFirst =4;//首先花费绑定币
+   int32 Count = 5;//数量
+   repeated int32 IndexList =6;//最大格子数格子位置 0:没有;1:有;
+   repeated int32 NumList =7; //需要扣除的数量
+   int32 BuyCount = 8;//购买数量
+   repeated Base_Backpack_BuyItemInfo BuyItemInfo =9;//购买物品信息
+}
+
+
+//------消息------------------------------------------------
+//获取玩家背包列表
+message Net_Backpack_GetBackpackInfoReq{
+}
+//获取玩家背包列表
+message Net_Backpack_GetBackpackInfoRet{
+    Base_Backpack_BackpackInfo BackpackInfo =1;//
+}
+
+//背包更新
+message Net_Backpack_BackpackUpdateRet{
+  int32 DelItems =1;//删除物品
+  int32 AddItems =2;//添加物品
+  int32 UpdateItems =3;//更新物品
+  map<int32,int32> UpdateItemList =4;//更新物品列表 添加物品 和删除物品
+}
+/*
+//更新删除物品列表
+message Net_Backpack_UpdateDeleteItemsRet{
+    repeated Base_Backpack_AnItemInfo UseItems =1;//使用物品列表
+}
+*/
+
+//玩家背包使用道具
+message Net_Backpack_UseItemsReq{
+    int32 itemId =1;//
+}
+
+//玩家背包使用道具
+message Net_Backpack_UseItemsRet{
+    int32 Ret=1;//0:成功;1:未知错误2:失败;
+}
+//===============================
+//背包格子信息
+message Base_Backpack_CellInfo{
+  int32 Opened =1;//已开启的格子数
+  int32 Used =2;//已使用的格子
+  int32 Unused =3;//未使用的格子
+
+}
+//开启格子
+message Net_Backpack_OpenCellReq{
+
+}
+
+message Net_Backpack_OpenCellRet{
+
+}
+
+/*
+//交易信息
+message Base_Backpack_DealInfo{
+  int32 RoleBag =1;//已开启的格子数
+  int32 RoleInfo =2;//已使用的格子
+  int32 Monitor =3;//未使用的格子
+  string Log =4;//
+  int32 Expend =5;//
+  ...
+}*/

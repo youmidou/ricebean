@@ -1,0 +1,65 @@
+syntax = "proto3";
+option go_package = "./pbs";
+package pbs;
+//sys_server_cmd
+
+enum PacketType {
+    Net_Ide=0;//未知消息
+    Net_ReceiveMsg =1;//收到消息
+    Net_Disconnect_Notice=2;//网络断线通知
+}
+
+//进程服务器
+enum ServerId {
+  ServerIdle=0;
+  login=2;
+  Gateway =1;
+  Global=3;//大厅服务器
+  DataAccess=4;
+  GameWorld=5;//场景服务器
+  Cross=6;
+  Chat=7;
+}
+//服务Id
+enum SvcId {
+  IdleSvc=0;
+  GatewaySvc =1;
+  GlobalSvc=3;//大厅服务器
+  DataAccessSvc=4;
+  GameWorldSvc=5;//场景服务器
+  CrossSvc=6;
+  ChatSvc=7;
+}
+enum Cmd {
+  CmdIdle = 0; //空置占位没用
+  //Error = 2001000;
+  //xxx 1001  msgid /1000
+  LoginSvc_SetUserId=1;//登录
+  LoginSvc_OutUserId=2;//登出
+
+  Gateway_GatewaySvc_OnGatewayReceive =122;
+
+  Global_GlobalSvc_OnGatewayReceive =1222;
+  Global_GlobalSvc_OnDataAccessReceive =233;//
+  Global_GlobalSvc_OnGameWorldReceive =3;
+//----数据共享服务器----
+  DataAccess_LoginSvc_OnLoginReceive =10;
+  DataAccess_LoginSvc_OnGlobalReceive =11;//大厅全局服务接收
+  DataAccess_LoginSvc_OnGameWorldReceive =12;
+  DataAccess_DataAccessSvc_OnReceive =101;
+//----
+  GameWorld_GameWorldSvc_OnReceive=30;//接收转发消息
+
+  GatewayToGameMessageHeader=2001005;
+  Gate_Central           = 2001001;//网关->中转消息
+  Gate_CentralDisconnect = 2001002;//网关断开连接
+  Gate_CentralKeepAlive  = 2001003;//网关服务心跳包
+
+  //----------CentralServer-------------------------------
+
+  Central_GateKillConnection =2002001;//杀掉网关连接
+
+  Game_Central = 2003001;//
+
+ }
+

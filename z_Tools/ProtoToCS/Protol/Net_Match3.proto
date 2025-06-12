@@ -1,0 +1,385 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+/**
+ * Match3
+ * added by yh @ 2023-10-19 16:43
+  // repeated Base_Match3_RoleInfo  RoleList2=3;//
+ */
+//子游戏Id
+enum Match3Game {
+    GameIdle =0;//空置占位没用
+    Game10101   = 10101; //人机1v1 PVE火龙宝藏
+    Game10201   = 10201; //真人1v1
+    Game10202   = 10202; //无限火力
+    Game10301   = 10301; //真人4人混战
+    Game10401   = 10401; //金币房间 初级
+    Game10402   = 10402; //金币房间 中级
+    Game10403   = 10403; //金币房间 高级
+    Game10404   = 10404; //金币房间 顶级
+    Game10501   = 10501; //2人回合制房间
+}
+//主题信息
+message Base_Match3_Match3Info{
+    //英雄卡牌信息
+    Base_Match3_RoomInfo RoomInfo =1;//房间信息
+}
+//房间信息
+message Base_Match3_RoomInfo{
+    int32 RoomId =1;//房间号
+    int32 RoomTypeId = 2; //房间类型
+    int32 RoomStatus =3;//房间状态 0:闲置,1:匹配中;2:开始;3:结束;
+    int64 CurrentServerTime =4;//当前服务器时间
+    int64 StartTime =5;//倒计时结束时间 也是开始时间
+    int64 EndTime =6;//服务器结束时间
+
+    int32 CountdownNum =7;//0:开始 大于0倒计时中
+    int32 ChairMaxNum =8;//房间最大上限人数
+    map<int32, Base_Match3_RoleInfo> RoleList = 9;//角色信息列表
+
+
+}
+//一组棋子
+message Base_Match3_SetChesses{
+    map<int32, Base_Match3_Chess> ChangeChesses =1;         //一组棋子信息，key是位置，value是数据
+}
+
+//棋盘信息
+message Base_Match3_ChessboardInfo{
+    int32 MoveType =1;  //操作类型：1，移动；2，点击
+    int32 BeginPos =2;  //起始位
+    int32 EndPos =3;    //目标位
+    int32 SkillId =4;   //技能id
+    map<int32, Base_Match3_RepeatInt> FirstEliminated =5;   //行动所消除掉的珠子
+    map<int32, Base_Match3_RepeatInt> NextEliminated =6;    //行动消除掉的珠子中有特殊棋子消除的后续消除
+    map<int32, Base_Match3_SupplyChesses> SupplyChesses =7; //行动之后补充的所有棋子
+    map<int32, Base_Match3_Chess> ChessGrid =8; //棋盘数据
+    map<int32, Base_Match3_Chess> ChangeChesses =9;
+    map<int32, Base_Match3_SetChesses> TargetChangeChesses =10; //目标的棋子变化,key椅子号，value变化棋子//某些技能效果是棋子变化
+}
+//英雄信息
+message Base_Match3_HeroInfo{
+    int32 Id =1;//英雄Id
+    string Name =2;//昵称
+    int32 Level =3;//等级
+    //-------属性信息------------------------
+    int32 Hp =4;//血条值
+    int32 HpLimit =5;//血上限
+    int32 Atk =6;//攻击值
+    int32 Step =7;//步数
+    int32 RecoveryTime =8;//步数恢复时间 秒
+    //-------------------------------
+    int32 HeadIconId =9;//头像Id
+    int32 Quality =10;//品质
+    string Detect =11;//伤害范围
+    string Skill =12;//伤害技能
+    int32 Buy =13;//购买金币
+}
+//技能栏
+message Base_Match3_SkillBarInfo{
+    Base_Match3_ChessboardSkillInfo ChessboardSkill1=1;//第一个技能
+    Base_Match3_ChessboardSkillInfo ChessboardSkill2=2;//第二个技能
+    Base_Match3_ChessboardSkillInfo ChessboardSkill3=3;//第三个技能
+
+}
+//一个棋盘技能
+message Base_Match3_ChessboardSkillInfo{
+    int32 Id=1;
+    string Name =2;
+    string Description=3;
+    int32 ClearType =4;
+    int32 Point =5;
+    int32 ActiveColor =6;
+    int32 ActiveNum =7;
+    int32 BoardSkillIId =8;
+    string SkillIcon =9;
+    string BottomFrame =10;
+    int32 EffectsKillok =11;
+    int32 DelayTime =12;
+
+
+}
+//一个英雄技能
+message Base_Match3_HeroSkillInfo{
+    int32 Id=1;
+    map<string,Base_Match3_HeroSkillItemInfo> HeroSkillItemList =2;
+
+}
+
+//一行英雄技能效果伤害列表
+message Base_Match3_HeroSkillItemInfo{
+    int32 Id=1;
+    int32 TargetType=2;//1:自己方英雄;2:敌人方英雄;3:自己方棋盘;4:敌人方棋盘;
+}
+
+//英雄攻击
+message Base_Match3_HeroAttackInfo{
+    int32 Id=1;
+
+}
+
+
+//角色信息
+message Base_Match3_RoleInfo{
+    string Id =1;
+    int32 ChairId =2;//椅子id
+    string NickName =3;
+    bool IsOnline =4;//是否在线
+    bool IsAIRobot =5;//true:机器人;false:玩家;
+    string BindPlayerId =6;//如果是机器人 绑定在真人玩家Id身上
+    bool IsOwner =7;//是否是房主 0:成员;1:房主;
+    int32 SelectHeroId =8;//选择英雄Id
+
+    Base_Match3_HeroInfo HeroInfo =9;//英雄信息
+    Base_Match3_SkillBarInfo SkillBarInfo =10;//技能栏
+    Base_Match3_ChessboardInfo ChessboardInfo =11;//棋盘信息
+
+
+}
+//Match3Chessboard
+//整型列表
+message Base_Match3_RepeatInt{
+    repeated int32 IntList =1;  //整型List
+}
+//棋子的基本信息
+message Base_Match3_SimpleChess{
+    int32 ChessColor =1;       //棋子颜色
+    int32 SpeType =2;          //特殊棋子类型
+}
+message Base_Match3_Chess{
+    int32 ChessId =1;           //棋子id
+    int32 ChessColor =2;        //棋子颜色
+    int32 SubChessId =3;        //关联的棋子id，被冰冻的棋子，燃烧结束生成的棋子
+    int32 FrozenCnt =4;         //冻结需要消除的次数
+    int64 ExpireTime =5;        //棋子失效时间，针对燃烧棋子
+}
+//单列补充棋子
+message Base_Match3_SupplyChesses{
+    repeated Base_Match3_SimpleChess SupplyChesses =1;      //单列的补充棋子
+}
+
+
+//-------结算------
+message Base_Match3_JieSuanRoleInfo{
+    int32 RankingNum =1;//排名数
+    string Id =2;
+    int32 ChairId =3;//椅子id
+    string NickName =4;
+    map<int32, int32> RewardItemList=5;//奖励物品列表 key:是ItemId;v:数量num;
+    bool IsWin =6;//true:赢;false;输
+}
+//干扰信息
+message Base_Match3_InterfereInfo{
+    string FromRoleId =1;      //发起的玩家id
+    //攻击目标数组
+    repeated string DstRoleId =2;//目标玩家id
+    int32 InterfereType =3; //干扰类型：5冰冻，6燃烧
+    repeated int32 InterfereKeys =4;//被干扰的棋子
+    int32 SkillEnergyDt =5;     //大招能量变化值
+    int32 BlessingEnergyDt =6;  //祝福能量变化值
+}
+
+
+//#endregion =============================================================
+
+//干扰行动
+message Net_Match3_InterfereReq{
+    Base_Match3_InterfereInfo InterfereInfo = 1;     //干扰数据
+}
+//干扰行动 回包
+message Net_Match3_InterfereRet{
+    Base_Match3_InterfereInfo InterfereInfo = 1;     //干扰数据
+}
+
+//-------------------------------------------------
+
+//1:开始匹配房间 进入房间
+message Net_Match3_StartMatchingRoomReq{
+    /*战斗类型
+	RoomTypeIdPVE1v1    = 10101 //人机1v1
+	RoomTypeIdPVP1v1    = 10201 //真人1v1
+	RoomTypeIdPVP1v3    = 10301 //真人4人混战
+	RoomTypeIdCoin1v1p1 = 10401 //金币房间 初级
+	RoomTypeIdCoin1v1p2 = 10402 //金币房间 中级
+	RoomTypeIdCoin1v1p3 = 10403 //金币房间 高级
+	RoomTypeIdCoin1v1p4 = 10404 //金币房间 顶级
+    */
+    int32 RoomTypeId =1;
+    int32 SelectHeroId =2;//选择英雄Id
+}
+//开始匹配房间 进入房间
+message Net_Match3_StartMatchingRoomRet{
+    /*
+    //0:匹配中...;1:房间中...;
+    -1:房间类型参数错误;
+    -2:金币不够;
+    -3:未知错误的英雄;
+    -4:英雄次数不够
+    */
+    int32 Ret =1;
+}
+//取消匹配房间
+message Net_Match3_CancelMatchingReq{
+}
+
+message Net_Match3_CancelMatchingRet{
+    int32 Ret =1;// 0:取消匹配成功;1:取消匹配失败;
+}
+
+//2:广播 其它玩家进入房间
+message Net_Match3_OtherRoleEnterRoomRet{
+    Base_Match3_RoleInfo OtherRole =1;//其它玩家进入房间
+}
+//3:开始匹配成 返回房间
+message Net_Match3_StartMatchingRoomSuccessRet{
+    Base_Match3_RoomInfo RoomInfo =1;
+}
+//4:获取场景 加载完场景后获取场景信息 断线重连也是这个
+message Net_Match3_GetSceneInformationReq{
+}
+//获取场景信息
+message Net_Match3_GetSceneInformationRet{
+    int32 Ret =1;//0:成功;1:失败 没有房间;
+    Base_Match3_RoomInfo RoomInfo =2;//
+}
+//5:主动推送 倒计时
+message Net_Match3_CountdownRet{
+    int32 TotalNum =1;//总数
+    int32 CountdownNum =2; //倒计时数
+
+}
+//6:开始
+message Net_Match3_StartRet{
+
+}
+//7:下一步行动
+message Net_Match3_NextMoveReq{
+    string RoleId =1;//
+    int32 ChairId =2;   //椅子Id
+    Base_Match3_ChessboardInfo ChessboardInfo =3;//棋盘信息
+    Base_Match3_HeroInfo HeroInfo =4;//英雄信息
+
+}
+//下一步行动 返回
+message Net_Match3_NextMoveRet{
+    int32 Ret =1;//1:失败没有房间;2:游戏结算中
+    string RoleId =2;//
+    int32 ChairId =3;   //椅子Id
+    Base_Match3_ChessboardInfo ChessboardInfo =4;//棋盘信息
+    Base_Match3_HeroInfo HeroInfo =5;//英雄信息
+}
+//攻击目标英雄
+message Base_Match3_AttackTargetHero{
+    string TargetId=1;//目标Id数组
+    int32 TargetValue =2;//伤害值
+    int32 TargetHp =3;//被攻击血量  只有HeroAttackRet才有用
+    int32 TargetHpLimit =4;//血上限 只有HeroAttackRet才有用
+}
+//英雄攻击attacked
+message Net_Match3_HeroAttackReq{
+    string AId=1;//操作玩家Id
+    int32 AValue =2;//给自己加血
+    int32 SkillId=3;//使用技能Id 0:普通攻击;
+    repeated Base_Match3_AttackTargetHero AttackTargetHeroList=4;//攻击目标英雄数组
+
+}
+//英雄攻击
+message Net_Match3_HeroAttackRet{
+    int32 Ret =1;//0:成功;1:没有房间;2:游戏结束;
+    string AId=2;//操作玩家Id
+    int32 AValue =3;//给自己加血值
+    int32 AHp=4;//给当前自己血值
+    int32 AHpLimit =5;//自己血上限
+    int32 SkillId=6;//使用技能Id 0:普通攻击;
+    repeated Base_Match3_AttackTargetHero AttackTargetHeroList=7;//攻击目标英雄数组
+
+}
+//等待其它玩家离线倒计时
+message Net_Match3_WaitOtherPlayerOfflineCountdownRet{
+
+}
+
+//-------4人战斗的时候 单人退出的结算面板------
+message Net_Match3_RoleDeathJieSuanRet{
+    Base_Match3_JieSuanRoleInfo  JieSuanRoleInfo =1;//玩家退出结算角色信息
+}
+
+//8:结束 GameOver
+message Net_Match3_GameOverRet{
+    map<string, Base_Match3_JieSuanRoleInfo> JieSuan =1;
+}
+/*
+//结算结果
+message Net_Match3_JieSuanRet{
+}*/
+//9:玩家请求退出房间
+message Net_Match3_ExitRoomReq{
+}
+message Net_Match3_ExitRoomRet{
+    int32 Ret =1;//0:退出房间成功;-1:退出房间失败;
+    int32 RoleId =2;//其它玩家退出房间
+
+}
+//其它玩家退出
+message Net_Match3_OtherRoleExitRoomRet{
+    int32 RoleId =1;//其它玩家退出房间
+}
+
+//---------技能栏----------------------------------------------
+//释放技能
+message Net_Match3_ReleaseSkillReq{
+    int32 SkillId =1;//释放技能
+    int32 SkillPosition=2;//技能位置
+}
+message Net_Match3_ReleaseSkillRet{
+
+}
+
+//---------下面消息暂时不用----------------------------------------------
+
+
+//---------下面消息暂时不用----------------------------------------------
+//进入房间
+message Net_Match3_EnterRoomReq{
+
+}
+message Net_Match3_EnterRoomRet{
+    int32 Ret =1;//0:成功;-1:失败;
+    Base_Match3_RoomInfo RoomInfo =2;//
+
+}
+//准备
+message Net_Match3_PrepareReq{
+    bool IsPrepare =1; //true:准备；false:准备取消;
+}
+//准备
+message Net_Match3_PrepareRet{
+    // int32 Ret =1;//0:成功;1:失败
+    int32 RoleId =1;//准备玩家Id
+    bool IsPrepare =2; //true:准备；false:未准备;
+
+}
+
+//购买天赋技能 只有在房间里才能购买
+message Net_Match3_BuyTalentSkillReq{
+    int32 TalentSkillId =1;//天赋技能Id
+}
+//购买天赋技能
+message Net_Match3_BuyTalentSkillRet{
+    int32 Ret =1;//0:成功;1:未知技能;2:没有房间;3:金币不够;
+    int32 TalentSkillId =2;//天赋技能Id
+}
+
+
+
+
+//=======todo=======回合制=========================================
+//下一轮操作
+message Net_Match3_NextRoundOperationRet{
+    int32 MaxRoundNum =1; //最大轮回数
+    int32 CurrentRoundNum =2; //当前轮回数
+    string OperationPlayerId =3; //当前操作玩家Id
+    int64  OperationPlayerEndTime =4;//操作玩家结束时间
+
+}
+//=======todo================================================

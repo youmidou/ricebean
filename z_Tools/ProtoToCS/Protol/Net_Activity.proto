@@ -1,0 +1,49 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+/*
+	玩家->Activity
+
+added by yh @ 2024/01/06 10:36
+注意:
+*/
+//玩家所有活动
+message Base_Activity_ActivityInfo{
+  Base_Activity_DailyTaskActivityInfo DailyTaskActivityInfo =1;//每日任务活动
+
+}
+//每日任务活动
+message Base_Activity_DailyTaskActivityInfo{
+  //火龙宝藏值
+  int32 FireDragonTreasureValue =1;//
+  //火龙宝藏领取任务状态bit
+  int32 FireDragonTreasureBit =2;//
+
+  //广告
+  int64 AdsBit =3;//
+}
+//广告信息
+message Base_Activity_AdsInfo{
+
+}
+//更新活动
+message Net_Activity_UpdateActivityRet{
+    Base_Activity_ActivityInfo ActivityInfo =1;//
+}
+//广告更新用户类型
+message Net_Activity_AdsUpdateUserTypeReq{
+
+}
+message Net_Activity_AdsUpdateUserTypeRet{
+
+}
+//领取火龙宝藏奖励
+message Net_Activity_ReceiveFireDragonTreasureRewardsReq{
+  int32 Index =1;//领取奖励位置Id
+}
+//领取火龙宝藏奖励
+message Net_Activity_ReceiveFireDragonTreasureRewardsRet{
+  int32 Ret = 1;//0:领取成功;1:未知错误;2:已经领取;3:条件不满足;
+  int32 FireDragonTreasureValue=2;//当前火龙宝藏值
+  int32 FireDragonTreasureBit =3;//当前火龙任务状态pos:0,1,2,3
+}

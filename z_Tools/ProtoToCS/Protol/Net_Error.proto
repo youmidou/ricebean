@@ -1,0 +1,20 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+/*
+   	错误码
+
+   added by yh @ 2024/03/16 14:55
+   注意:服务器主动发送客户端提示的错误码
+*/
+enum EErrorNum{
+  ErrorNumIde =0;
+  EN_KNAPSACK_USE_NOT_DIRECT =1;
+
+}
+//服务器主推通用错误提示
+message Net_Error_ErrorRet
+{
+  int32 Code=1;//错误码
+  string Msg=2;//
+}

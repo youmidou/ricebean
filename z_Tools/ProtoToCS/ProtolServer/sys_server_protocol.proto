@@ -1,0 +1,107 @@
+syntax = "proto3";
+option go_package = "./pbs";
+package pbs;
+/*
+service GateToGame {
+  rpc ProcessGateToGame (GateToGameReq) returns (GateToGameRet) {}
+}
+*/
+//内部消息包请求
+message Net_InternalMessagePacket {
+  int32 MsgType=1;//1:MT_NET_RECV_MSG 2:MT_NET_DISCONNECT_NOTICE
+  string NetId = 2;//也是 IPAddress地址
+  string UserId = 3;//用户Id
+  int32 MsgId = 4;//RetId转发消息1001002
+  bytes MsgData = 5;//ReqBytes消息内容
+}
+
+/*
+//Gate <- GateToCentralRet
+message Net_Gate_CentralRet {
+  string GateCid = 1;
+  string Cid = 2;
+  string IPAddress =3;
+  string UserId = 4;
+  int32 RetId =5;
+  bytes RetBytes =6;
+}
+//网关断开连接
+message Net_Gate_CentralDisconnectReq {
+  string GateCid = 1;
+  string Cid = 2;
+  //string RetId =5;
+  //bytes RetBytes =6;
+
+}
+message Net_Gate_CentralDisconnectRet {
+  string GateCid = 1;
+  string Cid = 2;
+  bool IsOk = 3;
+
+}
+//
+message Net_Gate_CentralKeepAliveReq{
+  int32 ConnectNum =1;//当前网关连接数
+
+}
+message Net_Gate_CentralKeepAliveRet{
+
+}
+//==========CentralServer===============================================
+//中央服务器主动杀掉连接
+message Net_Central_GateKillConnectionReq{
+  string GateCid = 1;
+  string Cid = 2;
+}
+message CentralToGameReq{
+  string GateCid = 1;
+  string Cid = 2;
+  int32 ReqId =3;
+  bytes ReqBytes =4;
+}
+message CentralToGameRet{
+  string GateCid = 1;
+  string Cid = 2;
+  int32 RetId =3;
+  bytes RetBytes =4;
+}
+message CentralToChatReq{
+  string GateCid = 1;
+  string Cid = 2;
+  int32 ReqId =3;
+  bytes ReqBytes =4;
+}
+message CentralToChatRet{
+  string GateCid = 1;
+  string Cid = 2;
+  int32 RetId =3;
+  bytes RetBytes =4;
+}
+
+//==========GameServer===============================================
+message Net_Game_CentralReq{
+  string Cid = 1;
+  int32 ReqId =2;
+  bytes ReqBytes =3;
+}
+message Net_Game_CentralRet{
+  string Cid = 1;
+  int32 RetId =2;
+  bytes RetBytes =3;
+}
+
+message GameToCentralKeepAliveReq{
+
+}
+message GameToCentralKeepAliveRet{
+
+}
+
+//==========ChatServer===============================================
+message ChatToCentralKeepAliveReq{
+
+}
+message ChatToCentralKeepAliveRet{
+
+}
+*/

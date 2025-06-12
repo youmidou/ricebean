@@ -1,0 +1,45 @@
+ // [START declaration]
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+// [END declaration]
+
+// [START messages]
+
+message PlaceHolder3333
+{
+string dec=1;
+string account=2;
+bool flag=3;
+int32 funID = 4;
+repeated int32 cards=5;
+
+}
+
+message AvatarInfo
+{
+string name=1;
+string account=2;
+int32 money=3;
+int32 team_id = 4;
+repeated int32 cards=5;
+}
+
+message MatchingSuccess
+{
+map<int32, AvatarInfo> AvatarInfos = 1;
+
+} 
+
+message PlayedCardInfo
+{
+int32 team_id=1;
+string account=2;
+int32 card_value=3;
+int32 out_card_value=4;
+int32 cards_left_num=5;
+map<int32, AvatarInfo> AvatarInfos = 6;
+} 
+
+// [END messages]
+

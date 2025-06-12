@@ -1,0 +1,29 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+/*
+   	广告
+
+   added by yh @ 2024/01/16 18:14
+   注意:
+*/
+
+//广告任务
+message Base_Ads_AdsTasksInfo{
+  repeated Base_Ads_AdsTasksItemInfo AdsTasksItemList =1;//广告列表
+  int64 AdsBit =2;//位状态
+}
+//广告任务item
+message Base_Ads_AdsTasksItemInfo{
+  int32 Id=1;//广告Id
+  int32 ItemId =2;//物品Id
+  int32 ItemNum =3;//数量
+}
+
+//收集广告奖励
+message Net_Ads_CollectAdsRewardReq{
+  int32 TaskId =1;//任务Id
+}
+message Net_Ads_CollectAdsRewardRet{
+  int32 Ret =1;//0:领取成功;1:未知错误;2:已经领取;3:条件不满足;
+}

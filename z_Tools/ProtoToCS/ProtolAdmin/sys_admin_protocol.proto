@@ -1,0 +1,132 @@
+syntax = "proto3";
+option go_package = "./pb_admin";
+package pb_admin;
+/*
+	sys_admin_cmd
+
+added by yh @ 2024/04/30 11:36
+注意:后台运维操作命令 VerifyKey
+*/
+//游戏服务器基本信息
+message Base_Admin_SystemInfo{
+    //游戏服务器Id
+  //在线人数
+  int32 OnlineNum=1;
+  //总连接数
+  int32 TotalConnectNum=2;
+
+}
+//获取游戏服务器基本信息
+message Net_Admin_GetSystemReq{
+}
+message Net_Admin_GetSystemRet{
+  int32 Ret=1;//0:成功;1:失败;
+  Base_Admin_SystemInfo SystemInfo =2;//游戏服务器基本信息
+}
+
+//获取当前在线玩家列表
+message Net_Admin_GetUsersReq{
+
+}
+message Net_Admin_GetUsersRet{
+  int32 Ret=1;//0:成功;1:失败;
+
+}
+
+
+//获取游戏服务器基本信息
+message Net_Admin_UpdateConfigReq{
+
+}
+message Net_Admin_UpdateConfigRet{
+  int32 Ret=1;//0:成功;1:失败;
+
+}
+
+//获取游戏服务器基本信息
+message Net_Admin_UserAddCurrencyReq{
+  string UserId=1;//玩家Id
+  int32 Coin=2;//金币
+  int32 Gold=3;//钻石
+
+}
+message Net_Admin_UserAddCurrencyRet{
+  int32 Ret=1;//0:成功;1:失败;
+  int32 UserCurrentCoin=4;//玩家当前金币
+  int32 UserCurrentGold=5;//玩家当前钻石
+}
+
+
+//执行一封邮件 System
+message Net_Admin_ExecuteEmailReq{
+  int32 EmailType =1;//0:普通邮件;1:系统邮件;2:;3:;
+  string Title=2;//邮件标题
+  string Content=3;//邮件内容
+  //礼包Id
+  string GiftId=4;
+}
+message Net_Admin_ExecuteEmailRet{
+  int32 Ret=1;//0:成功;1:失败;
+
+}
+
+
+
+
+message Net_Admin_DeleteRedisAllRoleCacheDataReq{
+}
+message Net_Admin_DeleteRedisAllRoleCacheDataRet{
+  int32 Ret=1;//0:成功;1:失败;
+}
+
+
+//作弊
+message Net_Admin_CheatReq{
+
+
+}
+message Net_Admin_CheatRet{
+
+}
+//删除玩家账号
+message Net_Admin_DeleteAccountReq{
+
+
+}
+message Net_Admin_DeleteAccountRet{
+
+}
+
+//添加玩家金币
+message Net_Admin_AddPlayerCoinReq{
+      string PId =1;//玩家Id
+      int32 AddCoin=2;//添加金币
+
+}
+message Net_Admin_AddPlayerCoinRet{
+    int32 Ret =1;//0:成功;1:失败;2:玩家不存在;
+    int32   Coin=2;//玩家金币
+}
+
+//添加玩家钻石
+message Net_Admin_AddPlayerGoldReq{
+  string PId =1;//玩家Id
+  int32 AddGold=2;//添加钻石
+
+}
+message Net_Admin_AddPlayerGoldRet{
+  int32 Ret =1;//0:成功;1:失败;2:玩家不存在;
+  int32   Gold=2;//玩家金币
+}
+
+//添加系统邮件->发送所有玩家
+message Net_Admin_AddSystemEmailReq{
+  string PId =1;//玩家Id
+  int32 AddGold=2;//添加钻石
+
+}
+message Net_Admin_AddSystemEmailRet{
+  int32 Ret =1;//0:成功;1:失败;2:玩家不存在;
+  int32   Gold=2;//玩家金币
+}
+

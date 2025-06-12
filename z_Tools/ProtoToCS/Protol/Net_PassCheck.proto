@@ -1,0 +1,52 @@
+syntax = "proto3";
+package Pb;
+option go_package = "./pb";
+/*
+   	通行证系统 功能模块
+
+   added by yh @ 2024/02/19 09:38
+   注意:
+*/
+
+//通行证系统信息
+message Base_PassCheck_PassCheckInfo{
+  int32 Stage = 1;//赛级等级
+  int64 StartTime =2;//开始时间
+  int64 EndTime =3;//结束时间
+
+  //int32 Level = 5;//通行证等级
+  int32 Value = 6;//通行证积分值
+  int32 IsUnlockAdvanced = 7;//是否解锁高级 0:未解锁;1:解锁;
+  map<int32,Base_PassCheck_PassCheckItemInfo> PassCheckItemList=8;//列表信息taskId:
+
+}
+//
+message Base_PassCheck_PassCheckItemInfo{
+  int32 NormalState = 1;//普通:: 0:未领取;1:已领取;
+  int32 AdvancedState = 2;//高级:: 0:未领取;1:已领取;
+}
+
+//====================================================
+//主动更新
+message Net_PassCheck_UpdateItemsInfoRet{
+  Base_PassCheck_PassCheckInfo PassCheckInfo =1;//
+  //map<int32,Base_PassCheck_PassCheckItemInfo> UpdateItemList =1;//
+}
+
+//领取奖励
+message Net_PassCheck_ClaimRewardReq{
+  int32 TaskId =1;//领取奖励Id
+  int32 Type =2;//0:初级;1:高级;
+}
+message Net_PassCheck_ClaimRewardRet{
+  int32 Ret =1;//0:领取成功;1:未知错误;2:积分条件不满足;3:已经领取;
+}
+
+//购买
+message Net_PassCheck_BuyReq{
+  int32 Id =1;//领取奖励Id
+
+}
+message Net_PassCheck_BuyRet{
+  int32 Ret =1;//
+}
