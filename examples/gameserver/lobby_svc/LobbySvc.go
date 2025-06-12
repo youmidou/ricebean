@@ -3,19 +3,17 @@ package lobby_svc
 import (
 	"context"
 	"github.com/golang/protobuf/proto"
-	"phoenix-tudou/framework/log4"
-	"phoenix-tudou/framework/sys_base"
-	"phoenix-tudou/framework/sys_net"
-	"phoenix-tudou/z_Tools/ProtoToCS/Protocal/pb"
 	_interfaces2 "ricebean/examples/gameserver/lobby_svc/_interfaces"
 	"ricebean/examples/gameserver/lobby_svc/_user"
 	"ricebean/examples/gameserver/lobby_svc/sys_modules/activity"
 	"ricebean/examples/gameserver/lobby_svc/sys_modules/mail"
+	"ricebean/framework/log4"
+
+	"ricebean/framework/sys_net"
 	pitaya "ricebean/pkg"
 	"ricebean/pkg/component"
-	"time"
 
-	"phoenix-tudou/z_Tools/ProtoToCS/Protocal/pbs"
+	"ricebean/z_Tools/ProtoToCS/Protocal/pbs"
 )
 
 const (
@@ -24,13 +22,6 @@ const (
 )
 
 /*
-	一组服务器一个Global
-
-author yh 2024.10.25:21:49
-服务职责：负责接收和转发,定义处理功能逻辑模块
-1:WorldGame 场景服务器
-2:Chat 聊天服务器
-3:DataAccess 共享存储数据
 //modules.Base
 */
 func NewLobbySvc(app pitaya.Pitaya) *LobbySvc {
@@ -106,44 +97,37 @@ func (t *LobbySvc) RegisterHandleMessage() {
 }
 
 func (t *LobbySvc) RequestProcessingMessage(req *pbs.Net_InternalMessagePacket) (*pbs.Net_InternalMessagePacket, error) {
-	user := t.m_globaluser_manager.GetUserByNetID(req.NetId)
-	switch req.MsgId {
-	case int32(pb.Cmd_Login_Login):
-	default:
-		if user == nil {
-			//ctxGate.RemoveConnect(ctx.Cid)
-			//log4.Info("发现User==nil gate=%s reqId=%d", gateReq.GateCid, gateReq.ReqId)
-			time.Sleep(3 * time.Second)
-			//ctxGate.Send(int32(pbs.Cmd_Central_GateKillConnection), killBytes)
+	/*
+		user := t.m_globaluser_manager.GetUserByNetID(req.NetId)
+		switch req.MsgId {
+		case int32(pb.Cmd_Login_Login):
+		default:
+			if user == nil {
+				//ctxGate.RemoveConnect(ctx.Cid)
+				//log4.Info("发现User==nil gate=%s reqId=%d", gateReq.GateCid, gateReq.ReqId)
+				time.Sleep(3 * time.Second)
+				//ctxGate.Send(int32(pbs.Cmd_Central_GateKillConnection), killBytes)
+				return nil, nil
+			}
+		}
+		if req.MsgId == 0 {
 			return nil, nil
 		}
-	}
-	if req.MsgId == 0 {
-		return nil, nil
-	}
-	moduleId := sys_base.GetCmdModule(req.MsgId)
-	switch moduleId {
-	case pb.CmdModule_Lobby: //大厅消息
-		resp, _ := t.msgHandler.Process(req.NetId, user, req.MsgId, req.MsgData)
-		if resp != nil {
-			r := resp.GetResponse()
-			msgData, _ := proto.Marshal(r.Ret)
-			t.ForwardRPCGateway(req.NetId, req.UserId, r.RetId, msgData)
+		moduleId := sys_base.GetCmdModule(req.MsgId)
+		switch moduleId {
+		case pb.CmdModule_Lobby: //大厅消息
+			resp, _ := t.msgHandler.Process(req.NetId, user, req.MsgId, req.MsgData)
+			if resp != nil {
+				r := resp.GetResponse()
+				msgData, _ := proto.Marshal(r.Ret)
+				t.ForwardRPCGateway(req.NetId, req.UserId, r.RetId, msgData)
+			}
+			return nil, nil
+		default:
+			log4.Error("GateToCentral unknown message pending gateReq.ReqId = %s", req.MsgId)
+			return nil, nil
 		}
-		return nil, nil
-		/*
-			case pb.CmdModule_World: //场景世界消息
-				resp := t.ForwardRPCGameWorld(netId, userId, reqId, reqBytes)
-				if resp != nil {
-					t.ForwardRPCGateway(resp.NetId, resp.UserId, resp.MsgId, resp.MsgData)
-				}
-			case pb.CmdModule_Chat:
-				//t.ToChatConnResponseHandler(ctx, gateReq, ctxgate)
-		*/
-	default:
-		log4.Error("GateToCentral unknown message pending gateReq.ReqId = %s", req.MsgId)
-		return nil, nil
-	}
+	*/
 	ret := &pbs.Net_InternalMessagePacket{}
 	//resp := RequestProcessor.Process(ctx, gateReq.ReqId, gateReq.ReqBytes)
 	return ret, nil
