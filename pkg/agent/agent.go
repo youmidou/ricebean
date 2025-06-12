@@ -80,7 +80,7 @@ type (
 		heartbeatTimeout   time.Duration
 		writeTimeout       time.Duration
 		lastAt             int64 // last heartbeat unix time stamp
-		messageEncoder     message.MessagesEncoder
+		messageCodec       message.MessageCodec
 		messagesBufferSize int // size of the pending messages buffer
 		metricsReporters   []metrics.Reporter
 		serializer         serialize.Serializer // message serializer
@@ -133,7 +133,7 @@ type (
 		packetCodec        codec.PacketCodec
 		heartbeatTimeout   time.Duration
 		writeTimeout       time.Duration
-		messageEncoder     message.MessagesEncoder
+		messageCodec       message.MessageCodec
 		messagesBufferSize int // size of the pending messages buffer
 		metricsReporters   []metrics.Reporter
 		serializer         serialize.Serializer // message serializer
@@ -147,7 +147,7 @@ func NewAgentFactory(
 	serializer serialize.Serializer,
 	heartbeatTimeout time.Duration,
 	writeTimeout time.Duration,
-	messageEncoder message.MessagesEncoder,
+	messageCodec message.MessageCodec,
 	messagesBufferSize int,
 	sessionPool session.SessionPool,
 	metricsReporters []metrics.Reporter,
@@ -157,7 +157,7 @@ func NewAgentFactory(
 		packetCodec:        packetCodec,
 		heartbeatTimeout:   heartbeatTimeout,
 		writeTimeout:       writeTimeout,
-		messageEncoder:     messageEncoder,
+		messageCodec:       messageCodec,
 		messagesBufferSize: messagesBufferSize,
 		sessionPool:        sessionPool,
 		metricsReporters:   metricsReporters,
@@ -167,7 +167,7 @@ func NewAgentFactory(
 
 // CreateAgent returns a new agent
 func (f *agentFactoryImpl) CreateAgent(conn net.Conn) Agent {
-	return newAgent(conn, f.packetCodec, f.serializer, f.heartbeatTimeout, f.writeTimeout, f.messagesBufferSize, f.appDieChan, f.messageEncoder, f.metricsReporters, f.sessionPool)
+	return newAgent(conn, f.packetCodec, f.serializer, f.heartbeatTimeout, f.writeTimeout, f.messagesBufferSize, f.appDieChan, f.messageCodec, f.metricsReporters, f.sessionPool)
 }
 
 // NewAgent create new agent instance
@@ -179,7 +179,7 @@ func newAgent(
 	writeTimeout time.Duration,
 	messagesBufferSize int,
 	dieChan chan bool,
-	messageEncoder message.MessagesEncoder,
+	messageCodec message.MessageCodec,
 	metricsReporters []metrics.Reporter,
 	sessionPool session.SessionPool,
 ) Agent {
@@ -187,8 +187,8 @@ func newAgent(
 	serializerName := serializer.GetName()
 
 	once.Do(func() {
-		hbdEncode(heartbeatTime, packetCodec, messageEncoder.IsCompressionEnabled(), serializerName)
-		herdEncode(heartbeatTime, packetCodec, messageEncoder.IsCompressionEnabled(), serializerName)
+		hbdEncode(heartbeatTime, packetCodec, messageCodec.IsCompressionEnabled(), serializerName)
+		herdEncode(heartbeatTime, packetCodec, messageCodec.IsCompressionEnabled(), serializerName)
 	})
 
 	if writeTimeout <= 0 {
@@ -209,7 +209,7 @@ func newAgent(
 		lastAt:             time.Now().Unix(),
 		serializer:         serializer,
 		state:              constants.StatusStart,
-		messageEncoder:     messageEncoder,
+		messageCodec:       messageCodec,
 		metricsReporters:   metricsReporters,
 		sessionPool:        sessionPool,
 	}
@@ -243,7 +243,7 @@ func (a *agentImpl) getMessageFromPendingMessage(pm pendingMessage) (*message.Me
 }
 
 func (a *agentImpl) packetEncodeMessage(m *message.Message) ([]byte, error) {
-	em, err := a.messageEncoder.Encode(m)
+	em, err := a.messageCodec.Encode(m)
 	if err != nil {
 		return nil, err
 	}

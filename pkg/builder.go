@@ -28,10 +28,9 @@ type Builder struct {
 	Config         config.PitayaConfig
 	DieChan        chan bool
 	//数据包编解码器
-	PacketCodec codec.PacketCodec
-
-	MessageEncoder message.MessagesEncoder
-	Serializer     serialize.Serializer
+	PacketCodec  codec.PacketCodec
+	MessageCodec message.MessageCodec
+	Serializer   serialize.Serializer
 
 	Router           *router.Router
 	RPCClient        cluster.RPCClient
@@ -153,7 +152,7 @@ func NewBuilder(isFrontend bool,
 		postBuildHooks:   make([]func(app Pitaya), 0),
 		Config:           config,
 		DieChan:          dieChan,
-		MessageEncoder:   message.NewPomeloPacketEncoder(config.Handler.Messages.Compression),
+		MessageCodec:     message.NewPomeloPacketEncoder(config.Handler.Messages.Compression),
 		Serializer:       serializer,
 		Router:           router.New(),
 		RPCClient:        rpcClient,
@@ -206,7 +205,7 @@ func (builder *Builder) Build() Pitaya {
 			builder.PacketCodec,
 			builder.Serializer,
 			builder.Router,
-			builder.MessageEncoder,
+			builder.MessageCodec,
 			builder.Server,
 			builder.SessionPool,
 			builder.RemoteHooks,
@@ -222,7 +221,7 @@ func (builder *Builder) Build() Pitaya {
 		builder.Serializer,
 		builder.Config.Heartbeat.Interval,
 		builder.Config.Buffer.Agent.WriteTimeout,
-		builder.MessageEncoder,
+		builder.MessageCodec,
 		builder.Config.Buffer.Agent.Messages,
 		builder.SessionPool,
 		builder.MetricsReporters,
@@ -230,7 +229,7 @@ func (builder *Builder) Build() Pitaya {
 	//接收消息服务器
 	handlerService := service.NewHandlerService(
 		builder.PacketCodec, //数据包解码器
-		builder.MessageEncoder,
+		builder.MessageCodec,
 		builder.Serializer,
 		builder.Config.Buffer.Handler.LocalProcess,
 		builder.Config.Buffer.Handler.RemoteProcess,

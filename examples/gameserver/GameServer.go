@@ -24,15 +24,15 @@ func main() {
 	builder := pitaya.NewDefaultBuilder(true, *svType, pitaya.Cluster, serverMetadata, *cfg)
 
 	//----------------------------------------------
-	//数据包->解析
+	//数据包编解码器
 	builder.PacketCodec = codec.NewPomeloMessagePacket()
-
+	//消息->编码器
+	builder.MessageCodec = message.NewPomeloPacketEncoder(cfg.Handler.Messages.Compression)
+	builder.Serializer = protobuf.NewSerializer() // 设置 Protobuf 序列化器
+	
 	//builder.PacketDecoder = _ymd_packet.NewPomeloPacketDecoder()
 	//数据包->编码器
 	//builder.PacketEncoder = _ymd_packet.NewPomeloPacketEncoder()
-	//消息->编码器
-	builder.MessageEncoder = message.NewPomeloPacketEncoder(cfg.Handler.Messages.Compression)
-	builder.Serializer = protobuf.NewSerializer() // 设置 Protobuf 序列化器
 
 	tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", 1250))
 	builder.AddAcceptor(tcp)

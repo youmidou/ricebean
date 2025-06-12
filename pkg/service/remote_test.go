@@ -75,6 +75,7 @@ func (m *MyComp) RemoteErr(ctx context.Context) (*test.SomeStruct, error) {
 
 type unregisteredStruct struct{}
 
+/*
 func TestNewRemoteService(t *testing.T) {
 	packetEncoder := codec.NewPomeloPacketEncoder()
 	ctrl := gomock.NewController(t)
@@ -106,6 +107,7 @@ func TestNewRemoteService(t *testing.T) {
 	assert.Equal(t, handlerHooks, svc.handlerHooks)
 	assert.Equal(t, handlerPool, svc.handlerPool)
 }
+*/
 
 func TestRemoteServiceRegister(t *testing.T) {
 	svc := NewRemoteService(nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil)

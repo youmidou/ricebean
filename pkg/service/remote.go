@@ -59,7 +59,7 @@ type RemoteService struct {
 	rpcClient              cluster.RPCClient
 	services               map[string]*component.Service // all registered service
 	router                 *router.Router
-	messageEncoder         message.MessagesEncoder
+	messageCodec           message.MessageCodec
 	server                 *cluster.Server // server obj
 	remoteBindingListeners []cluster.RemoteBindingListener
 	remoteHooks            *pipeline.RemoteHooks
@@ -76,7 +76,7 @@ func NewRemoteService(
 	packetCodec codec.PacketCodec,
 	serializer serialize.Serializer,
 	router *router.Router,
-	messageEncoder message.MessagesEncoder,
+	messageCodec message.MessageCodec,
 	server *cluster.Server,
 	sessionPool session.SessionPool,
 	remoteHooks *pipeline.RemoteHooks,
@@ -91,7 +91,7 @@ func NewRemoteService(
 		serviceDiscovery:       sd,
 		serializer:             serializer,
 		router:                 router,
-		messageEncoder:         messageEncoder,
+		messageCodec:           messageCodec,
 		server:                 server,
 		remoteBindingListeners: make([]cluster.RemoteBindingListener, 0),
 		sessionPool:            sessionPool,
@@ -443,7 +443,7 @@ func (r *RemoteService) handleRPCSys(ctx context.Context, req *protos.Request, r
 		r.serializer,
 		r.serviceDiscovery,
 		req.FrontendID,
-		r.messageEncoder,
+		r.messageCodec,
 		r.sessionPool,
 	)
 	if err != nil {

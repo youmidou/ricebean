@@ -78,7 +78,7 @@ type Client struct {
 	requestTimeout      time.Duration
 	closeChan           chan struct{}
 	nextID              uint32
-	messageEncoder      message.Encoder
+	messageCodec        message.MessageCodec
 	clientHandshakeData *session.HandshakeData
 }
 

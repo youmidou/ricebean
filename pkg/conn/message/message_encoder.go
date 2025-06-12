@@ -26,8 +26,8 @@ import (
 	"ricebean/pkg/util/compression"
 )
 
-// Encoder interface
-type MessagesEncoder interface {
+// 消息 编解码器
+type MessageCodec interface {
 	IsCompressionEnabled() bool
 	Encode(message *Message) ([]byte, error)
 	Decode(data []byte) (*Message, error)
@@ -39,7 +39,7 @@ type PomeloPacketEncoder struct {
 }
 
 // NewMessagesEncoder returns a new message encoder
-func NewPomeloPacketEncoder(dataCompression bool) MessagesEncoder {
+func NewPomeloPacketEncoder(dataCompression bool) MessageCodec {
 	t := &PomeloPacketEncoder{dataCompression}
 	return t
 }

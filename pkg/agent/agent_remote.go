@@ -43,7 +43,7 @@ import (
 type Remote struct {
 	Session          session.Session // session
 	chDie            chan struct{}   // wait for close
-	messageEncoder   message.MessagesEncoder
+	messageCodec     message.MessageCodec
 	packetCodec      codec.PacketCodec        // binary encoder
 	frontendID       string                   // the frontend that sent the request
 	reply            string                   // nats reply topic
@@ -61,7 +61,7 @@ func NewRemote(
 	serializer serialize.Serializer,
 	serviceDiscovery cluster.ServiceDiscovery,
 	frontendID string,
-	messageEncoder message.MessagesEncoder,
+	messageCodec message.MessageCodec,
 	sessionPool session.SessionPool,
 ) (*Remote, error) {
 	a := &Remote{
@@ -72,7 +72,7 @@ func NewRemote(
 		rpcClient:        rpcClient,
 		serviceDiscovery: serviceDiscovery,
 		frontendID:       frontendID,
-		messageEncoder:   messageEncoder,
+		messageCodec:     messageCodec,
 	}
 
 	// binding session
@@ -171,7 +171,7 @@ func (a *Remote) serialize(m pendingMessage) ([]byte, error) {
 		Err:   m.err,
 	}
 
-	em, err := a.messageEncoder.Encode(msg)
+	em, err := a.messageCodec.Encode(msg)
 	if err != nil {
 		return nil, err
 	}

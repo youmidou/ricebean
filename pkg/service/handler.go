@@ -71,7 +71,7 @@ type (
 		agentFactory     agent.AgentFactory
 		handlerPool      *HandlerPool
 		handlers         map[string]*component.Handler // all handler method
-		messageEncoder   message.MessagesEncoder
+		messageCodec     message.MessageCodec
 	}
 
 	unhandledMessage struct {
@@ -85,7 +85,7 @@ type (
 // NewHandlerService creates and returns a new handler service
 func NewHandlerService(
 	packetCodec codec.PacketCodec,
-	messageEncoder message.MessagesEncoder,
+	messageCodec message.MessageCodec,
 	serializer serialize.Serializer,
 	localProcessBufferSize int,
 	remoteProcessBufferSize int,
@@ -101,7 +101,7 @@ func NewHandlerService(
 		chLocalProcess:   make(chan unhandledMessage, localProcessBufferSize),
 		chRemoteProcess:  make(chan unhandledMessage, remoteProcessBufferSize),
 		packetCodec:      packetCodec,
-		messageEncoder:   messageEncoder,
+		messageCodec:     messageCodec,
 		serializer:       serializer,
 		server:           server,
 		remoteService:    remoteService,
@@ -294,7 +294,7 @@ func (h *HandlerService) processPacket(a agent.Agent, p *packet.Packet) error {
 			a.RemoteAddr().String())
 	}
 
-	msg, err := h.messageEncoder.Decode(p.Data)
+	msg, err := h.messageCodec.Decode(p.Data)
 	if err != nil {
 		return err
 	}
