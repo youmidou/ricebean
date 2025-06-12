@@ -27,8 +27,9 @@ type Builder struct {
 	postBuildHooks []func(app Pitaya)
 	Config         config.PitayaConfig
 	DieChan        chan bool
-	PacketDecoder  codec.PacketDecoder
-	PacketEncoder  codec.PacketEncoder
+	//数据包->解析
+	MessagePacket codec.MessagePacket
+
 	MessageEncoder message.MessagesEncoder
 	Serializer     serialize.Serializer
 
@@ -152,8 +153,6 @@ func NewBuilder(isFrontend bool,
 		postBuildHooks:   make([]func(app Pitaya), 0),
 		Config:           config,
 		DieChan:          dieChan,
-		PacketDecoder:    codec.NewPomeloPacketDecoder(),
-		PacketEncoder:    codec.NewPomeloPacketEncoder(),
 		MessageEncoder:   message.NewPomeloPacketEncoder(config.Handler.Messages.Compression),
 		Serializer:       serializer,
 		Router:           router.New(),
@@ -204,7 +203,7 @@ func (builder *Builder) Build() Pitaya {
 			builder.RPCClient,
 			builder.RPCServer,
 			builder.ServiceDiscovery,
-			builder.PacketEncoder,
+			builder.MessagePacket,
 			builder.Serializer,
 			builder.Router,
 			builder.MessageEncoder,

@@ -7,6 +7,7 @@ import (
 	pitaya "ricebean/pkg"
 	"ricebean/pkg/acceptor"
 	"ricebean/pkg/config"
+	"ricebean/pkg/conn/codec"
 	"ricebean/pkg/conn/message"
 	"ricebean/pkg/serialize/protobuf"
 )
@@ -24,7 +25,9 @@ func main() {
 	builder := pitaya.NewDefaultBuilder(true, *svType, pitaya.Cluster, serverMetadata, *cfg)
 
 	//----------------------------------------------
-	//数据包->解码器
+	//数据包->解析
+	builder.MessagePacket = codec.NewPomeloMessagePacket()
+
 	builder.PacketDecoder = _ymd_packet.NewPomeloPacketDecoder()
 	//数据包->编码器
 	builder.PacketEncoder = _ymd_packet.NewPomeloPacketEncoder()

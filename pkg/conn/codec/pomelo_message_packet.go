@@ -21,25 +21,19 @@
 package codec
 
 import (
+	"bytes"
+
 	"ricebean/pkg/conn/packet"
 )
 
-// PomeloPacketEncoder struct
-type PomeloPacketEncoder struct {
+type PomeloMessagePacket struct{}
+
+func NewPomeloMessagePacket() *PomeloMessagePacket {
+	return &PomeloMessagePacket{}
 }
 
-// NewPomeloPacketEncoder ctor
-func NewPomeloPacketEncoder() *PomeloPacketEncoder {
-	return &PomeloPacketEncoder{}
-}
-
-// Encode create a packet.Packet from  the raw bytes slice and then encode to network bytes slice
-// Protocol refs: https://github.com/NetEase/pomelo/wiki/Communication-Protocol
-//
-// -<type>-|--------<length>--------|-<data>-
-// --------|------------------------|--------
-// 1 byte packet type, 3 bytes packet data length(big end), and data segment
-func (e *PomeloPacketEncoder) Encode(typ packet.Type, data []byte) ([]byte, error) {
+// 包编码
+func (t *PomeloMessagePacket) PacketEncode(typ packet.Type, data []byte) ([]byte, error) {
 	if typ < packet.Handshake || typ > packet.Kick {
 		return nil, packet.ErrWrongPomeloPacketType
 	}
@@ -56,4 +50,61 @@ func (e *PomeloPacketEncoder) Encode(typ packet.Type, data []byte) ([]byte, erro
 	copy(buf[HeadLength:], data)
 
 	return buf, nil
+}
+
+// --------------------------------------------------------------------------------------
+
+func (t *PomeloMessagePacket) forward(buf *bytes.Buffer) (int, packet.Type, error) {
+	header := buf.Next(HeadLength)
+	return ParseHeader(header)
+}
+
+// 包解码 Decode decode the network bytes slice to packet.Packet(s)
+func (t *PomeloMessagePacket) PacketDecode(data []byte) ([]*packet.Packet, error) {
+	buf := bytes.NewBuffer(nil)
+	buf.Write(data)
+
+	var (
+		packets []*packet.Packet
+		err     error
+	)
+	// check length
+	if buf.Len() < HeadLength {
+		return nil, nil
+	}
+
+	// first time
+	size, typ, err := t.forward(buf)
+	if err != nil {
+		return nil, err
+	}
+
+	for size <= buf.Len() {
+		p := &packet.Packet{Type: typ, Length: size, Data: buf.Next(size)}
+		packets = append(packets, p)
+
+		// if no more packets, break
+		if buf.Len() < HeadLength {
+			break
+		}
+
+		size, typ, err = t.forward(buf)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return packets, nil
+}
+
+// ====================================================================
+
+// 消息编码
+func (t *PomeloMessagePacket) MessageEncode() {
+
+}
+
+// 消息解码
+func (t *PomeloMessagePacket) MessageDecode() {
+
 }

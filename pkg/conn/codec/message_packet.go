@@ -22,7 +22,15 @@ package codec
 
 import "ricebean/pkg/conn/packet"
 
-// PacketDecoder interface
-type PacketDecoder interface {
-	Decode(data []byte) ([]*packet.Packet, error)
+// 数据包编码器 PacketEncoder
+// PacketDecoder  codec.PacketDecoder
+// PacketEncoder  codec.PacketEncoder
+type MessagePacket interface {
+	PacketEncode(typ packet.Type, data []byte) ([]byte, error) //包编码
+	PacketDecode(data []byte) ([]*packet.Packet, error)        //包解码
+
+	//消息编码
+	MessageEncode()
+	//消息解码
+	MessageDecode()
 }
