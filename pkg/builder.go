@@ -23,14 +23,15 @@ import (
 
 // Builder holds dependency instances for a pitaya App
 type Builder struct {
-	acceptors        []acceptor.Acceptor
-	postBuildHooks   []func(app Pitaya)
-	Config           config.PitayaConfig
-	DieChan          chan bool
-	PacketDecoder    codec.PacketDecoder
-	PacketEncoder    codec.PacketEncoder
-	MessageEncoder   message.MessagesEncoder
-	Serializer       serialize.Serializer
+	acceptors      []acceptor.Acceptor
+	postBuildHooks []func(app Pitaya)
+	Config         config.PitayaConfig
+	DieChan        chan bool
+	PacketDecoder  codec.PacketDecoder
+	PacketEncoder  codec.PacketEncoder
+	MessageEncoder message.MessagesEncoder
+	Serializer     serialize.Serializer
+
 	Router           *router.Router
 	RPCClient        cluster.RPCClient
 	RPCServer        cluster.RPCServer
@@ -153,7 +154,7 @@ func NewBuilder(isFrontend bool,
 		DieChan:          dieChan,
 		PacketDecoder:    codec.NewPomeloPacketDecoder(),
 		PacketEncoder:    codec.NewPomeloPacketEncoder(),
-		MessageEncoder:   message.NewMessagesEncoder(config.Handler.Messages.Compression),
+		MessageEncoder:   message.NewPomeloPacketEncoder(config.Handler.Messages.Compression),
 		Serializer:       serializer,
 		Router:           router.New(),
 		RPCClient:        rpcClient,
@@ -231,6 +232,7 @@ func (builder *Builder) Build() Pitaya {
 	//接收消息服务器
 	handlerService := service.NewHandlerService(
 		builder.PacketDecoder, //数据包解码器
+		builder.MessageEncoder,
 		builder.Serializer,
 		builder.Config.Buffer.Handler.LocalProcess,
 		builder.Config.Buffer.Handler.RemoteProcess,

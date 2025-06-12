@@ -81,7 +81,7 @@ type (
 		heartbeatTimeout   time.Duration
 		writeTimeout       time.Duration
 		lastAt             int64 // last heartbeat unix time stamp
-		messageEncoder     message.Encoder
+		messageEncoder     message.MessagesEncoder
 		messagesBufferSize int // size of the pending messages buffer
 		metricsReporters   []metrics.Reporter
 		serializer         serialize.Serializer // message serializer
@@ -135,7 +135,7 @@ type (
 		encoder            codec.PacketEncoder // binary encoder
 		heartbeatTimeout   time.Duration
 		writeTimeout       time.Duration
-		messageEncoder     message.Encoder
+		messageEncoder     message.MessagesEncoder
 		messagesBufferSize int // size of the pending messages buffer
 		metricsReporters   []metrics.Reporter
 		serializer         serialize.Serializer // message serializer
@@ -150,7 +150,7 @@ func NewAgentFactory(
 	serializer serialize.Serializer,
 	heartbeatTimeout time.Duration,
 	writeTimeout time.Duration,
-	messageEncoder message.Encoder,
+	messageEncoder message.MessagesEncoder,
 	messagesBufferSize int,
 	sessionPool session.SessionPool,
 	metricsReporters []metrics.Reporter,
@@ -184,7 +184,7 @@ func newAgent(
 	writeTimeout time.Duration,
 	messagesBufferSize int,
 	dieChan chan bool,
-	messageEncoder message.Encoder,
+	messageEncoder message.MessagesEncoder,
 	metricsReporters []metrics.Reporter,
 	sessionPool session.SessionPool,
 ) Agent {

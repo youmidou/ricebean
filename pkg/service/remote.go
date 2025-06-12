@@ -59,7 +59,7 @@ type RemoteService struct {
 	rpcClient              cluster.RPCClient
 	services               map[string]*component.Service // all registered service
 	router                 *router.Router
-	messageEncoder         message.Encoder
+	messageEncoder         message.MessagesEncoder
 	server                 *cluster.Server // server obj
 	remoteBindingListeners []cluster.RemoteBindingListener
 	remoteHooks            *pipeline.RemoteHooks
@@ -76,7 +76,7 @@ func NewRemoteService(
 	encoder codec.PacketEncoder,
 	serializer serialize.Serializer,
 	router *router.Router,
-	messageEncoder message.Encoder,
+	messageEncoder message.MessagesEncoder,
 	server *cluster.Server,
 	sessionPool session.SessionPool,
 	remoteHooks *pipeline.RemoteHooks,

@@ -30,6 +30,7 @@ import (
 type MessagesEncoder interface {
 	IsCompressionEnabled() bool
 	Encode(message *Message) ([]byte, error)
+	Decode(data []byte) (*Message, error)
 }
 
 // MessagesEncoder implements MessageEncoder interface
