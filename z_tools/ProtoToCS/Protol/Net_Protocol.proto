@@ -16,6 +16,7 @@ enum CmdModule {
 }
 
 /*
+ 都是游戏服协议
 //消息头id
 added by yh @ 2023/08/25 14:09
 注意:协议规则 协议号/1000 为模块id 取余为消息号  纠结了很久 最终还是坚持
@@ -32,10 +33,9 @@ ProtocolVersion =1;//协议版本号
 */
 enum Cmd {
   CmdIdle = 0; //空置占位没用
-
   Error = 1001001;
-  //login 1001  msgid /1000
-  Login_Login = 1001002;//登录
+  // 1001  msgid /1000
+  Login_Login = 1001002;//授权登录
   Login_Logout= 1001022;//登出
   Login_CloseServer = 1001023;//服务器关服中...
   Login_KeepAlive = 1001003;//heartbeat 心跳包
