@@ -4,8 +4,8 @@
 proto_dir="./Protol"
 
 # 指定输出目录
-output_dir="/Users/yh/Documents/github/crazy-elimination/Assets/Hotfix/Net/Protocal"
-protol_dir="/Users/yh/Documents/github/crazy-elimination/Assets/Hotfix/Net/Protol"
+output_dir="/Users/yh/Documents/github/crazy-elimination2/Assets/Hotfix/Net/Protocal"
+protol_dir="/Users/yh/Documents/github/crazy-elimination2/Assets/Hotfix/Net/Protol"
 
 protoc_dir="./protoc"
 
