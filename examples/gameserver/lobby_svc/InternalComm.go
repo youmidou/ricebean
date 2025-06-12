@@ -5,7 +5,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"ricebean/examples/_def"
 	pitaya "ricebean/pkg"
-	"ricebean/z_Tools/ProtoToCS/Protocal/pbs"
+	"ricebean/z_tools/ProtoToCS/Protocal/pbs"
 )
 
 const (

@@ -12,7 +12,7 @@ import (
 	pitaya "ricebean/pkg"
 	"ricebean/pkg/component"
 
-	"ricebean/z_Tools/ProtoToCS/Protocal/pbs"
+	"ricebean/z_tools/ProtoToCS/Protocal/pbs"
 )
 
 const (
@@ -29,10 +29,9 @@ func NewLobbySvc(app pitaya.Pitaya) *LobbySvc {
 
 type LobbySvc struct {
 	component.Base
-	app                  pitaya.Pitaya
-	m_globaluser_manager *GlobalUserManager
-	m_usermail_manager   *mail.UserMailManager
-	//m_rank_manager
+	app                pitaya.Pitaya
+	globalUserManager  *GlobalUserManager
+	m_usermail_manager *mail.UserMailManager
 	m_activity_manager *activity.ActivityManager
 	msgHandler         *LobbySvcMsgHandler
 	_request_map       map[int32]func(msgId int32, bytes []byte) (sys_net.IRequestHandler, error)
@@ -41,7 +40,8 @@ type LobbySvc struct {
 func (t *LobbySvc) Init() {
 	t._request_map = make(map[int32]func(msgId int32, bytes []byte) (sys_net.IRequestHandler, error))
 	//全局用户
-	t.m_globaluser_manager = NewGlobalUserManager()
+	t.globalUserManager = NewGlobalUserManager()
+
 	t.m_usermail_manager = mail.NewUserMailManager()
 	t.m_activity_manager = activity.NewActivityManager()
 
@@ -134,7 +134,7 @@ func (t *LobbySvc) RequestProcessingMessage(req *pbs.Net_InternalMessagePacket) 
 
 // 全局玩家管理器
 func (t *LobbySvc) GetUserManager() *GlobalUserManager {
-	return t.m_globaluser_manager
+	return t.globalUserManager
 }
 
 // 全局玩家管理器

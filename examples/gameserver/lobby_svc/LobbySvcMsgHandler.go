@@ -4,7 +4,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"ricebean/examples/_def"
 	"ricebean/framework/sys_net"
-	"ricebean/z_Tools/ProtoToCS/Protocal/pb"
+	"ricebean/z_tools/ProtoToCS/Protocal/pb"
 )
 
 type LobbySvcMsgHandler struct {
