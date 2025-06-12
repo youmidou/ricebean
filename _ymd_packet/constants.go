@@ -1,4 +1,4 @@
-package _ymd
+package _ymd_packet
 
 import "errors"
 
