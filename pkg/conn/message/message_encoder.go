@@ -27,25 +27,25 @@ import (
 )
 
 // Encoder interface
-type Encoder interface {
+type MessagesEncoder interface {
 	IsCompressionEnabled() bool
 	Encode(message *Message) ([]byte, error)
 }
 
 // MessagesEncoder implements MessageEncoder interface
-type MessagesEncoder struct {
+type PomeloPacketEncoder struct {
 	DataCompression bool
 }
 
 // NewMessagesEncoder returns a new message encoder
-func NewMessagesEncoder(dataCompression bool) *MessagesEncoder {
-	me := &MessagesEncoder{dataCompression}
-	return me
+func NewPomeloPacketEncoder(dataCompression bool) MessagesEncoder {
+	t := &PomeloPacketEncoder{dataCompression}
+	return t
 }
 
 // IsCompressionEnabled returns wether the compression is enabled or not
-func (me *MessagesEncoder) IsCompressionEnabled() bool {
-	return me.DataCompression
+func (t *PomeloPacketEncoder) IsCompressionEnabled() bool {
+	return t.DataCompression
 }
 
 // Encode marshals message to binary format. Different message types is corresponding to
@@ -61,17 +61,7 @@ func (me *MessagesEncoder) IsCompressionEnabled() bool {
 // ------------------------------------------
 // The figure above indicates that the bit does not affect the type of message.
 // See ref: https://github.com/topfreegames/pitaya/v3/blob/master/docs/communication_protocol.md
-func (me *MessagesEncoder) Encode(message *Message) ([]byte, error) {
-	return Encode(message, me.DataCompression)
-}
-
-// Decode decodes the message
-func (me *MessagesEncoder) Decode(data []byte) (*Message, error) {
-	return Decode(data)
-}
-
-// 加密
-func Encode(message *Message, DataCompression bool) ([]byte, error) {
+func (t *PomeloPacketEncoder) Encode(message *Message) ([]byte, error) {
 	if invalidType(message.Type) {
 		return nil, ErrWrongMessageType
 	}
@@ -117,7 +107,7 @@ func Encode(message *Message, DataCompression bool) ([]byte, error) {
 		}
 	}
 
-	if DataCompression {
+	if t.DataCompression {
 		d, err := compression.DeflateData(message.Data)
 		if err != nil {
 			return nil, err
@@ -133,10 +123,8 @@ func Encode(message *Message, DataCompression bool) ([]byte, error) {
 	return buf, nil
 }
 
-// Decode unmarshal the bytes slice to a message
-// See ref: https://github.com/topfreegames/pitaya/v3/blob/master/docs/communication_protocol.md
-// 解码
-func Decode(data []byte) (*Message, error) {
+// Decode decodes the message
+func (t *PomeloPacketEncoder) Decode(data []byte) (*Message, error) {
 	if len(data) < msgHeadLength {
 		return nil, ErrInvalidMessage
 	}

@@ -29,7 +29,7 @@ type Builder struct {
 	DieChan          chan bool
 	PacketDecoder    codec.PacketDecoder
 	PacketEncoder    codec.PacketEncoder
-	MessageEncoder   *message.MessagesEncoder
+	MessageEncoder   message.MessagesEncoder
 	Serializer       serialize.Serializer
 	Router           *router.Router
 	RPCClient        cluster.RPCClient
