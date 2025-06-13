@@ -226,7 +226,7 @@ func (builder *Builder) Build() Pitaya {
 		builder.SessionPool,
 		builder.MetricsReporters,
 	)
-	//接收消息服务器
+	//网关处理程序服务
 	handlerService := service.NewHandlerService(
 		builder.PacketCodec, //数据包解码器
 		builder.MessageCodec,

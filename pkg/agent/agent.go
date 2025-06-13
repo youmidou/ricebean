@@ -131,8 +131,8 @@ type (
 		sessionPool        session.SessionPool
 		appDieChan         chan bool // app die channel
 		packetCodec        codec.PacketCodec
-		heartbeatTimeout   time.Duration
-		writeTimeout       time.Duration
+		heartbeatTimeout   time.Duration //心跳超时
+		writeTimeout       time.Duration //写入超时
 		messageCodec       message.MessageCodec
 		messagesBufferSize int // size of the pending messages buffer
 		metricsReporters   []metrics.Reporter

@@ -305,6 +305,7 @@ func (h *HandlerService) processPacket(a agent.Agent, p *packet.Packet) error {
 	return nil
 }
 
+// 处理消息. b
 func (h *HandlerService) processMessage(a agent.Agent, msg *message.Message) {
 	requestID := nuid.New().Next()
 	ctx := pcontext.AddToPropagateCtx(context.Background(), constants.StartTimeKey, time.Now().UnixNano())
