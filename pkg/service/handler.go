@@ -82,7 +82,7 @@ type (
 	}
 )
 
-// NewHandlerService creates and returns a new handler service
+// GatewayHandlerService NewHandlerService creates and returns a new handler service
 func NewHandlerService(
 	packetCodec codec.PacketCodec,
 	messageCodec message.MessageCodec,
@@ -301,7 +301,7 @@ func (h *HandlerService) processPacket(a agent.Agent, p *packet.Packet) error {
 	msg.Route = ""
 	h.processMessage(a, msg)
 
-	a.SetLastAt()
+	a.SetLastAt() //设置最后时间
 	return nil
 }
 

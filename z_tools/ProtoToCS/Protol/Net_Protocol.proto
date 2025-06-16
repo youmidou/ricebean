@@ -34,10 +34,11 @@ ProtocolVersion =1;//协议版本号
 enum Cmd {
   CmdIdle = 0; //空置占位没用
   Error = 1001001;
+  Login_CloseServer = 1001023;//服务器关服中...
+
   // 1001  msgid /1000
   Login_Login = 1001002;//授权登录
   Login_Logout= 1001022;//登出
-  Login_CloseServer = 1001023;//服务器关服中...
   Login_KeepAlive = 1001003;//heartbeat 心跳包
   Login_Reconnect = 1001004;//断线重新连接
   Login_FacebookConnect = 1001005;
