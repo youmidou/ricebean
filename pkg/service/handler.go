@@ -319,6 +319,7 @@ func (h *HandlerService) processMessage(a agent.Agent, msg *message.Message) {
 	ctx = pcontext.AddToPropagateCtx(ctx, constants.RouteKey, msg.Route)
 	ctx = pcontext.AddToPropagateCtx(ctx, constants.RequestIDKey, requestID)
 
+	//属性
 	attributes := []attribute.KeyValue{
 		attribute.String("local.id", h.server.ID),
 		attribute.String("span.kind", "server"),
