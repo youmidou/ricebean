@@ -2,24 +2,36 @@ package _ymd_message
 
 import (
 	"encoding/binary"
+	"errors"
+	"ricebean/pkg/conn/message"
 	"ricebean/pkg/util/compression"
+	"sync"
 )
 
-//MessageCodec
+var (
+	routesCodesMutex = sync.RWMutex{}
+	routes           = make(map[string]uint16) // route map to code
+	codes            = make(map[uint16]string) // code map to route
+)
 
-// MessagesEncoder implements MessageCodec interface
-type YmdMessageCodec struct {
+// Errors that could be occurred in message codec
+var (
+	ErrWrongMessageType  = errors.New("wrong message type")
+	ErrInvalidMessage    = errors.New("invalid message")
+	ErrRouteInfoNotFound = errors.New("route info not found in dictionary")
+)
+
+type YmdPacketEncoder struct {
 	DataCompression bool
 }
 
-// NewMessagesEncoder returns a new message encoder
-func NewYmdMessageCodec(dataCompression bool) *YmdMessageCodec {
-	t := &YmdMessageCodec{dataCompression}
+func NewYmdPacketEncoder(dataCompression bool) message.MessageCodec {
+	t := &YmdPacketEncoder{dataCompression}
 	return t
 }
 
 // IsCompressionEnabled returns wether the compression is enabled or not
-func (t *YmdMessageCodec) IsCompressionEnabled() bool {
+func (t *YmdPacketEncoder) IsCompressionEnabled() bool {
 	return t.DataCompression
 }
 
@@ -36,70 +48,67 @@ func (t *YmdMessageCodec) IsCompressionEnabled() bool {
 // ------------------------------------------
 // The figure above indicates that the bit does not affect the type of message.
 // See ref: https://github.com/topfreegames/pitaya/v3/blob/master/docs/communication_protocol.md
-func (t *YmdMessageCodec) Encode(message *Message) ([]byte, error) {
-	if invalidType(message.Type) {
-		return nil, ErrWrongMessageType
-	}
+func (t *YmdPacketEncoder) Encode(msg *message.Message) ([]byte, error) {
 
 	buf := make([]byte, 0)
-	flag := byte(message.Type) << 1
-
-	routesCodesMutex.RLock()
-	code, compressed := routes[message.Route]
-	routesCodesMutex.RUnlock()
-	if compressed {
-		flag |= msgRouteCompressMask
-	}
-
-	if message.Err {
-		flag |= errorMask
-	}
-
+	flag := byte(msg.Type) << 1
+	/*
+		routesCodesMutex.RLock()
+		code, compressed := routes[msg.Route]
+		routesCodesMutex.RUnlock()
+		if compressed {
+			flag |= msgRouteCompressMask
+		}
+		if message.Err {
+			flag |= errorMask
+		}
+	*/
 	buf = append(buf, flag)
+	/*
+			if message.Type == Request || message.Type == Response {
+				n := message.ID
+				// variant length encode
+				for {
+					b := byte(n % 128)
+					n >>= 7
+					if n != 0 {
+						buf = append(buf, b+128)
+					} else {
+						buf = append(buf, b)
+						break
+					}
+				}
+			}
 
-	if message.Type == Request || message.Type == Response {
-		n := message.ID
-		// variant length encode
-		for {
-			b := byte(n % 128)
-			n >>= 7
-			if n != 0 {
-				buf = append(buf, b+128)
-			} else {
-				buf = append(buf, b)
-				break
+				if routable(message.Type) {
+					if compressed {
+						buf = append(buf, byte((code>>8)&0xFF))
+						buf = append(buf, byte(code&0xFF))
+					} else {
+						buf = append(buf, byte(len(message.Route)))
+						buf = append(buf, []byte(message.Route)...)
+					}
+				}
+
+
+		if t.DataCompression {
+			d, err := compression.DeflateData(msg.Data)
+			if err != nil {
+				return nil, err
+			}
+
+			if len(d) < len(msg.Data) {
+				msg.Data = d
+				buf[0] |= gzipMask
 			}
 		}
-	}
-
-	if routable(message.Type) {
-		if compressed {
-			buf = append(buf, byte((code>>8)&0xFF))
-			buf = append(buf, byte(code&0xFF))
-		} else {
-			buf = append(buf, byte(len(message.Route)))
-			buf = append(buf, []byte(message.Route)...)
-		}
-	}
-
-	if t.DataCompression {
-		d, err := compression.DeflateData(message.Data)
-		if err != nil {
-			return nil, err
-		}
-
-		if len(d) < len(message.Data) {
-			message.Data = d
-			buf[0] |= gzipMask
-		}
-	}
-
-	buf = append(buf, message.Data...)
+	*/
+	buf = append(buf, msg.Data...)
 	return buf, nil
 }
 
 // Decode decodes the message
-func (t *YmdMessageCodec) Decode(data []byte) (*Message, error) {
+func (t *YmdPacketEncoder) Decode(data []byte) (*Message, error) {
 	if len(data) < msgHeadLength {
 		return nil, ErrInvalidMessage
 	}

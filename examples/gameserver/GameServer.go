@@ -34,8 +34,12 @@ func main() {
 
 	tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", 1250))
 	builder.AddAcceptor(tcp)
+	ws := acceptor.NewWSAcceptor(fmt.Sprintf(":%d", 1251))
+	builder.AddAcceptor(ws)
+	//builder.SetGatewayHandler()
 	//----------------------------------------------
 	//GatewayHandlerService
+
 	app = builder.Build()
 	defer app.Shutdown()
 

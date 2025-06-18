@@ -72,6 +72,8 @@ type (
 		handlerPool      *HandlerPool
 		handlers         map[string]*component.Handler // all handler method
 		messageCodec     message.MessageCodec
+
+		_processMessage func(a agent.Agent, msg *message.Message) //接收返回未处理的消息数据
 	}
 
 	unhandledMessage struct {
@@ -116,7 +118,7 @@ func NewHandlerService(
 	return h
 }
 
-// Dispatch message to corresponding logic handler
+// Dispatch message to corresponding logic handler 将消息发送给相应的逻辑处理程序
 func (h *HandlerService) Dispatch(thread int) {
 	// TODO: This timer is being stopped multiple times, it probably doesn't need to be stopped here
 	defer timer.GlobalTicker.Stop()
@@ -303,6 +305,11 @@ func (h *HandlerService) processPacket(a agent.Agent, p *packet.Packet) error {
 
 	a.SetLastAt() //设置最后时间
 	return nil
+}
+
+// 设置接收客户端消息处理
+func (h *HandlerService) SetProcessMessage(_processMessage func(a agent.Agent, msg *message.Message)) {
+	h._processMessage = _processMessage
 }
 
 // 处理消息. b

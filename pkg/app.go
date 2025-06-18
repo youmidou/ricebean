@@ -150,8 +150,8 @@ type App struct {
 	worker            *worker.Worker
 	remoteService     *service.RemoteService
 	handlerService    *service.HandlerService
-	handlerComp       []regComp
-	remoteComp        []regComp
+	handlerComp       []regComp //处理成分
+	remoteComp        []regComp //远程成分
 	modulesMap        map[string]interfaces.Module
 	modulesArr        []moduleWrapper
 	sessionModulesArr []sessionModuleWrapper
