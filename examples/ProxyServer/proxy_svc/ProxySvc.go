@@ -17,5 +17,10 @@ type ProxySvc struct {
 }
 
 func (t *ProxySvc) Init() {
+	//InternalMessageProcessing
+}
 
+// 内部接收消息
+func (t *ProxySvc) InternalReceivingMessage() {
+	//InternalMessageProcessing
 }
