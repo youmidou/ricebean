@@ -3,8 +3,8 @@ package ProxyServer
 import (
 	"flag"
 	"ricebean/examples/ProxyServer/proxy_svc"
-	"ricebean/examples/gameserver/lobby_svc"
 	pitaya "ricebean/pkg"
+	"ricebean/pkg/component"
 	"ricebean/pkg/config"
 	"ricebean/pkg/conn/codec"
 	"ricebean/pkg/conn/message"
@@ -32,5 +32,6 @@ func main() {
 	defer app.Shutdown()
 	//-----------proxy-----------------------
 	lobbySvc := proxy_svc.NewProxySvc(app)
-	app.Register(lobbySvc, component.WithName("LobbySvc"))
+	app.Register(lobbySvc, component.WithName("ProxySvc"))
+
 }
