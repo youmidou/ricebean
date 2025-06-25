@@ -6,6 +6,7 @@ import (
 	"ricebean/examples/gameserver/lobby_svc"
 	pitaya "ricebean/pkg"
 	"ricebean/pkg/acceptor"
+	"ricebean/pkg/agent"
 	"ricebean/pkg/component"
 	"ricebean/pkg/config"
 	"ricebean/pkg/conn/codec"
@@ -36,6 +37,7 @@ func main() {
 	builder.AddAcceptor(tcp)
 	ws := acceptor.NewWSAcceptor(fmt.Sprintf(":%d", 1251))
 	builder.AddAcceptor(ws)
+	//注册网管服务
 	//builder.SetGatewayHandler()
 	//----------------------------------------------
 	//GatewayHandlerService
@@ -47,6 +49,10 @@ func main() {
 	lobbySvc := lobby_svc.NewLobbySvc(app)
 	app.Register(lobbySvc, component.WithName("LobbySvc"))
 	//app.RegisterRemote(lobbySvc, component.WithName("LobbySvc"))
+
+	app.SetOnGatewayReceive(func(a agent.Agent, msg *message.Message) {
+		//lobbySvc.OnGatewayReceive()
+	})
 
 	//接收路由地址 server.service.handler
 	err := app.SetDictionary(map[string]uint16{

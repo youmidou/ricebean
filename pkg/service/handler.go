@@ -73,7 +73,7 @@ type (
 		handlers         map[string]*component.Handler // all handler method
 		messageCodec     message.MessageCodec
 
-		_processMessage func(a agent.Agent, msg *message.Message) //接收返回未处理的消息数据
+		_OnGatewayReceive func(a agent.Agent, msg *message.Message) //接收返回未处理的消息数据
 	}
 
 	unhandledMessage struct {
@@ -308,8 +308,8 @@ func (h *HandlerService) processPacket(a agent.Agent, p *packet.Packet) error {
 }
 
 // 设置接收客户端消息处理
-func (h *HandlerService) SetProcessMessage(_processMessage func(a agent.Agent, msg *message.Message)) {
-	h._processMessage = _processMessage
+func (h *HandlerService) SetOnGatewayReceive(callback func(a agent.Agent, msg *message.Message)) {
+	h._OnGatewayReceive = callback
 }
 
 // 处理消息. b

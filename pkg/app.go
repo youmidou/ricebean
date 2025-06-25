@@ -25,6 +25,7 @@ import (
 	"os"
 	"os/signal"
 	"reflect"
+	"ricebean/pkg/agent"
 	"strings"
 	"syscall"
 
@@ -127,6 +128,7 @@ type Pitaya interface {
 	GetModule(name string) (interfaces.Module, error)
 
 	GetNumberOfConnectedClients() int64
+	SetOnGatewayReceive(f func(a agent.Agent, msg *message.Message))
 }
 
 // App is the base app struct
@@ -210,6 +212,9 @@ func NewApp(
 
 	app.initSysRemotes()
 	return app
+}
+func (app *App) SetOnGatewayReceive(callback func(a agent.Agent, msg *message.Message)) {
+	app.handlerService.SetOnGatewayReceive(callback)
 }
 
 // GetDieChan gets the channel that the app sinalizes when its going to die

@@ -55,6 +55,12 @@ func (t *LobbySvc) Init() {
 
 }
 
+// 内部接收消息
+func (t *LobbySvc) InternalReceivingMessage() {
+	//InternalMessageProcessing
+
+}
+
 // 接收网关数据
 func (t *LobbySvc) OnGatewayReceive(ctx context.Context, req *pbs.Net_InternalMessagePacket) (*pbs.Net_InternalMessagePacket, error) {
 
