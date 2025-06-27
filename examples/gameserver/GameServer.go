@@ -37,8 +37,8 @@ func main() {
 	builder.AddAcceptor(tcp)
 	ws := acceptor.NewWSAcceptor(fmt.Sprintf(":%d", 1251))
 	builder.AddAcceptor(ws)
-	//注册网管服务
-	//builder.SetGatewayHandler()
+	//注册网关接收模块
+	//builder.SetGatewayHandlerSvc()
 	//----------------------------------------------
 	//GatewayHandlerService
 
@@ -51,6 +51,9 @@ func main() {
 	//app.RegisterRemote(lobbySvc, component.WithName("LobbySvc"))
 
 	app.SetOnGatewayReceive(func(a agent.Agent, msg *message.Message) {
+		//s := a.GetSession()
+		//s.
+		//s.Bind("1")
 		//lobbySvc.OnGatewayReceive()
 	})
 

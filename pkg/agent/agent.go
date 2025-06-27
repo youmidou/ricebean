@@ -112,7 +112,7 @@ type (
 		String() string
 		GetStatus() int32
 		Kick(ctx context.Context) error
-		SetLastAt()
+		SetLastAt() //设置最后时间
 		SetStatus(state int32)
 		Handle()
 		IPVersion() string
