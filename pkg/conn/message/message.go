@@ -32,7 +32,7 @@ type Type byte
 
 // Message types
 const (
-	Request  Type = 0x00
+	Request  Type = 0x00 //请求
 	Notify   Type = 0x01 //通知
 	Response Type = 0x02 //回复
 	Push     Type = 0x03 //推

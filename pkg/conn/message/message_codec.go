@@ -200,3 +200,82 @@ func (t *YmdMessageCodec) Decode(data []byte) (*Message, error) {
 	}
 	return m, nil
 }
+
+/*
+func (t *YmdMessageCodec) Decode(data []byte) (*Message, error) {
+	if len(data) < msgHeadLength {
+		return nil, ErrInvalidMessage
+	}
+	m := New()
+	flag := data[0]
+	offset := 1
+	m.Type = Type((flag >> 1) & msgTypeMask)
+
+	if InvalidType(m.Type) {
+		return nil, ErrWrongMessageType
+	}
+
+	if m.Type == Request || m.Type == Response {
+		id := uint(0)
+		// little end byte order
+		// WARNING: must can be stored in 64 bits integer
+		// variant length encode
+		for i := offset; i < len(data); i++ {
+			b := data[i]
+			id += uint(b&0x7F) << uint(7*(i-offset))
+			if b < 128 {
+				offset = i + 1
+				break
+			}
+		}
+		m.ID = id
+	}
+
+	m.Err = flag&errorMask == errorMask
+
+	size := len(data)
+	if Routable(m.Type) {
+		if flag&msgRouteCompressMask == 1 {
+			if offset > size || (offset+2) > size {
+				return nil, ErrInvalidMessage
+			}
+
+			m.compressed = true
+			code := binary.BigEndian.Uint16(data[offset:(offset + 2)])
+			routesCodesMutex.RLock()
+			route, ok := codes[code]
+			routesCodesMutex.RUnlock()
+			if !ok {
+				return nil, ErrRouteInfoNotFound
+			}
+			m.Route = route
+			offset += 2
+		} else {
+			m.compressed = false
+			rl := data[offset]
+			offset++
+
+			if offset > size || (offset+int(rl)) > size {
+				return nil, ErrInvalidMessage
+			}
+			m.Route = string(data[offset:(offset + int(rl))])
+			offset += int(rl)
+		}
+	}
+
+	if offset > size {
+		return nil, ErrInvalidMessage
+	}
+
+	m.Data = data[offset:]
+	var err error
+	if flag&gzipMask == gzipMask {
+		m.Data, err = compression.InflateData(m.Data)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return m, nil
+}
+
+*/
