@@ -367,6 +367,8 @@ func (h *HandlerService) localProcess(ctx context.Context, a agent.Agent, route 
 		mid = 0
 	}
 
+	h._OnGatewayReceive(a, msg)
+
 	ret, err := h.handlerPool.ProcessHandlerMessage(ctx, route, h.serializer, h.handlerHooks, a.GetSession(), msg.Data, msg.Type, false)
 	if msg.Type != message.Notify {
 		if err != nil {
@@ -381,6 +383,7 @@ func (h *HandlerService) localProcess(ctx context.Context, a agent.Agent, route 
 			}
 		}
 	} else {
+		//来自 Ctx 的报告时间
 		metrics.ReportTimingFromCtx(ctx, h.metricsReporters, handlerType, err)
 		tracing.FinishSpan(ctx, err)
 		if err != nil {

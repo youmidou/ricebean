@@ -14,6 +14,7 @@ import (
 var app pitaya.Pitaya
 
 func main() {
+	//负载均衡代理服务器
 
 	svType := flag.String("type", "Proxy", "the server type")
 	serverMetadata := map[string]string{
@@ -28,6 +29,7 @@ func main() {
 	builder.MessageCodec = message.NewPomeloPacketEncoder(cfg.Handler.Messages.Compression)
 	builder.Serializer = protobuf.NewSerializer() // 设置 Protobuf 序列化器
 
+	//builder.AddGin()
 	app = builder.Build()
 	defer app.Shutdown()
 	//-----------proxy-----------------------
