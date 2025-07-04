@@ -98,11 +98,11 @@ func (m *Message) String() string {
 		len(m.Data))
 }
 
-func routable(t Type) bool {
+func Routable(t Type) bool {
 	return t == Request || t == Notify || t == Push
 }
 
-func invalidType(t Type) bool {
+func InvalidType(t Type) bool {
 	return t < Request || t > Push
 
 }

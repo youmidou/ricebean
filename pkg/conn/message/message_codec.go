@@ -63,7 +63,7 @@ func (t *YmdMessageCodec) IsCompressionEnabled() bool {
 // The figure above indicates that the bit does not affect the type of message.
 // See ref: https://github.com/topfreegames/pitaya/v3/blob/master/docs/communication_protocol.md
 func (t *YmdMessageCodec) Encode(message *Message) ([]byte, error) {
-	if invalidType(message.Type) {
+	if InvalidType(message.Type) {
 		return nil, ErrWrongMessageType
 	}
 
@@ -98,7 +98,7 @@ func (t *YmdMessageCodec) Encode(message *Message) ([]byte, error) {
 		}
 	}
 
-	if routable(message.Type) {
+	if Routable(message.Type) {
 		if compressed {
 			buf = append(buf, byte((code>>8)&0xFF))
 			buf = append(buf, byte(code&0xFF))
@@ -134,7 +134,7 @@ func (t *YmdMessageCodec) Decode(data []byte) (*Message, error) {
 	offset := 1
 	m.Type = Type((flag >> 1) & msgTypeMask)
 
-	if invalidType(m.Type) {
+	if InvalidType(m.Type) {
 		return nil, ErrWrongMessageType
 	}
 
@@ -157,7 +157,7 @@ func (t *YmdMessageCodec) Decode(data []byte) (*Message, error) {
 	m.Err = flag&errorMask == errorMask
 
 	size := len(data)
-	if routable(m.Type) {
+	if Routable(m.Type) {
 		if flag&msgRouteCompressMask == 1 {
 			if offset > size || (offset+2) > size {
 				return nil, ErrInvalidMessage
