@@ -7,6 +7,9 @@ import (
 	"ricebean/examples/GameServer/lobby_svc/sys_modules/activity"
 	"ricebean/examples/GameServer/lobby_svc/sys_modules/mail"
 	"ricebean/framework/log4"
+	"ricebean/pkg/agent"
+	"ricebean/pkg/conn/message"
+	"ricebean/pkg/route"
 
 	"ricebean/framework/sys_net"
 	pitaya "ricebean/pkg"
@@ -60,9 +63,14 @@ func (t *LobbySvc) InternalReceivingMessage() {
 	//InternalMessageProcessing
 
 }
+func (t *LobbySvc) OnGatewayReceive(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message) {
+	s := a.GetSession()
+	s.Bind(ctx, "")
+
+}
 
 // 接收网关数据
-func (t *LobbySvc) OnGatewayReceive(ctx context.Context, req *pbs.Net_InternalMessagePacket) (*pbs.Net_InternalMessagePacket, error) {
+func (t *LobbySvc) OnGatewayReceive2(ctx context.Context, req *pbs.Net_InternalMessagePacket) (*pbs.Net_InternalMessagePacket, error) {
 	s := t.app.GetSessionFromCtx(ctx)
 	s.GetRequestsInFlight()
 

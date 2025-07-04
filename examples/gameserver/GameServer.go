@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"ricebean/examples/GameServer/lobby_svc"
@@ -11,6 +12,7 @@ import (
 	"ricebean/pkg/config"
 	"ricebean/pkg/conn/codec"
 	"ricebean/pkg/conn/message"
+	"ricebean/pkg/route"
 	"ricebean/pkg/serialize/protobuf"
 )
 
@@ -35,8 +37,8 @@ func main() {
 
 	tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", 1250))
 	builder.AddAcceptor(tcp)
-	ws := acceptor.NewWSAcceptor(fmt.Sprintf(":%d", 1251))
-	builder.AddAcceptor(ws)
+	//ws := acceptor.NewWSAcceptor(fmt.Sprintf(":%d", 1251))
+	//builder.AddAcceptor(ws)
 	//注册网关接收模块
 	//builder.SetGatewayHandlerSvc()
 	//----------------------------------------------
@@ -50,11 +52,14 @@ func main() {
 	app.Register(lobbySvc, component.WithName("LobbySvc"))
 	//app.RegisterRemote(lobbySvc, component.WithName("LobbySvc"))
 
-	app.SetOnGatewayReceive(func(a agent.Agent, msg *message.Message) {
-		//s := a.GetSession()
-		//s.
+	app.SetOnGatewayReceive(func(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message) {
+		s := a.GetSession()
+		s.OnClose(func() {
+
+		})
+		s.Bind(ctx, "")
 		//s.Bind("1")
-		//lobbySvc.OnGatewayReceive()
+		lobbySvc.OnGatewayReceive(ctx, a, route, msg)
 	})
 
 	//接收路由地址 server.service.handler

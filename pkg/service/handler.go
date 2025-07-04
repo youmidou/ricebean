@@ -73,7 +73,7 @@ type (
 		handlers         map[string]*component.Handler // all handler method
 		messageCodec     message.MessageCodec
 
-		_OnGatewayReceive func(a agent.Agent, msg *message.Message) //接收返回未处理的消息数据
+		_OnGatewayReceive func(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message) //接收返回未处理的消息数据
 	}
 
 	unhandledMessage struct {
@@ -308,7 +308,7 @@ func (h *HandlerService) processPacket(a agent.Agent, p *packet.Packet) error {
 }
 
 // 设置接收客户端消息处理
-func (h *HandlerService) SetOnGatewayReceive(callback func(a agent.Agent, msg *message.Message)) {
+func (h *HandlerService) SetOnGatewayReceive(callback func(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message)) {
 	h._OnGatewayReceive = callback
 }
 
@@ -359,37 +359,41 @@ func (h *HandlerService) processMessage(a agent.Agent, msg *message.Message) {
 }
 
 func (h *HandlerService) localProcess(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message) {
-	var mid uint
-	switch msg.Type {
-	case message.Request:
-		mid = msg.ID
-	case message.Notify:
-		mid = 0
-	}
+	/*
+		var mid uint
+		switch msg.Type {
+		case message.Request:
+			mid = msg.ID
+		case message.Notify:
+			mid = 0
+		}
+	*/
 
-	//h._OnGatewayReceive(a, msg)
+	h._OnGatewayReceive(ctx, a, route, msg)
 
-	ret, err := h.handlerPool.ProcessHandlerMessage(ctx, route, h.serializer, h.handlerHooks, a.GetSession(), msg.Data, msg.Type, false)
-	if msg.Type != message.Notify {
-		if err != nil {
-			logger.Log.Errorf("Failed to process handler message: %s", err.Error())
-			a.AnswerWithError(ctx, mid, err)
-		} else {
-			err := a.GetSession().ResponseMID(ctx, mid, ret)
+	/*
+		ret, err := h.handlerPool.ProcessHandlerMessage(ctx, route, h.serializer, h.handlerHooks, a.GetSession(), msg.Data, msg.Type, false)
+		if msg.Type != message.Notify {
 			if err != nil {
 				logger.Log.Errorf("Failed to process handler message: %s", err.Error())
-				tracing.FinishSpan(ctx, err)
-				metrics.ReportTimingFromCtx(ctx, h.metricsReporters, handlerType, err)
+				a.AnswerWithError(ctx, mid, err)
+			} else {
+				err := a.GetSession().ResponseMID(ctx, mid, ret)
+				if err != nil {
+					logger.Log.Errorf("Failed to process handler message: %s", err.Error())
+					tracing.FinishSpan(ctx, err)
+					metrics.ReportTimingFromCtx(ctx, h.metricsReporters, handlerType, err)
+				}
+			}
+		} else {
+			//来自 Ctx 的报告时间
+			metrics.ReportTimingFromCtx(ctx, h.metricsReporters, handlerType, err)
+			tracing.FinishSpan(ctx, err)
+			if err != nil {
+				logger.Log.Errorf("Failed to process notify message: %s", err.Error())
 			}
 		}
-	} else {
-		//来自 Ctx 的报告时间
-		metrics.ReportTimingFromCtx(ctx, h.metricsReporters, handlerType, err)
-		tracing.FinishSpan(ctx, err)
-		if err != nil {
-			logger.Log.Errorf("Failed to process notify message: %s", err.Error())
-		}
-	}
+	*/
 }
 
 // DumpServices outputs all registered services

@@ -26,6 +26,7 @@ import (
 	"os/signal"
 	"reflect"
 	"ricebean/pkg/agent"
+	"ricebean/pkg/route"
 	"strings"
 	"syscall"
 
@@ -128,7 +129,7 @@ type Pitaya interface {
 	GetModule(name string) (interfaces.Module, error)
 
 	GetNumberOfConnectedClients() int64
-	SetOnGatewayReceive(f func(a agent.Agent, msg *message.Message))
+	SetOnGatewayReceive(f func(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message))
 }
 
 // App is the base app struct
@@ -213,7 +214,7 @@ func NewApp(
 	app.initSysRemotes()
 	return app
 }
-func (app *App) SetOnGatewayReceive(callback func(a agent.Agent, msg *message.Message)) {
+func (app *App) SetOnGatewayReceive(callback func(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message)) {
 	app.handlerService.SetOnGatewayReceive(callback)
 }
 
