@@ -28,9 +28,9 @@ namespace Pb
     {
         CmdIdle = 0,
         Error = 1001001,
+        Login_CloseServer = 1001023,
         Login_Login = 1001002,
         Login_Logout = 1001022,
-        Login_CloseServer = 1001023,
         Login_KeepAlive = 1001003,
         Login_Reconnect = 1001004,
         Login_FacebookConnect = 1001005,
