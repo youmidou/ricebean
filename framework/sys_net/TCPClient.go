@@ -112,7 +112,7 @@ func (t *TCPClient) ConnectForever() {
 // 握手
 func (t *TCPClient) DoHandshake() error {
 
-	PacketEncoder := codec.NewPomeloPacketEncoder()
+	PacketEncoder := codec.NewYmdMessageCodec()
 	msgPkg2, e := PacketEncoder.Encode(packet.Data, msgPkg)
 	if e != nil {
 		return e

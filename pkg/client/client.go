@@ -107,7 +107,7 @@ func New(logLevel logrus.Level, requestTimeout ...time.Duration) *Client {
 
 	return &Client{
 		Connected:       false,
-		packetEncoder:   codec.NewPomeloPacketEncoder(),
+		packetEncoder:   codec.NewYmdMessageCodec(),
 		packetDecoder:   codec.NewPomeloPacketDecoder(),
 		packetChan:      make(chan *packet.Packet, 10),
 		pendingRequests: make(map[uint]*pendingRequest),

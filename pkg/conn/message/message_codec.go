@@ -34,18 +34,18 @@ type MessageCodec interface {
 }
 
 // MessagesEncoder implements MessageEncoder interface
-type PomeloPacketEncoder struct {
+type YmdMessageCodec struct {
 	DataCompression bool
 }
 
 // NewMessagesEncoder returns a new message encoder
-func NewPomeloPacketEncoder(dataCompression bool) MessageCodec {
-	t := &PomeloPacketEncoder{dataCompression}
+func NewYmdMessageCodec(dataCompression bool) MessageCodec {
+	t := &YmdMessageCodec{dataCompression}
 	return t
 }
 
 // IsCompressionEnabled returns wether the compression is enabled or not
-func (t *PomeloPacketEncoder) IsCompressionEnabled() bool {
+func (t *YmdMessageCodec) IsCompressionEnabled() bool {
 	return t.DataCompression
 }
 
@@ -62,7 +62,7 @@ func (t *PomeloPacketEncoder) IsCompressionEnabled() bool {
 // ------------------------------------------
 // The figure above indicates that the bit does not affect the type of message.
 // See ref: https://github.com/topfreegames/pitaya/v3/blob/master/docs/communication_protocol.md
-func (t *PomeloPacketEncoder) Encode(message *Message) ([]byte, error) {
+func (t *YmdMessageCodec) Encode(message *Message) ([]byte, error) {
 	if invalidType(message.Type) {
 		return nil, ErrWrongMessageType
 	}
@@ -125,7 +125,7 @@ func (t *PomeloPacketEncoder) Encode(message *Message) ([]byte, error) {
 }
 
 // Decode decodes the message
-func (t *PomeloPacketEncoder) Decode(data []byte) (*Message, error) {
+func (t *YmdMessageCodec) Decode(data []byte) (*Message, error) {
 	if len(data) < msgHeadLength {
 		return nil, ErrInvalidMessage
 	}

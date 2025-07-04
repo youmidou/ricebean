@@ -72,7 +72,7 @@ func TestDoSendRPC(t *testing.T) {
 		t.Run(table.name, func(t *testing.T) {
 			ctx := context.Background()
 			if table.err == nil {
-				packetEncoder := codec.NewPomeloPacketEncoder()
+				packetEncoder := codec.NewYmdMessageCodec()
 				ctrl := gomock.NewController(t)
 				defer ctrl.Finish()
 				mockSerializer := serializemocks.NewMockSerializer(ctrl)

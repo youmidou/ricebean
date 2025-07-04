@@ -981,7 +981,7 @@ func TestAgentAnswerWithError(t *testing.T) {
 
 	for _, row := range table {
 		t.Run(row.name, func(t *testing.T) {
-			encoder := codec.NewPomeloPacketEncoder()
+			encoder := codec.NewYmdMessageCodec()
 
 			messageEncoder := message.NewMessagesEncoder(false)
 			sessionPool := session.NewSessionPool()

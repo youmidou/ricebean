@@ -77,7 +77,7 @@ type unregisteredStruct struct{}
 
 /*
 func TestNewRemoteService(t *testing.T) {
-	packetEncoder := codec.NewPomeloPacketEncoder()
+	packetEncoder := codec.NewYmdMessageCodec()
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 	mockSerializer := serializemocks.NewMockSerializer(ctrl)
@@ -452,7 +452,7 @@ func TestRemoteServiceHandleRPCUser(t *testing.T) {
 
 	for _, table := range tables {
 		t.Run(table.name, func(t *testing.T) {
-			packetEncoder := codec.NewPomeloPacketEncoder()
+			packetEncoder := codec.NewYmdMessageCodec()
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 			mockSerializer := serializemocks.NewMockSerializer(ctrl)
@@ -548,7 +548,7 @@ func TestRemoteServiceHandleRPCUserWithHooks(t *testing.T) {
 
 	for _, table := range tables {
 		t.Run(table.name, func(t *testing.T) {
-			packetEncoder := codec.NewPomeloPacketEncoder()
+			packetEncoder := codec.NewYmdMessageCodec()
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 			mockSerializer := serializemocks.NewMockSerializer(ctrl)
@@ -664,7 +664,7 @@ func TestRemoteServiceHandleRPCSys(t *testing.T) {
 
 	for _, table := range tables {
 		t.Run(table.name, func(t *testing.T) {
-			packetEncoder := codec.NewPomeloPacketEncoder()
+			packetEncoder := codec.NewYmdMessageCodec()
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 			mockSerializer := serializemocks.NewMockSerializer(ctrl)
@@ -723,7 +723,7 @@ func TestRemoteServiceRemoteProcess(t *testing.T) {
 			}
 			ctx := context.Background()
 
-			packetEncoder := codec.NewPomeloPacketEncoder()
+			packetEncoder := codec.NewYmdMessageCodec()
 			mockSerializer := serializemocks.NewMockSerializer(ctrl)
 			mockSD := clustermocks.NewMockServiceDiscovery(ctrl)
 			mockRPCClient := clustermocks.NewMockRPCClient(ctrl)
@@ -772,7 +772,7 @@ func TestRemoteServiceRPC(t *testing.T) {
 
 	for _, table := range tables {
 		t.Run(table.name, func(t *testing.T) {
-			packetEncoder := codec.NewPomeloPacketEncoder()
+			packetEncoder := codec.NewYmdMessageCodec()
 			ctrl := gomock.NewController(t)
 			defer ctrl.Finish()
 			mockSerializer := serializemocks.NewMockSerializer(ctrl)

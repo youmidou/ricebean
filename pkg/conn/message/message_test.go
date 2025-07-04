@@ -65,7 +65,7 @@ func TestEncode(t *testing.T) {
 			message := table.message
 			SetDictionary(table.routes)
 
-			messageEncoder := NewMessagesEncoder(table.gzip == 0x10)
+			messageEncoder := NewYmdMessageCodec(table.gzip == 0x10)
 			result, err := messageEncoder.Encode(message)
 			gp := filepath.Join("fixtures", name+".golden")
 
@@ -127,8 +127,8 @@ func TestDecode(t *testing.T) {
 
 			gp := filepath.Join("fixtures", name+".golden")
 			encoded := helpers.ReadFile(t, gp)
-
-			message, err := Decode(encoded)
+			c := NewYmdMessageCodec(false)
+			message, err := c.Decode(encoded)
 
 			if err == nil {
 				assert.Equal(t, table.message, message)

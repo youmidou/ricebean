@@ -26,7 +26,7 @@ func main() {
 	//数据包编解码器
 	builder.PacketCodec = codec.NewPomeloMessagePacket()
 	//消息->编码器
-	builder.MessageCodec = message.NewPomeloPacketEncoder(cfg.Handler.Messages.Compression)
+	builder.MessageCodec = message.NewYmdMessageCodec(cfg.Handler.Messages.Compression)
 	builder.Serializer = protobuf.NewSerializer() // 设置 Protobuf 序列化器
 
 	//builder.AddGin()

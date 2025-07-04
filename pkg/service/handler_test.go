@@ -393,7 +393,7 @@ func TestHandlerServiceHandle(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	packetEncoder := codec.NewPomeloPacketEncoder()
+	packetEncoder := codec.NewYmdMessageCodec()
 	packetDecoder := codec.NewPomeloPacketDecoder()
 	handshakeBuffer := `{"sys":{"platform":"mac","libVersion":"0.3.5-release","clientBuildNumber":"20","clientVersion":"2.1"},"user":{"age":30}}`
 	bbb, err := packetEncoder.Encode(packet.Handshake, []byte(handshakeBuffer))
