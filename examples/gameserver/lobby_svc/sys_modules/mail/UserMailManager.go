@@ -1,6 +1,6 @@
 package mail
 
-import "ricebean/examples/gameserver/lobby_svc/_interfaces"
+import "ricebean/examples/GameServer/lobby_svc/_interfaces"
 
 type UserMailManager struct {
 }

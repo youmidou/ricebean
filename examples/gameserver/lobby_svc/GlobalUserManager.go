@@ -1,8 +1,8 @@
 package lobby_svc
 
 import (
+	"ricebean/examples/GameServer/lobby_svc/_interfaces"
 	"ricebean/examples/_def"
-	"ricebean/examples/gameserver/lobby_svc/_interfaces"
 )
 
 type GlobalUserManager struct {

@@ -1,7 +1,7 @@
 package activity
 
 import (
-	"ricebean/examples/gameserver/lobby_svc/_interfaces"
+	"ricebean/examples/GameServer/lobby_svc/_interfaces"
 )
 
 type ActivityManager struct {

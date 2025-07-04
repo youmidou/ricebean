@@ -3,9 +3,9 @@ package lobby_svc
 import (
 	"context"
 	"github.com/golang/protobuf/proto"
-	_interfaces2 "ricebean/examples/gameserver/lobby_svc/_interfaces"
-	"ricebean/examples/gameserver/lobby_svc/sys_modules/activity"
-	"ricebean/examples/gameserver/lobby_svc/sys_modules/mail"
+	_interfaces2 "ricebean/examples/GameServer/lobby_svc/_interfaces"
+	"ricebean/examples/GameServer/lobby_svc/sys_modules/activity"
+	"ricebean/examples/GameServer/lobby_svc/sys_modules/mail"
 	"ricebean/framework/log4"
 
 	"ricebean/framework/sys_net"
