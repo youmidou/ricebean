@@ -40,7 +40,7 @@ func main() {
 	//注册网关接收模块
 	//builder.SetGatewayHandlerSvc()
 	//----------------------------------------------
-	//GatewayHandlerService
+	//GatewayHandlerService. gateway_svc
 
 	app = builder.Build()
 	defer app.Shutdown()

@@ -252,8 +252,8 @@ func (builder *Builder) Build() Pitaya {
 		builder.RPCServer,
 		builder.Worker,
 		builder.ServiceDiscovery,
-		remoteService,
-		handlerService,
+		remoteService,  //rpc转发服务
+		handlerService, //网关服务
 		builder.Groups,
 		builder.SessionPool,
 		builder.MetricsReporters,

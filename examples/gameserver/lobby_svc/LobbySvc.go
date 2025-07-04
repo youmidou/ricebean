@@ -63,6 +63,8 @@ func (t *LobbySvc) InternalReceivingMessage() {
 
 // 接收网关数据
 func (t *LobbySvc) OnGatewayReceive(ctx context.Context, req *pbs.Net_InternalMessagePacket) (*pbs.Net_InternalMessagePacket, error) {
+	s := t.app.GetSessionFromCtx(ctx)
+	s.GetRequestsInFlight()
 
 	ret := &pbs.Net_InternalMessagePacket{}
 	switch req.MsgType {

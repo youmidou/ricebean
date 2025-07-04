@@ -1,18 +1,48 @@
 #需要翻墙下载 就需要在本地下载好 在Copy到远端Docker->images里
 #正式服部署 Ubuntu 22.04
 services:  # 定义所有需要运行的服务
+  
+  nats:
+    image: nats
+    ports:
+      - 4222:4222
+
+  etcd:
+    image: bitnami/etcd
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+    ports:
+      - 2379:2379
+
   redis:  # redis 服务
     image: redis:latest  # 使用最新的 redis 镜像
     platform: linux/amd64  # 明确指定镜像架构为 x86_64
-    container_name: redis_6376  # 容器名称，方便管理
+    container_name: redis_6378  # 容器名称，方便管理
     ports:
-      - "63792:6379"  # 将主机63791端口映射到容器6379端口
+      - "6378:6378"  # 将主机63791端口映射到容器6379端口
     volumes:
       - ./ricebean_data/redis_data:/data  # 挂载主机目录到容器，实现数据持久化
-    command: redis-server --port 6376 --save 900 1 --save 300 10 --save 60 10000  # 启动 redis 并设置持久化策略
+    command: redis-server --port 6378 --save 900 1 --save 300 10 --save 60 10000  # 启动 redis 并设置持久化策略
     restart: unless-stopped  # 容器异常退出时自动重启，除非手动停止
     networks:
       - ricebean_network  # 连接到 ricebean_network 网络，便于与其他服务通信
+
+  mysql:
+    image: mysql:8.0
+    platform: linux/amd64  # 明确指定镜像架构为 x86_64
+    container_name: mysql_3306
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+      - MYSQL_DATABASE=ricebean_db     #默认创建数据库
+      - TZ=Asia/Shanghai
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci  # 设置字符集为utf8mb4，排序规则为utf8mb4_unicode_ci
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./ricebean_data/mysql_data:/var/lib/mysql
+    networks:
+      - ricebean_network
 
 volumes:
   redis_data:  # 定义 redis_data 卷，用于持久化存储
