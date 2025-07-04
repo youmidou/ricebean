@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"ricebean/examples/gameserver/lobby_svc"
+	"ricebean/examples/GameServer/lobby_svc"
 	pitaya "ricebean/pkg"
 	"ricebean/pkg/acceptor"
 	"ricebean/pkg/agent"
