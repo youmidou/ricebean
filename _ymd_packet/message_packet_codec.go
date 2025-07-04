@@ -26,14 +26,14 @@ import (
 	"ricebean/pkg/conn/packet"
 )
 
-type YmdMessagePacket struct{}
+type MessagePacketCodec struct{}
 
-func NewPomeloMessagePacket() *YmdMessagePacket {
-	return &YmdMessagePacket{}
+func NewPomeloMessagePacket() *MessagePacketCodec {
+	return &MessagePacketCodec{}
 }
 
 // 包编码
-func (t *YmdMessagePacket) Encode(typ packet.Type, data []byte) ([]byte, error) {
+func (t *MessagePacketCodec) Encode(typ packet.Type, data []byte) ([]byte, error) {
 	if typ < packet.Handshake || typ > packet.Kick {
 		return nil, packet.ErrWrongPomeloPacketType
 	}
@@ -54,13 +54,13 @@ func (t *YmdMessagePacket) Encode(typ packet.Type, data []byte) ([]byte, error) 
 
 // --------------------------------------------------------------------------------------
 
-func (t *YmdMessagePacket) forward(buf *bytes.Buffer) (int, packet.Type, error) {
+func (t *MessagePacketCodec) forward(buf *bytes.Buffer) (int, packet.Type, error) {
 	header := buf.Next(HeadLength)
 	return ParseHeader(header)
 }
 
 // 包解码 Decode decode the network bytes slice to packet.Packet(s)
-func (t *YmdMessagePacket) Decode(data []byte) ([]*packet.Packet, error) {
+func (t *MessagePacketCodec) Decode(data []byte) ([]*packet.Packet, error) {
 	buf := bytes.NewBuffer(nil)
 	buf.Write(data)
 
@@ -100,11 +100,11 @@ func (t *YmdMessagePacket) Decode(data []byte) ([]*packet.Packet, error) {
 // ====================================================================
 
 // 消息编码
-func (t *YmdMessagePacket) MessageEncode() {
+func (t *MessagePacketCodec) MessageEncode() {
 
 }
 
 // 消息解码
-func (t *YmdMessagePacket) MessageDecode() {
+func (t *MessagePacketCodec) MessageDecode() {
 
 }

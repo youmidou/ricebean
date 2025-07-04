@@ -174,7 +174,7 @@ func (h *HandlerService) Handle(conn acceptor.PlayerConn) {
 	// startup agent goroutine
 	go a.Handle()
 
-	logger.Log.Debugf("accept-gate New session established: %s", a.String())
+	logger.Log.Debugf("-- accept-gate New session established: %s", a.String())
 
 	// guarantee agent related resource is destroyed
 	defer func() {

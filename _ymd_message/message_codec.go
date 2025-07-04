@@ -108,7 +108,7 @@ func (t *YmdPacketEncoder) Encode(msg *message.Message) ([]byte, error) {
 }
 
 // Decode decodes the message
-func (t *YmdPacketEncoder) Decode(data []byte) (*Message, error) {
+func (t *YmdPacketEncoder) Decode(data []byte) (*message.Message, error) {
 	if len(data) < msgHeadLength {
 		return nil, ErrInvalidMessage
 	}
