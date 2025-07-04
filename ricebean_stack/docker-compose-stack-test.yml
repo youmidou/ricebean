@@ -39,8 +39,8 @@ services:  # 定义所有需要运行的服务
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci  # 设置字符集为utf8mb4，排序规则为utf8mb4_unicode_ci
     ports:
       - "3307:3306"
-    volumes:
-      - ./ricebean_data/mysql_data:/var/lib/mysql
+    #volumes:
+      #- ./ricebean_data/mysql_data:/var/lib/mysql
     networks:
       - ricebean_network
 
