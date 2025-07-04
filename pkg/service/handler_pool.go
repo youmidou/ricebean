@@ -80,7 +80,7 @@ func (h *HandlerPool) ProcessHandlerMessage(
 	if err != nil {
 		return nil, e.NewError(err, e.ErrBadRequestCode)
 	}
-
+	//在管道之前执行
 	ctx, arg, err = handlerHooks.BeforeHandler.ExecuteBeforePipeline(ctx, arg)
 	if err != nil {
 		return nil, err
