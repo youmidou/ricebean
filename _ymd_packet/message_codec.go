@@ -1,4 +1,4 @@
-package _ymd_message
+package _ymd_packet
 
 import (
 	"encoding/binary"

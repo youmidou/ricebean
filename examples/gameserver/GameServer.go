@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"ricebean/_ymd_message"
+	"ricebean/_ymd_packet"
 	"ricebean/examples/GameServer/lobby_svc"
 	pitaya "ricebean/pkg"
 	"ricebean/pkg/acceptor"
@@ -35,7 +35,7 @@ func main() {
 	builder.PacketCodec = codec.NewPomeloMessagePacket()
 	//消息->编码器
 	//builder.MessageCodec = message.NewPomeloPacketEncoder(cfg.Handler.Messages.Compression)
-	builder.MessageCodec = _ymd_message.NewYmdPacketEncoder(cfg.Handler.Messages.Compression)
+	builder.MessageCodec = _ymd_packet.NewYmdPacketEncoder(cfg.Handler.Messages.Compression)
 
 	tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", 1250))
 	builder.AddAcceptor(tcp)

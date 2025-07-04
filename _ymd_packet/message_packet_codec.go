@@ -26,6 +26,7 @@ import (
 	"ricebean/pkg/conn/packet"
 )
 
+// 消息包编解码器
 type MessagePacketCodec struct{}
 
 func NewPomeloMessagePacket() *MessagePacketCodec {
