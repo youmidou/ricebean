@@ -63,11 +63,11 @@ func (t *LobbySvc) InternalReceivingMessage() {
 
 }
 
-func (t *LobbySvc) M1001002(ctx context.Context, req *pb.Net_Login_LoginReq) (*pb.Net_Login_LoginRet, error) {
+func (t *LobbySvc) M1001002(ctx context.Context, req *pb.Net_Lobby_LoginReq) (*pb.Net_Lobby_LoginRet, error) {
 	s := t.app.GetSessionFromCtx(ctx)
 	s.GetRequestsInFlight()
 
-	ret := &pb.Net_Login_LoginRet{}
+	ret := &pb.Net_Lobby_LoginRet{}
 	return ret, nil
 }
 

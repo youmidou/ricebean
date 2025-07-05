@@ -10,7 +10,32 @@ namespace Pb
 {
 
     [global::ProtoBuf.ProtoContract()]
-    public partial class Base_Lobby_UserInfo : global::ProtoBuf.IExtensible
+    public partial class Net_Lobby_ErrorRet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public int ErrorNum { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string ErrorStr { get; set; } = "";
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_CloseServerRet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_LoginReq : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
         global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -18,85 +43,55 @@ namespace Pb
 
         [global::ProtoBuf.ProtoMember(1)]
         [global::System.ComponentModel.DefaultValue("")]
-        public string UserId { get; set; } = "";
+        public string Credential { get; set; } = "";
 
         [global::ProtoBuf.ProtoMember(2)]
         [global::System.ComponentModel.DefaultValue("")]
-        public string GameName { get; set; } = "";
+        public string Package { get; set; } = "";
 
         [global::ProtoBuf.ProtoMember(3)]
         [global::System.ComponentModel.DefaultValue("")]
-        public string PlatName { get; set; } = "";
+        public string Version { get; set; } = "";
 
         [global::ProtoBuf.ProtoMember(4)]
-        public int SceneId { get; set; }
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_AuthorizationLoginReq : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
         [global::System.ComponentModel.DefaultValue("")]
-        public string Token { get; set; } = "";
+        public string HotVersion { get; set; } = "";
 
-        [global::ProtoBuf.ProtoMember(2)]
-        public Base_Lobby_UserInfo UserInfo { get; set; }
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_AuthorizationLoginRet : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public int Ret { get; set; }
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_AuthorizationEnterGameReq : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
+        [global::ProtoBuf.ProtoMember(5)]
         [global::System.ComponentModel.DefaultValue("")]
-        public string GameId { get; set; } = "";
+        public string DeviceModel { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(6)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string SysVersion { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(7)]
+        public bool IsRealLogin { get; set; }
+
+        [global::ProtoBuf.ProtoMember(8)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string DeviceId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(9)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string AdId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(10)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string FacebookId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(11)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string AppleId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(12)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string HmsId { get; set; } = "";
 
     }
 
     [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_AuthorizationEnterGameRet : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public int Ret { get; set; }
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_LuckyWheelReq : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_LuckyWheelRet : global::ProtoBuf.IExtensible
+    public partial class Net_Lobby_LoginRet : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
         global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -106,18 +101,22 @@ namespace Pb
         public int Ret { get; set; }
 
         [global::ProtoBuf.ProtoMember(2)]
-        public int WinningId { get; set; }
+        public long ServerTime { get; set; }
 
         [global::ProtoBuf.ProtoMember(3)]
-        public int PrizeId { get; set; }
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Credential { get; set; } = "";
 
         [global::ProtoBuf.ProtoMember(4)]
-        public int PrizeNum { get; set; }
+        public int DifferentDevice { get; set; }
+
+        [global::ProtoBuf.ProtoMember(5)]
+        public bool IsFirstLogin { get; set; }
 
     }
 
     [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_EnterLobbyReq : global::ProtoBuf.IExtensible
+    public partial class Net_Lobby_PlayerInfoRet : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
         global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -126,7 +125,289 @@ namespace Pb
     }
 
     [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_EnterLobbyRet : global::ProtoBuf.IExtensible
+    public partial class Net_Lobby_ReconnectReq : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public Net_Lobby_LoginReq Login { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public int ThemeId { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public bool Quest { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4)]
+        public bool NormalQuest { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_ReconnectRet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public int Ret { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_FacebookConnectReq : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string FacebookId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string FacebookName { get; set; } = "";
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_FacebookConnectRet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public bool InvalidFacebookId { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public bool AlreadyFBConnected { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public int IdChanged { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Credential { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(5)]
+        public int FirstLoginReward { get; set; }
+
+        [global::ProtoBuf.ProtoMember(6)]
+        public int Coins { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_FacebookLogoutReq : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Uuid { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string FacebookId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string AppleId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(4)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string HmsId { get; set; } = "";
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_FacebookLogoutRet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public int IdChanged { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public int ReloginWithFacebookOrLocalUser { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Credential { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(4)]
+        public int FirstLoginReward { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_FacebookSetUserInfoReq : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public int Id { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Name { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Email { get; set; } = "";
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_FacebookSetUserInfoRet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_CollectFacebookRewardReq : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_CollectFacebookRewardRet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_AppleLoginReq : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string AppleId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string IdentityToken { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Email { get; set; } = "";
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_AppleLoginRet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Credential { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public int IdChanged { get; set; }
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public bool InvalidAppleToken { get; set; }
+
+        [global::ProtoBuf.ProtoMember(4)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string FacebookId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(5)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string AppleSubId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(6)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string HmsId { get; set; } = "";
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_AppleLogoutReq : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Uuid { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string FacebookId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string AppleId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(4)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string HmsId { get; set; } = "";
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_AppleLogoutRet : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public int IdChanged { get; set; }
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string Uuid { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string FacebookId { get; set; } = "";
+
+        [global::ProtoBuf.ProtoMember(4)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string AppleId { get; set; } = "";
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_KeepAliveReq : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class Net_Lobby_KeepAliveRet : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
         global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -136,12 +417,12 @@ namespace Pb
         public int Coins { get; set; }
 
         [global::ProtoBuf.ProtoMember(2)]
-        public int Chips { get; set; }
+        public long CurrentServerTime { get; set; }
 
     }
 
     [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_GetFcmRewardsReq : global::ProtoBuf.IExtensible
+    public partial class Net_Lobby_MultiUserLoginRet : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
         global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -149,217 +430,7 @@ namespace Pb
 
         [global::ProtoBuf.ProtoMember(1)]
         [global::System.ComponentModel.DefaultValue("")]
-        public string Id { get; set; } = "";
-
-        [global::ProtoBuf.ProtoMember(2)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string Key { get; set; } = "";
-
-        [global::ProtoBuf.ProtoMember(3)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string Type { get; set; } = "";
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_GetFcmRewardsRet : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public int InvalidType { get; set; }
-
-        [global::ProtoBuf.ProtoMember(2)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string FcmRewards { get; set; } = "";
-
-        [global::ProtoBuf.ProtoMember(3)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string Type { get; set; } = "";
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_CollectFcmRewardsReq : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string Id { get; set; } = "";
-
-        [global::ProtoBuf.ProtoMember(2)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string Key { get; set; } = "";
-
-        [global::ProtoBuf.ProtoMember(3)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string Type { get; set; } = "";
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_CollectFcmRewardsRet : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public int InvalidType { get; set; }
-
-        [global::ProtoBuf.ProtoMember(2)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string FcmRewards { get; set; } = "";
-
-        [global::ProtoBuf.ProtoMember(3)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string Type { get; set; } = "";
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Base_Lobby_WeeklyPrize : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public int Coins { get; set; }
-
-        [global::ProtoBuf.ProtoMember(2)]
-        public int Golds { get; set; }
-
-        [global::ProtoBuf.ProtoMember(3)]
-        public int HolyGrails { get; set; }
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_CollectLoginBonusReq : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_CollectLoginBonusRet : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public int Ret { get; set; }
-
-        [global::ProtoBuf.ProtoMember(2)]
-        public Base_Player_LoginBonusInfo LoginBonusInfo { get; set; }
-
-        [global::ProtoBuf.ProtoMember(3)]
-        public Base_Lobby_WeeklyPrize WeeklyPrize { get; set; }
-
-        [global::ProtoBuf.ProtoMember(4)]
-        public int CurrentCoins { get; set; }
-
-        [global::ProtoBuf.ProtoMember(5)]
-        public int CurrentGolds { get; set; }
-
-        [global::ProtoBuf.ProtoMember(6)]
-        public int CurrentHolyGrails { get; set; }
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_ReissueLoginBonusReq : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public int MonthCount { get; set; }
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_ReissueLoginBonusRet : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public int Ret { get; set; }
-
-        [global::ProtoBuf.ProtoMember(2)]
-        public Base_Player_LoginBonusInfo LoginBonusInfo { get; set; }
-
-        [global::ProtoBuf.ProtoMember(3)]
-        public Base_Lobby_WeeklyPrize WeeklyPrize { get; set; }
-
-        [global::ProtoBuf.ProtoMember(4)]
-        public int CurrentCoins { get; set; }
-
-        [global::ProtoBuf.ProtoMember(5)]
-        public int CurrentGolds { get; set; }
-
-        [global::ProtoBuf.ProtoMember(6)]
-        public int CurrentHolyGrails { get; set; }
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_GetDailyBonusReq : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_GetDailyBonusRet : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public Base_Player_DailyBonusInfo DailyBonusInfo { get; set; }
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_CollectDailyBonusReq : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public int TickIndex { get; set; }
-
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public partial class Net_Lobby_CollectDailyBonusRet : global::ProtoBuf.IExtensible
-    {
-        private global::ProtoBuf.IExtension __pbn__extensionData;
-        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public int TickIndex { get; set; }
-
-        [global::ProtoBuf.ProtoMember(2)]
-        public bool IsBool { get; set; }
+        public string LoginAddress { get; set; } = "";
 
     }
 

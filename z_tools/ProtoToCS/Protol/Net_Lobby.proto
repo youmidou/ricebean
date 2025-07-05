@@ -1,138 +1,173 @@
 syntax = "proto3";
 package Pb;
 option go_package = "./pb";
-import "Net_Player.proto";
-/*
-	大厅消息
 
-added by yh @ 2023/11/30 10:29
-注意:大厅小功能就放大厅 难得建文件夹
-*/
-message Base_Lobby_UserInfo{
-     string UserId = 1;//
-     string GameName=2;
-     string PlatName=3;
-     int32 SceneId=4;
-}
-//授权登录
-message Net_Lobby_AuthorizationLoginReq{
-     string Token =1;
-     Base_Lobby_UserInfo UserInfo=2;//用户信息
-}
-//授权登录
-message Net_Lobby_AuthorizationLoginRet{
-     int32 Ret = 1;//0:成功；1:失败；
+//import "Net_Inbox.proto";
 
+//import "Net_Lobby.proto";
+//服务主动发送 错误提示
+message Net_Lobby_ErrorRet{
+  int32 ErrorNum =1;//错误号
+  string ErrorStr =2;//
+}
+//关服中... 当网关打开 中央服务器连接失败,返回关服中
+message Net_Lobby_CloseServerRet{
 }
 
-//授权进入游戏
-message Net_Lobby_AuthorizationEnterGameReq{
-     string GameId =1;
-}
-//授权进入游戏
-message Net_Lobby_AuthorizationEnterGameRet{
-     int32 Ret = 1;//0:成功；1:失败；
+//不能用下划线槽
+//游客登录
+message Net_Lobby_LoginReq
+{
+     string  Credential = 1; //"登陆凭据"
+     string  Package = 2; //包名
+     string  Version = 3; //包版本号
+     string  HotVersion = 4; //热更新资源版本号
+     string  DeviceModel = 5;//设备型号
+     string  SysVersion = 6;//系统版本
+     bool    IsRealLogin = 7;//是否真实登录
+     string  DeviceId = 8;//设备Id
+     string  AdId =9;//广告Id
+     string  FacebookId = 10;
+     string  AppleId = 11;//
+     string  HmsId=12;
 
 }
-//幸运大转盘
-message Net_Lobby_LuckyWheelReq{
+message Net_Lobby_LoginRet
+{
+  int32 Ret =1;//0:登录成功;1:凭据错误;2:重新链接失败;3:跨日;
+  int64 ServerTime =2;  //服务器时间
+  //登录凭证
+  string Credential = 3;
+  //不同的设备
+  int32 DifferentDevice =4;
+  //是否是第一次登录
+  bool IsFirstLogin =5;
+  //玩家数据
+  //Base_Lobby_PlayerData PlayerData =8;
 }
-//幸运大转盘
-message Net_Lobby_LuckyWheelRet{
-     int32 Ret = 1;//0:成功；1:材料不够；
-     int32 WinningId =2;//中奖Id
-     int32 PrizeId =3;//中奖物品Id
-     int32 PrizeNum =4;//中奖物品数量
-}
-
-
-//进入大厅
-message Net_Lobby_EnterLobbyReq{
-
-}
-message Net_Lobby_EnterLobbyRet{
-
-     int32 Coins =1; //同步前后端金币
-     int32 Chips =2;//同步前后端宝石
-}
-
-//获得 Fcm 奖励
-message Net_Lobby_GetFcmRewardsReq{
-     string Id =1; //
-     string Key =2;//
-     string Type =3;//
-}
-message Net_Lobby_GetFcmRewardsRet{
-     int32 InvalidType =1; //
-     string FcmRewards =2;//
-     string Type =3;//
-}
-//收集 Fcm 奖励
-message Net_Lobby_CollectFcmRewardsReq{
-     string Id =1; //
-     string Key =2;//
-     string Type =3;//
-}
-message Net_Lobby_CollectFcmRewardsRet{
-     int32 InvalidType =1; //
-     string FcmRewards =2;//
-     string Type =3;//
-}
-//收集周奖励
-message Base_Lobby_WeeklyPrize{
-     int32 Coins =1;//获得金币
-     int32 Golds =2;//获得砖石
-     int32 HolyGrails=3;//获得奖杯
+//登录成功后返回玩家信息
+message Net_Lobby_PlayerInfoRet{
 
 }
-//收集每日签到奖励
-message Net_Lobby_CollectLoginBonusReq{
+//断线重新连接
+message Net_Lobby_ReconnectReq{
+  //登录数据
+  Net_Lobby_LoginReq Login =1;
+  int32 ThemeId =2;
+  bool Quest =3;//任务
+  bool NormalQuest =4;//普通任务
+}
+message Net_Lobby_ReconnectRet{
+  int32 Ret =1;//0:成功;1:凭据错误;2:重新链接失败;3:跨日;
+  //玩家数据
+  //Base_Player_PlayerData PlayerData =2;
+  //Base_Match3_RoomInfo RoomInfo =9;//如果有房间信息就直接拉进房间里
+
 
 }
-message Net_Lobby_CollectLoginBonusRet{
-     int32 Ret =1;//0:签到成功;1:已经签到;
-     Base_Player_LoginBonusInfo LoginBonusInfo = 2;//每日签到信息
-     Base_Lobby_WeeklyPrize WeeklyPrize =3;//周奖励信息
-
-     int32 CurrentCoins =4;//当前金币
-     int32 CurrentGolds =5;//当前钻石
-     int32 CurrentHolyGrails=6;//当前奖杯
-
-     //int32 MonthlyPrize=2;//
-}
-//补签登录奖励
-message Net_Lobby_ReissueLoginBonusReq{
-    int32 MonthCount =1;//补签的那一天数
-}
-message Net_Lobby_ReissueLoginBonusRet{
-     int32 Ret =1;//0:签到成功;1:已经签到;2:金币不够;
-     Base_Player_LoginBonusInfo LoginBonusInfo = 2;//每日签到信息
-     Base_Lobby_WeeklyPrize WeeklyPrize =3;//周奖励信息
-
-     int32 CurrentCoins =4;//当前金币
-     int32 CurrentGolds =5;//当前钻石
-     int32 CurrentHolyGrails=6;//当前奖杯
-
-     //int32 MonthlyPrize=2;//
-}
-
-
-
-//获取每日登陆奖励
-message Net_Lobby_GetDailyBonusReq{
+//Facebook登录
+message Net_Lobby_FacebookConnectReq
+{
+  string  FacebookId = 1;
+  string FacebookName = 2;
 
 }
-message Net_Lobby_GetDailyBonusRet{
-    Base_Player_DailyBonusInfo DailyBonusInfo =1;//每日奖励
+message Net_Lobby_FacebookConnectRet
+{
+  bool InvalidFacebookId =1; //Facebook ID 无效
+  bool AlreadyFBConnected =2;//已经FB连接
+  int32 IdChanged = 3;//身份变更
+  string  Credential = 4;//登录凭证
+  int32 FirstLoginReward = 5;//首次登录奖励
+  int32 Coins =6;
 
 }
 
-//收集每日登录奖励
-message Net_Lobby_CollectDailyBonusReq{
-     int32 TickIndex =1;//领取每日奖励索引
+//Facebook 登出
+message Net_Lobby_FacebookLogoutReq
+{
+    string Uuid = 1;
+    string FacebookId = 2;
+    string AppleId = 3;
+    string HmsId = 4;
+}
+message Net_Lobby_FacebookLogoutRet
+{
+  int32 IdChanged =1;//是否 需要切换账号
+  int32 ReloginWithFacebookOrLocalUser = 2;
+  string Credential =3;//登录凭证
+  int32 FirstLoginReward = 4;//首次登录奖励
 
 }
-message Net_Lobby_CollectDailyBonusRet{
-     int32 TickIndex =1;//领取每日奖励索引
-     bool IsBool =2;//true:成功;false:失败;
+//Facebook设置用户信息
+message Net_Lobby_FacebookSetUserInfoReq
+{
+  int32 Id =1;
+  string Name = 2;
+  string Email =3;
 }
+message Net_Lobby_FacebookSetUserInfoRet
+{
+}
+//FB 登录奖励
+message Net_Lobby_CollectFacebookRewardReq
+{
+}
+message Net_Lobby_CollectFacebookRewardRet
+{
+}
+//--------------------------------------------------------
+//apple 登录 check_apple_login
+message Net_Lobby_AppleLoginReq
+{
+    string AppleId =1;
+    string IdentityToken = 2;   //身份令牌
+    string Email = 3;
+
+}
+message Net_Lobby_AppleLoginRet
+{
+  string Credential = 1;//凭证
+  int32 IdChanged=2;//是否 身份变更
+  bool InvalidAppleToken=3; //无效令牌
+  string FacebookId =4;
+  string AppleSubId =5;
+  string HmsId =6;
+
+}
+//apple 登出
+message Net_Lobby_AppleLogoutReq
+{
+  string Uuid = 1;
+  string FacebookId =2;
+  string AppleId =3;
+  string HmsId =4;
+}
+message Net_Lobby_AppleLogoutRet
+{
+  int32 IdChanged =1;
+  string  Uuid = 2;
+  string FacebookId =3;
+  string AppleId =4;
+
+
+}
+//活着
+message Net_Lobby_KeepAliveReq
+{
+    // BuffData wawa =1;
+}
+//heartbeat 心跳包
+message Net_Lobby_KeepAliveRet
+{
+  int32 Coins =1;//当前玩家金币
+  int64 CurrentServerTime=2;//当前服务器时间
+
+}
+//多用户登录 主动推送被挤下线
+message Net_Lobby_MultiUserLoginRet
+{
+  string LoginAddress =1;//你被这个地址登录挤下线
+
+}
+

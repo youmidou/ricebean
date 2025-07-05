@@ -75,9 +75,10 @@ func main() {
 	//接收路由地址 server.service.handler Game.LobbySvc.1001002 not found
 	err := app.SetDictionary(map[string]uint32{
 		//---------Gateway------------------------------------------------
+		"Lobby.Login":               uint32(pb.Cmd_Lobby_Login), //
 		"LoginSvc.OnGatewayReceive": 1,                          //
 		"LobbySvc.M1001002":         2,                          //
-		"LobbySvc.Login":            uint32(pb.Cmd_Login_Login), //
+
 		//"ThemeSvc.OnGatewayReceive": 3, //
 		//"game.game.entergame":                  7,
 	})

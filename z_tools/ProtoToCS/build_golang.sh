@@ -2,6 +2,8 @@
 #----------------------------------------------------------------
  #生成协议 已经做到一键到位
  #added by yh @ 2023/08/03 23:35
+ #安装
+ #go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 
  #protoc下载地址
  #https://github.com/protocolbuffers/protobuf/releases
