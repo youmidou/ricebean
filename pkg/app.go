@@ -129,6 +129,7 @@ type Pitaya interface {
 	GetModule(name string) (interfaces.Module, error)
 
 	GetNumberOfConnectedClients() int64
+
 	SetOnGatewayReceive(f func(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message))
 }
 
