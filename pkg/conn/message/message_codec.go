@@ -22,6 +22,7 @@ package message
 
 import (
 	"encoding/binary"
+	"fmt"
 
 	"ricebean/pkg/util/compression"
 )
@@ -126,12 +127,19 @@ func (t *YmdMessageCodec) Encode(message *Message) ([]byte, error) {
 
 // Decode decodes the message
 func (t *YmdMessageCodec) Decode(data []byte) (*Message, error) {
+
 	if len(data) < msgHeadLength {
 		return nil, ErrInvalidMessage
 	}
 	m := New()
+	offset := 0
+	msgId := binary.BigEndian.Uint32(data[offset:(offset + 4)])
+	m.Route = fmt.Sprintf("LobbySvc.M%d", msgId)
+	m.Data = data[offset:]
+
+	return m, nil
+
 	flag := data[0]
-	offset := 1
 	m.Type = Type((flag >> 1) & msgTypeMask)
 
 	if InvalidType(m.Type) {

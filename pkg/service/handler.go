@@ -300,7 +300,7 @@ func (h *HandlerService) processPacket(a agent.Agent, p *packet.Packet) error {
 	if err != nil {
 		return err
 	}
-	msg.Route = ""
+	//msg.Route = ""
 	h.processMessage(a, msg)
 
 	a.SetLastAt() //设置最后时间
@@ -359,41 +359,39 @@ func (h *HandlerService) processMessage(a agent.Agent, msg *message.Message) {
 }
 
 func (h *HandlerService) localProcess(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message) {
-	/*
-		var mid uint
-		switch msg.Type {
-		case message.Request:
-			mid = msg.ID
-		case message.Notify:
-			mid = 0
-		}
-	*/
 
+	var mid uint
+	switch msg.Type {
+	case message.Request:
+		mid = msg.ID
+	case message.Notify:
+		mid = 0
+	}
+	
 	h._OnGatewayReceive(ctx, a, route, msg)
 
-	/*
-		ret, err := h.handlerPool.ProcessHandlerMessage(ctx, route, h.serializer, h.handlerHooks, a.GetSession(), msg.Data, msg.Type, false)
-		if msg.Type != message.Notify {
+	ret, err := h.handlerPool.ProcessHandlerMessage(ctx, route, h.serializer, h.handlerHooks, a.GetSession(), msg.Data, msg.Type, false)
+	if msg.Type != message.Notify {
+		if err != nil {
+			logger.Log.Errorf("Failed to process handler message: %s", err.Error())
+			a.AnswerWithError(ctx, mid, err)
+		} else {
+			err := a.GetSession().ResponseMID(ctx, mid, ret)
 			if err != nil {
 				logger.Log.Errorf("Failed to process handler message: %s", err.Error())
-				a.AnswerWithError(ctx, mid, err)
-			} else {
-				err := a.GetSession().ResponseMID(ctx, mid, ret)
-				if err != nil {
-					logger.Log.Errorf("Failed to process handler message: %s", err.Error())
-					tracing.FinishSpan(ctx, err)
-					metrics.ReportTimingFromCtx(ctx, h.metricsReporters, handlerType, err)
-				}
-			}
-		} else {
-			//来自 Ctx 的报告时间
-			metrics.ReportTimingFromCtx(ctx, h.metricsReporters, handlerType, err)
-			tracing.FinishSpan(ctx, err)
-			if err != nil {
-				logger.Log.Errorf("Failed to process notify message: %s", err.Error())
+				tracing.FinishSpan(ctx, err)
+				metrics.ReportTimingFromCtx(ctx, h.metricsReporters, handlerType, err)
 			}
 		}
-	*/
+	} else {
+		//来自 Ctx 的报告时间
+		metrics.ReportTimingFromCtx(ctx, h.metricsReporters, handlerType, err)
+		tracing.FinishSpan(ctx, err)
+		if err != nil {
+			logger.Log.Errorf("Failed to process notify message: %s", err.Error())
+		}
+	}
+
 }
 
 // DumpServices outputs all registered services

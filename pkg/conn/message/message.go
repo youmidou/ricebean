@@ -44,7 +44,7 @@ const (
 	msgRouteCompressMask = 0x01
 	msgTypeMask          = 0x07
 	msgRouteLengthMask   = 0xFF
-	msgHeadLength        = 0x02
+	msgHeadLength        = 0x04
 )
 
 var types = map[Type]string{

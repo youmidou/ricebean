@@ -63,12 +63,12 @@ func main() {
 		lobbySvc.OnGatewayReceive(ctx, a, route, msg)
 	})
 
-	//接收路由地址 server.service.handler
+	//接收路由地址 server.service.handler Game.LobbySvc.1001002 not found
 	err := app.SetDictionary(map[string]uint16{
 		//---------Gateway------------------------------------------------
 		"LoginSvc.OnGatewayReceive": 1, //
-		"LobbySvc.OnGatewayReceive": 2, //
-		"ThemeSvc.OnGatewayReceive": 3, //
+		"LobbySvc.M1001002":         2, //
+		//"ThemeSvc.OnGatewayReceive": 3, //
 		//"game.game.entergame":                  7,
 	})
 

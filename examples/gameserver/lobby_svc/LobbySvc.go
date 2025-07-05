@@ -10,6 +10,7 @@ import (
 	"ricebean/pkg/agent"
 	"ricebean/pkg/conn/message"
 	"ricebean/pkg/route"
+	"ricebean/z_tools/ProtoToCS/Protocal/pb"
 
 	"ricebean/framework/sys_net"
 	pitaya "ricebean/pkg"
@@ -63,6 +64,15 @@ func (t *LobbySvc) InternalReceivingMessage() {
 	//InternalMessageProcessing
 
 }
+
+func (t *LobbySvc) M1001002(ctx context.Context, req *pb.Net_Login_LoginReq) (*pb.Net_Login_LoginRet, error) {
+	s := t.app.GetSessionFromCtx(ctx)
+	s.GetRequestsInFlight()
+
+	ret := &pb.Net_Login_LoginRet{}
+	return ret, nil
+}
+
 func (t *LobbySvc) OnGatewayReceive(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message) {
 	s := a.GetSession()
 	s.Bind(ctx, "")
