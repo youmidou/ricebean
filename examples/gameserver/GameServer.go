@@ -27,8 +27,9 @@ func main() {
 	cfg := config.NewDefaultPitayaConfig()
 
 	builder := pitaya.NewDefaultBuilder(true, *svType, pitaya.Cluster, serverMetadata, *cfg)
+	//--------------初始化模块--------------------------------
 
-	//----------------------------------------------
+	//--------------网关模块--------------------------------
 	builder.Serializer = protobuf.NewSerializer() // 设置 Protobuf 序列化器
 	//数据包编解码器
 	builder.PacketCodec = codec.NewPomeloMessagePacket()
