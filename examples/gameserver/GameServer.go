@@ -14,6 +14,7 @@ import (
 	"ricebean/pkg/conn/message"
 	"ricebean/pkg/route"
 	"ricebean/pkg/serialize/protobuf"
+	"ricebean/z_tools/ProtoToCS/Protocal/pb"
 )
 
 var app pitaya.Pitaya
@@ -51,10 +52,7 @@ func main() {
 	//lobby_svc.NewGlobalUserManager
 
 	activityModule := lobby_svc.NewActivityModule(app)
-	err := app.RegisterModule(activityModule, "activityModule")
-	if err != nil {
-		return
-	}
+	app.RegisterModule(activityModule, "activityModule")
 	act, _ := app.GetModule("activityModule")
 	cc := act.(*lobby_svc.ActivityModule)
 	if cc != nil {
@@ -75,10 +73,11 @@ func main() {
 	})
 
 	//接收路由地址 server.service.handler Game.LobbySvc.1001002 not found
-	err = app.SetDictionary(map[string]uint16{
+	err := app.SetDictionary(map[string]uint32{
 		//---------Gateway------------------------------------------------
-		"LoginSvc.OnGatewayReceive": 1, //
-		"LobbySvc.M1001002":         2, //
+		"LoginSvc.OnGatewayReceive": 1,                          //
+		"LobbySvc.M1001002":         2,                          //
+		"LobbySvc.Login":            uint32(pb.Cmd_Login_Login), //
 		//"ThemeSvc.OnGatewayReceive": 3, //
 		//"game.game.entergame":                  7,
 	})

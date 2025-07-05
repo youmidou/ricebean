@@ -106,7 +106,7 @@ func Start() {
 	DefaultApp.Start()
 }
 
-func SetDictionary(dict map[string]uint16) error {
+func SetDictionary(dict map[string]uint32) error {
 	return DefaultApp.SetDictionary(dict)
 }
 

@@ -172,7 +172,7 @@ func (t *YmdMessageCodec) Decode(data []byte) (*Message, error) {
 			}
 
 			m.compressed = true
-			code := binary.BigEndian.Uint16(data[offset:(offset + 2)])
+			code := binary.BigEndian.Uint32(data[offset:(offset + 4)])
 			routesCodesMutex.RLock()
 			route, ok := codes[code]
 			routesCodesMutex.RUnlock()

@@ -83,7 +83,7 @@ type Pitaya interface {
 	GetServers() []*cluster.Server
 	GetSessionFromCtx(ctx context.Context) session.Session
 	Start()
-	SetDictionary(dict map[string]uint16) error
+	SetDictionary(dict map[string]uint32) error
 	AddRoute(serverType string, routingFunction router.RoutingFunc) error
 	Shutdown()
 	StartWorker()
@@ -432,7 +432,7 @@ func (app *App) listen() {
 }
 
 // SetDictionary sets routes map
-func (app *App) SetDictionary(dict map[string]uint16) error {
+func (app *App) SetDictionary(dict map[string]uint32) error {
 	if app.running {
 		return constants.ErrChangeDictionaryWhileRunning
 	}

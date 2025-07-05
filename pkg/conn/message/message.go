@@ -56,8 +56,8 @@ var types = map[Type]string{
 
 var (
 	routesCodesMutex = sync.RWMutex{}
-	routes           = make(map[string]uint16) // route map to code
-	codes            = make(map[uint16]string) // code map to route
+	routes           = make(map[string]uint32) // route map to code
+	codes            = make(map[uint32]string) // code map to route
 )
 
 // Errors that could be occurred in message codec
@@ -108,7 +108,7 @@ func InvalidType(t Type) bool {
 }
 
 // SetDictionary set routes map which be used to compress route.
-func SetDictionary(dict map[string]uint16) error {
+func SetDictionary(dict map[string]uint32) error {
 	if dict == nil {
 		return nil
 	}
@@ -136,10 +136,10 @@ func SetDictionary(dict map[string]uint16) error {
 }
 
 // GetDictionary gets the routes map which is used to compress route.
-func GetDictionary() map[string]uint16 {
+func GetDictionary() map[string]uint32 {
 	routesCodesMutex.RLock()
 	defer routesCodesMutex.RUnlock()
-	dict := make(map[string]uint16)
+	dict := make(map[string]uint32)
 	for k, v := range routes {
 		dict[k] = v
 	}
