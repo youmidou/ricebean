@@ -3,7 +3,6 @@ package lobby_svc
 import (
 	"context"
 	"github.com/golang/protobuf/proto"
-	_interfaces2 "ricebean/examples/GameServer/lobby_svc/_interfaces"
 	"ricebean/examples/GameServer/lobby_svc/sys_modules/activity"
 	"ricebean/examples/GameServer/lobby_svc/sys_modules/mail"
 	"ricebean/framework/log4"
@@ -25,6 +24,7 @@ const (
 )
 
 /*
+游戏大厅服务-->只处理大厅消息
 //modules.Base
 */
 func NewLobbySvc(app pitaya.Pitaya) *LobbySvc {
@@ -63,7 +63,7 @@ func (t *LobbySvc) InternalReceivingMessage() {
 
 }
 
-func (t *LobbySvc) M1001002(ctx context.Context, req *pb.Net_Lobby_LoginReq) (*pb.Net_Lobby_LoginRet, error) {
+func (t *LobbySvc) Login(ctx context.Context, req *pb.Net_Lobby_LoginReq) (*pb.Net_Lobby_LoginRet, error) {
 	s := t.app.GetSessionFromCtx(ctx)
 	s.GetRequestsInFlight()
 
@@ -228,13 +228,4 @@ func (t *LobbySvc) ForwardRPCDataAccess(netId string, userId string, msgId int32
 		return nil
 	}
 	return ret
-}
-
-func (t *LobbySvc) GetActivityManager() _interfaces2.ActivityManager {
-	//TODO implement me
-	return t.m_activity_manager
-}
-
-func (t *LobbySvc) GetRankManager() _interfaces2.RankManager {
-	return nil
 }
