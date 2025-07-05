@@ -37,7 +37,6 @@ type LobbySvc struct {
 	globalUserManager  *GlobalUserManager
 	m_usermail_manager *mail.UserMailManager
 	m_activity_manager *activity.ActivityManager
-	msgHandler         *LobbySvcMsgHandler
 	_request_map       map[int32]func(msgId int32, bytes []byte) (sys_net.IRequestHandler, error)
 }
 
@@ -50,7 +49,6 @@ func (t *LobbySvc) Init() {
 	t.m_activity_manager = activity.NewActivityManager()
 
 	//-------注册接收消息--------------------
-	t.msgHandler = NewLobbySvcMsgHandler(t)
 
 	//t.RegisterHandleMessage(pb.Cmd_Login_Login, t.LoginHandle)
 	//InternalCommInstance().SetApp(t.app)

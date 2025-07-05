@@ -66,10 +66,10 @@ type pendingRequest struct {
 
 // Client struct
 type Client struct {
-	conn                net.Conn
-	Connected           bool
-	packetEncoder       codec.PacketEncoder
-	packetDecoder       codec.PacketDecoder
+	conn      net.Conn
+	Connected bool
+
+	packetCodec         codec.PacketCodec //数据包编解码器
 	packetChan          chan *packet.Packet
 	IncomingMsgChan     chan *message.Message
 	pendingChan         chan bool
@@ -107,15 +107,14 @@ func New(logLevel logrus.Level, requestTimeout ...time.Duration) *Client {
 
 	return &Client{
 		Connected:       false,
-		packetEncoder:   codec.NewYmdMessageCodec(),
-		packetDecoder:   codec.NewPomeloPacketDecoder(),
+		packetCodec:     codec.NewPomeloMessagePacket(),
 		packetChan:      make(chan *packet.Packet, 10),
 		pendingRequests: make(map[uint]*pendingRequest),
 		requestTimeout:  reqTimeout,
 		// 30 here is the limit of inflight messages
 		// TODO this should probably be configurable
-		pendingChan:    make(chan bool, 30),
-		messageEncoder: message.NewMessagesEncoder(false),
+		pendingChan:  make(chan bool, 30),
+		messageCodec: message.NewYmdMessageCodec(false),
 		clientHandshakeData: &session.HandshakeData{
 			Sys: session.HandshakeClientData{
 				Platform:    "mac",
@@ -141,7 +140,7 @@ func (c *Client) sendHandshakeRequest() error {
 		return err
 	}
 
-	p, err := c.packetEncoder.Encode(packet.Handshake, enc)
+	p, err := c.packetCodec.Encode(packet.Handshake, enc)
 	if err != nil {
 		return err
 	}
@@ -180,7 +179,7 @@ func (c *Client) handleHandshakeResponse() error {
 	if handshake.Sys.Dict != nil {
 		message.SetDictionary(handshake.Sys.Dict)
 	}
-	p, err := c.packetEncoder.Encode(packet.HandshakeAck, []byte{})
+	p, err := c.packetCodec.Encode(packet.HandshakeAck, []byte{})
 	if err != nil {
 		return err
 	}
@@ -243,7 +242,7 @@ func (c *Client) handlePackets() {
 			case packet.Data:
 				//handle data
 				logger.Log.Debug("got data: %s", string(p.Data))
-				m, err := message.Decode(p.Data)
+				m, err := c.messageCodec.Decode(p.Data)
 				if err != nil {
 					logger.Log.Errorf("error decoding msg from sv: %s", string(m.Data))
 				}
@@ -282,7 +281,7 @@ func (c *Client) readPackets(buf *bytes.Buffer) ([]*packet.Packet, error) {
 		}
 		buf.Write(data[:n])
 	}
-	packets, err := c.packetDecoder.Decode(buf.Bytes())
+	packets, err := c.packetCodec.Decode(buf.Bytes())
 	if err != nil {
 		logger.Log.Errorf("error decoding packet from server: %s", err.Error())
 	}
@@ -320,7 +319,7 @@ func (c *Client) sendHeartbeats(interval int) {
 	for {
 		select {
 		case <-t.C:
-			p, _ := c.packetEncoder.Encode(packet.Heartbeat, []byte{})
+			p, _ := c.packetCodec.Encode(packet.Heartbeat, []byte{})
 			_, err := c.conn.Write(p)
 			if err != nil {
 				logger.Log.Errorf("error sending heartbeat to server: %s", err.Error())
@@ -420,11 +419,11 @@ func (c *Client) SendNotify(route string, data []byte) error {
 }
 
 func (c *Client) buildPacket(msg message.Message) ([]byte, error) {
-	encMsg, err := c.messageEncoder.Encode(&msg)
+	encMsg, err := c.messageCodec.Encode(&msg)
 	if err != nil {
 		return nil, err
 	}
-	p, err := c.packetEncoder.Encode(packet.Data, encMsg)
+	p, err := c.packetCodec.Encode(packet.Data, encMsg)
 	if err != nil {
 		return nil, err
 	}

@@ -35,12 +35,11 @@ func main() {
 	builder.PacketCodec = codec.NewPomeloMessagePacket()
 	//消息->编码器
 	builder.MessageCodec = message.NewYmdMessageCodec(cfg.Handler.Messages.Compression)
-	//builder.MessageCodec = _ymd_packet.NewYmdPacketEncoder(cfg.Handler.Messages.Compression)
 
 	tcp := acceptor.NewTCPAcceptor(fmt.Sprintf(":%d", 1250))
 	builder.AddAcceptor(tcp)
-	//ws := acceptor.NewWSAcceptor(fmt.Sprintf(":%d", 1251))
-	//builder.AddAcceptor(ws)
+
+	//-----------初始化网关---------------------------------
 	//注册网关接收模块
 	//builder.SetGatewayHandlerSvc()
 	//----------------------------------------------
@@ -48,8 +47,20 @@ func main() {
 
 	app = builder.Build()
 	defer app.Shutdown()
+	//-----------功能模块--------------------------
+	//lobby_svc.NewGlobalUserManager
 
-	//-----------大厅-----------------------
+	activityModule := lobby_svc.NewActivityModule(app)
+	err := app.RegisterModule(activityModule, "activityModule")
+	if err != nil {
+		return
+	}
+	act, _ := app.GetModule("activityModule")
+	cc := act.(*lobby_svc.ActivityModule)
+	if cc != nil {
+
+	}
+	//-----------消息接收服务-----------------------
 	lobbySvc := lobby_svc.NewLobbySvc(app)
 	app.Register(lobbySvc, component.WithName("LobbySvc"))
 	//app.RegisterRemote(lobbySvc, component.WithName("LobbySvc"))
@@ -57,7 +68,6 @@ func main() {
 	app.SetOnGatewayReceive(func(ctx context.Context, a agent.Agent, route *route.Route, msg *message.Message) {
 		s := a.GetSession()
 		s.OnClose(func() {
-
 		})
 		s.Bind(ctx, "")
 		//s.Bind("1")
@@ -65,7 +75,7 @@ func main() {
 	})
 
 	//接收路由地址 server.service.handler Game.LobbySvc.1001002 not found
-	err := app.SetDictionary(map[string]uint16{
+	err = app.SetDictionary(map[string]uint16{
 		//---------Gateway------------------------------------------------
 		"LoginSvc.OnGatewayReceive": 1, //
 		"LobbySvc.M1001002":         2, //
